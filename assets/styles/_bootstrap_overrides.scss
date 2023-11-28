@@ -1,0 +1,41 @@
+.blockquote {
+  border-left: 2px solid $primary;
+  padding-left: 1.5rem;
+}
+
+.card {
+  background-color: $light;
+  padding: 1rem;
+  border-radius: 0.25rem;
+}
+
+.container-main {
+  margin-top: 5.75rem;
+}
+
+.fs-smaller {
+  font-size: 0.75rem;
+}
+
+.icon {
+  &-green {
+    filter: invert(73%) sepia(10%) saturate(3085%) hue-rotate(36deg) brightness(85%) contrast(82%);
+  }
+
+  &-muted {
+    filter: invert(56%) sepia(0%) saturate(506%) hue-rotate(157deg) brightness(98%) contrast(82%);
+    opacity: 0.8;
+  }
+
+  &-orange {
+    filter: invert(41%) sepia(24%) saturate(3684%) hue-rotate(5deg) brightness(105%) contrast(103%);
+  }
+
+  &-red {
+    filter: invert(29%) sepia(15%) saturate(5273%) hue-rotate(328deg) brightness(93%) contrast(87%);
+  }
+}
+
+.top-nav-item {
+  font-size: 0.9rem;
+}

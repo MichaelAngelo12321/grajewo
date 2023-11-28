@@ -1,0 +1,63 @@
+<header class="header fixed-top bg-body">
+  <nav class="navbar navbar-expand-xl ">
+    <div class="container">
+      <a href="/" class="navbar-brand me-auto">
+        <img src="{{ asset('build/images/logo-dark.svg') }}" id="logo-top" alt="Logo serwisu" class="my-2"
+             height="42"/>
+      </a>
+
+      <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarTogglerContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse d-xl-flex justify-content-xl-between" id="navbarTogglerContent">
+        <form class="d-flex align-items-center gap-2 ms-auto me-auto mb-2 mb-lg-0" role="search">
+          <input type="search" class="form-control" placeholder="Szukaj w Grajewie..." name="search_query"/>
+
+          <button type="submit" class="btn btn-primary">
+            <img src="{{ asset('build/images/icons/search.svg') }}" alt="Ikona lupy"/>
+          </button>
+        </form>
+
+        <ul class="navbar-nav gap-2">
+          <li class="nav-item">
+            <a href="#" class="nav-link fw-medium link-danger">
+              <img src="{{ asset('build/images/icons/device-mobile-exclamation.svg') }}" alt="Ikona telefonu" class="icon-muted" />
+              RAPORT
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link fw-medium">
+              <img src="{{ asset('build/images/icons/photo.svg') }}" alt="Ikona zdjęcia" class="icon-muted" />
+              Galerie
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link fw-medium">
+              <img src="{{ asset('build/images/icons/layout-2.svg') }}" alt="Ikona siatki" class="icon-muted" />
+              Ogłoszenia
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link fw-medium">
+              <img src="{{ asset('build/images/icons/building-store.svg') }}" alt="Ikona sklepu" class="icon-muted" />
+              Firmy
+            </a>
+          </li>
+        </ul>
+
+        <div class="form-check form-switch py-3 py-xl-0 pt-xl-1 ms-xl-2">
+          <input class="form-check-input" type="checkbox" role="switch" id="theme-switcher">
+          <label class="form-check-label" for="theme-switcher">
+            <span class="d-none" id="theme-switcher-sun">🌞</span>
+            <span class="d-none" id="theme-switcher-moon">🌙</span>
+            ️</label>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

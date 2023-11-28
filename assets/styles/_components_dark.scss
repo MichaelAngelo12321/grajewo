@@ -1,0 +1,22 @@
+@include color-mode(dark) {
+  .share-button {
+    background-color: $gray-900;
+    border-color: lighten($gray-900, 10%);
+
+    &:hover {
+      background-color: lighten($gray-900, 8%);
+    }
+  }
+
+  .widget {
+    & .post-list {
+      & .item {
+        border-bottom: 1px solid $border-color-translucent-dark;
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}

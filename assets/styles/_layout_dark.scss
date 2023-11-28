@@ -1,0 +1,5 @@
+@include color-mode(dark) {
+  .header {
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
+  }
+}

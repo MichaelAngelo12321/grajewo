@@ -1,0 +1,94 @@
+$enable-shadows: false;
+
+@import "bootstrap/scss/functions";
+
+// colors
+$primary: #a93939;
+$secondary: #4f4f4f;
+$success: #7fad23;
+$info: #81a8dc;
+$warning: #D9C729;
+$danger: #AB6063;
+$light: #f8f8f8;
+$dark: #1b1e21;
+$white: #fff;
+
+// custom colors
+$blue: #01579B;
+$green-dark: #1B5E20;
+$red: #B71C1C;
+$yellow: #FFFF00;
+$orange: #EF6C00;
+
+$customColors: (
+    "blue": $blue,
+    "green": $success,
+    "green-dark": $green-dark,
+    "red": $red,
+    "yellow": $yellow,
+    "orange": $orange
+);
+
+@each $color, $value in $customColors {
+  .text-#{$color} {
+    color: $value;
+  }
+  .bg-#{$color} {
+    background-color: $value;
+  }
+}
+
+// variables
+$badge-padding-x: .4em;
+$badge-padding-y: .4em;
+$body-color: lighten($dark, 20%);
+$border-radius: .25rem;
+$btn-border-radius: .25rem;
+$card-border-width: 0;
+$card-box-shadow: 0 0 1rem rgba(0, 0, 0, .03);
+$input-border-radius: .25rem;
+$link-color: #3f3c3c;
+$link-color-dark: $light;
+$link-decoration: none;
+$link-hover-decoration: underline;
+$nav-link-hover-color: $link-color-dark;
+$font-family-sans-serif: 'Roboto', system-ui, sans-serif;
+$font-size-base: 0.95rem;
+$grid-gutter-width: 2rem;
+$navbar-padding-y: 0;
+
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+
+@import "bootstrap/scss/alert";
+@import "bootstrap/scss/badge";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/images";
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/pagination";
+@import "bootstrap/scss/tooltip";
+@import "bootstrap/scss/transitions";
+
+// Helpers
+@import "bootstrap/scss/helpers";
+
+// Utilities
+@import "bootstrap/scss/utilities/api";
+
+// Custom imports
+@import "bootstrap_overrides";
+@import "bootstrap_overrides_dark";
+@import "mixins";
+@import "components";
+@import "components_dark";
+@import "layout";
+@import "layout_dark";

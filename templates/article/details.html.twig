@@ -1,0 +1,10 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block body %}
+    <h1>Szczegóły artykułu</h1>
+
+    <p>{{ id }}</p>
+    <p>{{ slug }}</p>
+
+    {{ dump(category) }}
+{% endblock %}
