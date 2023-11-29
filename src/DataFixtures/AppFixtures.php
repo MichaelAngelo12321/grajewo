@@ -59,7 +59,7 @@ class AppFixtures extends Fixture
                 $article->setContent($this->replaceWithParagraphTags($faker->paragraphs(rand(3, 14), true)));
                 $article->setCreatedAt($date);
                 $article->setExcerpt($faker->sentences(3, true));
-                $article->setImageUrl(rand(0, 1) === 1 ? $faker->imageUrl(900, 600) : null);
+                $article->setImageUrl(rand(0, 1) === 1 ? "https://picsum.photos/900/600/?$slug-$i" : null);
                 $article->setName(rtrim($faker->sentence(), '.'));
                 $article->setUpdatedAt($date);
                 $article->setUpdateAuthor($admin);

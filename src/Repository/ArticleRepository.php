@@ -25,16 +25,16 @@ class ArticleRepository extends ServiceEntityRepository
     /**
      * @return Article[] Returns an array of Article objects
      */
-    public function findLatestByCategory(Category $category, int $limit): array
+    public function findLatestByCategory(Category $category, int $limit, int $offset = 0): array
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.category = :category')
             ->setParameter('category', $category)
             ->orderBy('a.updatedAt', 'DESC')
             ->setMaxResults($limit)
+            ->setFirstResult($offset * $limit)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function increaseViewsNumber(Article $article): void
@@ -45,7 +45,6 @@ class ArticleRepository extends ServiceEntityRepository
             ->where('a.id = :id')
             ->setParameter('id', $article->getId())
             ->getQuery()
-            ->execute()
-        ;
+            ->execute();
     }
 }

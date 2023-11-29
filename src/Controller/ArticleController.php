@@ -38,17 +38,20 @@ class ArticleController extends AbstractController
 
     public function list(Category $category, Request $request): Response
     {
-        $articles = $this->articleRepository->findLatestByCategory($category, 10);
+        $currentPage = $request->query->getInt('p', 1);
+        $itemsPerPage = 10;
+        $articles = $this->articleRepository->findLatestByCategory($category, $itemsPerPage, $currentPage - 1);
         $totalArticlesNumber = $this->articleRepository->count(['category' => $category]);
 
+        dump($articles);
         return $this->render('article/list.html.twig', [
             'articles' => $articles,
             'category' => $category,
             'paginator' => new Paginator(
                 $totalArticlesNumber,
-                10,
-                $request->query->getInt('p', 1),
-                $request->getPathInfo().'?p=(:num)'
+                $itemsPerPage,
+                $currentPage,
+                $request->getPathInfo() . '?p=(:num)'
             ),
         ]);
     }
