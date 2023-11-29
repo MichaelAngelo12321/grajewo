@@ -7,7 +7,7 @@
         {% if article.imageUrl %}
           <img
             class="rounded-1 img-fluid mb-3 w-100"
-            src="{{ article.imageUrl }}"
+            src="{{ article.imageUrl|imagine_filter('article_main_image') }}"
             alt="Opis użytkownika"
             fetchpriority="high"
           />

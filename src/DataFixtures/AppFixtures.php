@@ -51,6 +51,7 @@ class AppFixtures extends Fixture
             $manager->persist($category);
 
             for ($i = 0; $i < $articlesNumber; $i++) {
+                $imgNumber = rand(1, 19);
                 $date = DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-2 years', 'now'));
                 $article = new Article();
                 $article->setAuthor($admin);
@@ -59,7 +60,7 @@ class AppFixtures extends Fixture
                 $article->setContent($this->replaceWithParagraphTags($faker->paragraphs(rand(3, 14), true)));
                 $article->setCreatedAt($date);
                 $article->setExcerpt($faker->sentences(3, true));
-                $article->setImageUrl(rand(0, 1) === 1 ? "https://picsum.photos/900/600/?$slug-$i" : null);
+                $article->setImageUrl(rand(0, 1) === 1 ? "/media/upload/photos/img$imgNumber.jpg" : null);
                 $article->setName(rtrim($faker->sentence(), '.'));
                 $article->setUpdatedAt($date);
                 $article->setUpdateAuthor($admin);
@@ -69,6 +70,8 @@ class AppFixtures extends Fixture
 
             $manager->flush();
         }
+
+        shell_exec('php bin/console cache:clear');
     }
 
     private function replaceWithParagraphTags(string $text): string

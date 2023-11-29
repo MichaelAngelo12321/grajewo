@@ -10,7 +10,7 @@
           <div class="flex-shrink-0">
             <img class="rounded-1 img-fluid mb-2"
                  alt="Miniaturka zdjęcia do artykułu"
-                 src="{{ article.imageUrl }}"
+                 src="{{ article.imageUrl|imagine_filter('article_list_image') }}"
                  width="200"
                  fetchpriority="high"
             />

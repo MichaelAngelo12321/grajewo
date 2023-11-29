@@ -16,6 +16,9 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+        image_resolver:
+            pattern: ^/media/cache/resolve
+            security: false
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
