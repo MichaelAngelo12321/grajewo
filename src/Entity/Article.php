@@ -46,6 +46,10 @@ class Article
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?User $author = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $updateAuthor = null;
+
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -167,6 +171,18 @@ class Article
     public function setAuthor(?User $author): static
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getUpdateAuthor(): ?User
+    {
+        return $this->updateAuthor;
+    }
+
+    public function setUpdateAuthor(?User $updateAuthor): static
+    {
+        $this->updateAuthor = $updateAuthor;
 
         return $this;
     }

@@ -62,6 +62,7 @@ class AppFixtures extends Fixture
                 $article->setImageUrl(rand(0, 1) === 1 ? $faker->imageUrl(900, 600) : null);
                 $article->setName(rtrim($faker->sentence(), '.'));
                 $article->setUpdatedAt($date);
+                $article->setUpdateAuthor($admin);
 
                 $manager->persist($article);
             }
