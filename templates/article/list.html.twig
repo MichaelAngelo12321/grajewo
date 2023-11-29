@@ -1,8 +1,61 @@
 {% extends 'layout/base.html.twig' %}
 
 {% block body %}
-    <h1>Lista artykułów z kategorii</h1>
+  <div class="widget">
+    <h1 class="section-title primary">Aktualności</h1>
 
-    <a href="{{ path('article_details', {'__category': 'sport', 'id': 30, 'slug': 'heszke-w-meszke'}) }}">Heszle w melke</a>
-    <a href="{{ path('article_details', {'__category': 'sport', 'id': 30, 'slug': 'heszke-w-meszke'}) }}">Heszle w melke</a>
+    {% for article in articles %}
+      <div class="list-news d-flex align-items-center gap-3">
+        {% if article.imageUrl %}
+          <div class="flex-shrink-0">
+            <img class="rounded-1 img-fluid mb-2"
+                 alt="Miniaturka zdjęcia do artykułu"
+                 src="{{ article.imageUrl }}"
+                 width="200"
+                 fetchpriority="high"
+            />
+          </div>
+        {% endif %}
+
+        <div class="flex-grow-1">
+          <h2 class="fs-5">
+            <a
+              href="{{ path('article_details', {'__category': category.slug, 'id': article.id, 'slug': article.name}) }}">
+              {{ article.name }}
+            </a>
+          </h2>
+
+          <div class="meta d-flex justify-content-between gap-2">
+            <div class="date me-auto">
+              {{ article.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+
+              {% if article.createdAt != article.updatedAt %}
+                <span>
+                  (ostatnia aktualizacja: <strong>{{ article.updatedAt|date|format_datetime(pattern=app_datetime_format) }})</strong>
+                </span>
+              {% endif %}
+            </div>
+
+            <div>
+              <img src="{{ asset('build/images/icons/eye.svg') }}" alt="Ikona oka" class="icon-muted"/>
+              {{ article.viewsNumber }} wyświetleń
+            </div>
+
+            <div>
+              <img src="{{ asset('build/images/icons/message.svg') }}" alt="Ikona chmurki" class="icon-muted"/>
+              {{ article.commentsNumber }} komentarzy
+            </div>
+          </div>
+
+          <p>
+            {{ article.excerpt }}
+          </p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <nav>
+    {{ paginator.toHtml|raw }}
+  </nav>
 {% endblock %}

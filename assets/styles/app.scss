@@ -39,26 +39,27 @@ $customColors: (
 }
 
 // variables
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/variables-dark";
+
 $badge-padding-x: .4em;
 $badge-padding-y: .4em;
 $body-color: lighten($dark, 20%);
+$body-tertiary-bg: $gray-200;
 $border-radius: .25rem;
 $btn-border-radius: .25rem;
 $card-border-width: 0;
 $card-box-shadow: 0 0 1rem rgba(0, 0, 0, .03);
+$grid-gutter-width: 2rem;
 $input-border-radius: .25rem;
-$link-color: #3f3c3c;
+$font-family-sans-serif: 'Roboto', system-ui, sans-serif;
+$font-size-base: 0.95rem;$link-color: #3f3c3c;
 $link-color-dark: $light;
 $link-decoration: none;
 $link-hover-decoration: underline;
 $nav-link-hover-color: $link-color-dark;
-$font-family-sans-serif: 'Roboto', system-ui, sans-serif;
-$font-size-base: 0.95rem;
-$grid-gutter-width: 2rem;
 $navbar-padding-y: 0;
 
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/variables-dark";
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";

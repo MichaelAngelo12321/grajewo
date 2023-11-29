@@ -1,0 +1,29 @@
+homepage:
+  path: /
+  controller: App\Controller\HomeController::index
+
+# Article category
+article_category_old_redirect:
+  path: /dzial-{__category}
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+  defaults:
+    route: article_category
+    permanent: true
+
+article_category:
+  path: /{__category}
+  controller: App\Controller\ArticleController::list
+
+# Article details
+article_details_old_redirect:
+  path: /info/{slug}.{id}.html
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
+  defaults:
+    _locale: pl
+    __category: info
+    route: article_details
+    permanent: true
+
+article_details:
+  path: /{__category}/{id}/{slug}
+  controller: App\Controller\ArticleController::details

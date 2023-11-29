@@ -113,7 +113,22 @@
 
   & .meta {
     @include meta;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.875rem;
+  }
+}
+
+.list-news {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.875rem;
+
+  @media ((min-width: 576px) and (max-width: 767px)) or (min-width: 992px) {
+    flex-direction: row;
+  }
+
+  & .meta {
+    @include meta;
+    margin-bottom: 0.875rem;
   }
 }
 

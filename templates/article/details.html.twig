@@ -1,10 +1,107 @@
 {% extends 'layout/base.html.twig' %}
 
 {% block body %}
-    <h1>Szczegóły artykułu</h1>
+  <div class="row">
+    <div class="col-12">
+      <div class="big-news">
+        {% if article.imageUrl %}
+          <img
+            class="rounded-1 img-fluid mb-3 w-100"
+            src="{{ article.imageUrl }}"
+            alt="Opis użytkownika"
+            fetchpriority="high"
+          />
+        {% endif %}
 
-    <p>{{ id }}</p>
-    <p>{{ slug }}</p>
+        <h1 class="fs-2 mb-2">
+          {{ article.name }}
+        </h1>
 
-    {{ dump(category) }}
+        <div class="meta d-flex justify-content-between mb-4 gap-2">
+          <div class="date me-auto">
+            {{ article.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+
+            {% if article.createdAt != article.updatedAt %}
+              <span>
+                (ostatnia aktualizacja: <strong>{{ article.updatedAt|date|format_datetime(pattern=app_datetime_format) }})</strong>
+              </span>
+            {% endif %}
+          </div>
+
+          <div>
+            <img src="{{ asset('build/images/icons/eye.svg') }}" alt="Ikona oka" class="icon-muted"/>
+            {{ article.viewsNumber + 1 }} wyświetleń
+          </div>
+
+          <div>
+            <img src="{{ asset('build/images/icons/message.svg') }}" alt="Ikona chmurki" class="icon-muted"/>
+            {{ article.commentsNumber }} komentarzy
+          </div>
+        </div>
+
+        <div class="content">
+          {{ article.content|raw }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 gap-3">
+    <div class="col-auto">
+      <div class="card d-flex px-4">
+        <div>
+          <img src="{{ article.author.imagePath }}" width="64" height="64" class="rounded-5"
+               alt="Zdjęcie autora artykułu"/>
+        </div>
+
+        <div class="d-flex flex-column justify-content-center ms-3">
+          <p class="m-0 fw-medium">{{ article.author.fullName }}</p>
+          <p class="m-0 text-muted">{{ article.author.position }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-auto ms-lg-auto">
+      <p class="m-0 mb-2 fw-medium">Udostępnij</p>
+
+      <div class="d-flex gap-3">
+        <a href="" class="share-button">
+          <span class="badge rounded-pill bg-blue">
+            <img src="{{ asset('build/images/icons/brand-facebook.svg') }}" alt="Logo Facebook" width="20" height="20"/>
+          </span>
+
+          <span class="d-none d-lg-block">Facebook</span>
+        </a>
+        <a href="" class="share-button">
+          <span class="badge rounded-pill text-bg-dark">
+            <img src="{{ asset('build/images/icons/brand-x.svg') }}" alt="Logo X" width="20" height="20"/>
+          </span>
+
+          <span class="d-none d-lg-block">
+                X (Twitter)
+              </span>
+        </a>
+        <a href="" class="share-button">
+          <span class="badge rounded-pill text-bg-warning">
+            <img src="{{ asset('build/images/icons/mail-forward.svg') }}" alt="Ikona koperty ze strzałką" width="20"
+                 height="20"/>
+          </span>
+
+          <span class="d-none d-lg-block">E-mail</span>
+        </a>
+        <button type="button" class="share-button">
+          <span class="badge rounded-pill text-bg-secondary">
+            <img src="{{ asset('build/images/icons/copy.svg') }}" alt="Ikona schowka" width="20" height="20"/>
+          </span>
+
+          <span class="d-none d-lg-block">Kopiuj link</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    Zobacz więcej artykułów z kategorii: <a
+      href="{{ path('article_category', { '__category': category.slug }) }}">{{ category.name }}</a>
+  </div>
 {% endblock %}
