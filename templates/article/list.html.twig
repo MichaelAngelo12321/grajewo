@@ -1,26 +1,37 @@
 {% extends 'layout/base.html.twig' %}
 
+{% block topContent %}
+  <nav class="mb-2 border-left border-danger-subtle border-2">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
+      <li class="breadcrumb-item active">{{ category.name }}</li>
+    </ol>
+  </nav>
+{% endblock %}
+
 {% block body %}
-  <div class="widget">
+  <div class="widget mt-1">
     <h1 class="section-title primary">{{ category.name }}</h1>
 
     {% for article in articles %}
-      <div class="list-news d-flex align-items-center gap-3">
-        {% if article.imageUrl %}
-          <div class="flex-shrink-0">
-            <img class="rounded-1 img-fluid mb-2"
-                 alt="Miniaturka zdjęcia do artykułu"
-                 src="{{ article.imageUrl|imagine_filter('article_list_image') }}"
-                 width="200"
-                 fetchpriority="high"
-            />
-          </div>
-        {% endif %}
+      <div class="list-news d-flex flex-column flex-sm-row gap-3">
+        <div class="">
+          <img class="rounded-1 w-auto"
+               alt="Miniaturka zdjęcia do artykułu"
+               src="{{ article.imageUrl|default('/build/images/empty-photo.png')|imagine_filter('article_list_image') }}"
+               loading="lazy"
+          />
+        </div>
 
-        <div class="flex-grow-1">
-          <h2 class="fs-5">
+        <div class="w-100">
+          <h2 class="fs-5 mb-1">
             <a
-              href="{{ path('article_details', {'__category': category.slug, 'id': article.id, 'slug': article.name}) }}">
+              href="{{ path('article_details', {
+                '__category': category.slug,
+                'id': article.id,
+                'slug': article.name|lower|slug
+              }) }}"
+            >
               {{ article.name }}
             </a>
           </h2>
@@ -36,14 +47,14 @@
               {% endif %}
             </div>
 
-            <div>
-              <img src="{{ asset('build/images/icons/eye.svg') }}" alt="Ikona oka" class="icon-muted"/>
-              {{ article.viewsNumber }} wyświetleń
+            <div class="d-flex align-items-center">
+              <img src="{{ asset('build/images/icons/eye.svg') }}" alt="Ikona oka" class="me-1"/>
+              {{ article.viewsNumber }}
             </div>
 
-            <div>
-              <img src="{{ asset('build/images/icons/message.svg') }}" alt="Ikona chmurki" class="icon-muted"/>
-              {{ article.commentsNumber }} komentarzy
+            <div class="d-flex align-items-center">
+              <img src="{{ asset('build/images/icons/message.svg') }}" alt="Ikona chmurki" class="me-1"/>
+              {{ article.commentsNumber }}
             </div>
           </div>
 

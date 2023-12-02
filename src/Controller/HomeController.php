@@ -4,26 +4,41 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Repository\ArticleCachedRepository;
 use App\Repository\CategoryCachedRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends AbstractController
 {
-    public function __construct(private CategoryCachedRepository $categoryRepository)
-    {
+    public function __construct(
+        private ArticleCachedRepository $articleRepository,
+        private CategoryCachedRepository $categoryRepository
+    ) {
     }
 
     public function index(): Response
     {
         $topCategory = $this->categoryRepository->findTopCategory();
+        $topCategoryArticles = $this->articleRepository->findLatestArticlesFromCategory($topCategory, 7);
+        $mostPopularArticles = $this->articleRepository->findMostPopularArticles(4);
+
+        dump($mostPopularArticles);
         $categories = $this->categoryRepository->findAll();
+        $articles = [];
+
+        foreach ($categories as $category) {
+            $articles[$category->getId()] = $this->articleRepository->findLatestArticlesFromCategory($category, 4);
+        }
 
         return $this->render(
             'home/index.html.twig',
             [
-                'topCategory' => $topCategory,
+                'articles' => $articles,
                 'categories' => $categories,
+                'mostPopularArticles' => $mostPopularArticles,
+                'topCategory' => $topCategory,
+                'topCategoryArticles' => $topCategoryArticles,
             ],
         );
     }

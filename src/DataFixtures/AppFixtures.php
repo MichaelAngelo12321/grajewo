@@ -29,6 +29,17 @@ class AppFixtures extends Fixture
             'Artykuły i felietony' => 'artykuly',
             'Oferty i promocje' => 'oferty',
         ];
+        $categoryColors = [
+            'primary',
+            'secondary',
+            'success',
+            'danger',
+            'warning',
+            'info',
+            'green',
+            'green-dark',
+            'blue',
+        ];
 
         $admin = new User();
         $admin->setCreatedAt(new DateTimeImmutable(false));
@@ -44,14 +55,19 @@ class AppFixtures extends Fixture
             $articlesNumber = rand(175, 300);
             $category = new Category();
             $category->setArticlesNumber($articlesNumber);
-            $category->setIsTop($slug === 'aktualnosci');
+            $category->setColor($categoryColors[array_rand($categoryColors)]);
             $category->setIsRoot($slug === 'info');
             $category->setName($name);
+            $category->setPositionOrder($slug === 'aktualnosci' || $slug === 'info' ? 0 : 1);
             $category->setSlug($slug);
             $manager->persist($category);
 
+            if ($slug === 'info') {
+                continue;
+            }
+
             for ($i = 0; $i < $articlesNumber; $i++) {
-                $imgNumber = rand(1, 19);
+                $imgNumber = rand(1, 65);
                 $date = DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-2 years', 'now'));
                 $article = new Article();
                 $article->setAuthor($admin);
@@ -60,7 +76,7 @@ class AppFixtures extends Fixture
                 $article->setContent($this->replaceWithParagraphTags($faker->paragraphs(rand(3, 14), true)));
                 $article->setCreatedAt($date);
                 $article->setExcerpt($faker->sentences(3, true));
-                $article->setImageUrl(rand(0, 1) === 1 ? "/media/upload/photos/img$imgNumber.jpg" : null);
+                $article->setImageUrl(rand(0, 3) !== 1 ? "/media/upload/photos/img$imgNumber.jpg" : null);
                 $article->setName(rtrim($faker->sentence(), '.'));
                 $article->setUpdatedAt($date);
                 $article->setUpdateAuthor($admin);

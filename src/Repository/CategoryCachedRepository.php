@@ -32,7 +32,7 @@ class CategoryCachedRepository
         return $this->cache->get('top_category', function (ItemInterface $item) {
             $item->expiresAfter(new DateInterval('P1Y'));
 
-            return $this->categoryRepository->findOneBy(['isTop' => true]);
+            return $this->categoryRepository->findOneBy(['positionOrder' => 0, 'isRoot' => false]);
         });
     }
 }

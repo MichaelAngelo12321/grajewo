@@ -1,5 +1,16 @@
 {% extends 'layout/base.html.twig' %}
 
+{% block topContent %}
+  <nav class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
+      <li class="breadcrumb-item"><a
+          href="{{ path('article_category', { '__category': category.slug }) }}">{{ category.name }}</a></li>
+      <li class="breadcrumb-item active">{{ article.name }}</li>
+    </ol>
+  </nav>
+{% endblock %}
+
 {% block body %}
   <div class="row">
     <div class="col-12">
@@ -17,7 +28,7 @@
           {{ article.name }}
         </h1>
 
-        <div class="meta d-flex justify-content-between mb-4 gap-2">
+        <div class="meta d-flex justify-content-between mb-4 gap-3">
           <div class="date me-auto">
             {{ article.createdAt|date|format_datetime(pattern=app_datetime_format) }}
 
@@ -28,14 +39,14 @@
             {% endif %}
           </div>
 
-          <div>
-            <img src="{{ asset('build/images/icons/eye.svg') }}" alt="Ikona oka" class="icon-muted"/>
-            {{ article.viewsNumber + 1 }} wyświetleń
+          <div class="d-flex align-items-center">
+            <img src="{{ asset('build/images/icons/eye.svg') }}" alt="Ikona oka" class="me-1"/>
+            {{ article.viewsNumber + 1 }}
           </div>
 
-          <div>
-            <img src="{{ asset('build/images/icons/message.svg') }}" alt="Ikona chmurki" class="icon-muted"/>
-            {{ article.commentsNumber }} komentarzy
+          <div class="d-flex align-items-center">
+            <img src="{{ asset('build/images/icons/message.svg') }}" alt="Ikona chmurki" class="me-1"/>
+            {{ article.comments.count }}
           </div>
         </div>
 
@@ -46,12 +57,16 @@
     </div>
   </div>
 
-  <div class="row mb-4 gap-3">
-    <div class="col-auto">
+  <div class="row mb-5 gap-3">
+    <div class="col-12 col-xl-auto">
       <div class="card d-flex px-4">
         <div>
-          <img src="{{ article.author.imagePath }}" width="64" height="64" class="rounded-5"
-               alt="Zdjęcie autora artykułu"/>
+          <img src="{{ article.author.imagePath }}"
+               width="64"
+               height="64"
+               class="rounded-5"
+               alt="Zdjęcie autora artykułu"
+          />
         </div>
 
         <div class="d-flex flex-column justify-content-center ms-3">
@@ -61,18 +76,21 @@
       </div>
     </div>
 
-    <div class="col-auto ms-lg-auto">
+    <div class="col-auto ms-xl-auto">
       <p class="m-0 mb-2 fw-medium">Udostępnij</p>
 
       <div class="d-flex gap-3">
-        <a href="" class="share-button">
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" class="share-button"
+           target="_blank">
           <span class="badge rounded-pill bg-blue">
             <img src="{{ asset('build/images/icons/brand-facebook.svg') }}" alt="Logo Facebook" width="20" height="20"/>
           </span>
 
           <span class="d-none d-lg-block">Facebook</span>
         </a>
-        <a href="" class="share-button">
+
+        <a href="https://twitter.com/intent/tweet?text={{ article.name }} {{ app.request.uri }}" class="share-button"
+           target="_blank">
           <span class="badge rounded-pill text-bg-dark">
             <img src="{{ asset('build/images/icons/brand-x.svg') }}" alt="Logo X" width="20" height="20"/>
           </span>
@@ -81,27 +99,86 @@
                 X (Twitter)
               </span>
         </a>
-        <a href="" class="share-button">
+
+        <a
+          href="mailto:?body=<strong>{{ article.name }}</strong><p>{{ article.excerpt }}</p><br /><br />Więcej dowiesz się na: {{ app.request.uri }}"
+          class="share-button"
+          target="_blank"
+        >
           <span class="badge rounded-pill text-bg-warning">
-            <img src="{{ asset('build/images/icons/mail-forward.svg') }}" alt="Ikona koperty ze strzałką" width="20"
-                 height="20"/>
+            <img
+              src="{{ asset('build/images/icons/mail-forward.svg') }}"
+              alt="Ikona koperty ze strzałką"
+              width="20"
+              height="20"
+            />
           </span>
 
           <span class="d-none d-lg-block">E-mail</span>
         </a>
-        <button type="button" class="share-button">
+
+        <button type="button" class="share-button" id="share-button-clipboard">
           <span class="badge rounded-pill text-bg-secondary">
             <img src="{{ asset('build/images/icons/copy.svg') }}" alt="Ikona schowka" width="20" height="20"/>
           </span>
 
-          <span class="d-none d-lg-block">Kopiuj link</span>
+          <span class="d-none d-lg-block" id="share-button-clipboard-label">Kopiuj link</span>
         </button>
       </div>
     </div>
   </div>
 
-  <div>
-    Zobacz więcej artykułów z kategorii: <a
-      href="{{ path('article_category', { '__category': category.slug }) }}">{{ category.name }}</a>
+  <h3 class="fs-4">
+    Komentarze
+  </h3>
+
+  {% if article.comments.empty %}
+    <div class="card my-3">
+      <span>Jeszcze nikt nie skomentował tego artykułu. Bądź pierwszy i podziel się swoją opinią.</span>
+    </div>
+  {% else %}
+    {% for comment in article.comments %}
+      <div class="card mb-3" id="article-comment-{{ comment.id }}">
+        <div class="d-flex justify-content-between mb-1">
+          <div class="fw-bold">
+            {{ comment.author|default('Czytelnik') }}
+          </div>
+
+          <div class="fs-smaller text-muted">
+            {{ comment.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+          </div>
+        </div>
+
+        <p class="m-0">{{ comment.content|preg_replace('/[\r\n]+/', '\n\n')|nl2br }}</p>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <h4 class="fs-6 fw-bold mt-4 mb-3">Dodaj swój komentarz</h4>
+
+  <div class="mb-md-5">
+    {{ form_start(commentForm) }}
+    {% if commentForm.vars.errors|length > 0 %}
+      <div class="alert alert-danger">
+        {{ form_errors(commentForm) }}
+      </div>
+    {% endif %}
+
+    <div class="form-group mb-3">
+      {{ form_row(commentForm.content, { attr: { class: 'form-control', rows: 4 } }) }}
+    </div>
+
+    <div class="row row-cols-lg-auto g-4 align-items-end justify-content-between">
+      <div class="col-12">
+        {{ form_row(commentForm.author, { attr: { class: 'form-control' } }) }}
+      </div>
+      <div class="col-12">
+        {{ form_row(commentForm.submit, { attr: { class: 'btn btn-primary' } }) }}
+      </div>
+    </div>
+    {{ form_end(commentForm) }}
   </div>
+
+  <hr class="d-md-none my-5"/>
+
 {% endblock %}

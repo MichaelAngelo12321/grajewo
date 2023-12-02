@@ -3,8 +3,7 @@ $enable-shadows: false;
 @import "bootstrap/scss/functions";
 
 // colors
-$primary: #a93939;
-$secondary: #4f4f4f;
+$primary: #963232;
 $success: #7fad23;
 $info: #81a8dc;
 $warning: #D9C729;
@@ -46,7 +45,12 @@ $badge-padding-x: .4em;
 $badge-padding-y: .4em;
 $body-color: lighten($dark, 20%);
 $body-tertiary-bg: $gray-200;
+$body-secondary-color: #a9a9a9;
+$body-secondary-color-dark: #9f9f9f;
 $border-radius: .25rem;
+$breadcrumb-divider: "»";
+$breadcrumb-font-size: .75rem;
+$breadcrumb-margin-bottom: 0;
 $btn-border-radius: .25rem;
 $card-border-width: 0;
 $card-box-shadow: 0 0 1rem rgba(0, 0, 0, .03);
@@ -68,6 +72,7 @@ $navbar-padding-y: 0;
 
 @import "bootstrap/scss/alert";
 @import "bootstrap/scss/badge";
+@import "bootstrap/scss/breadcrumb";
 @import "bootstrap/scss/buttons";
 @import "bootstrap/scss/containers";
 @import "bootstrap/scss/forms";

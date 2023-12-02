@@ -1,0 +1,59 @@
+<div class="top-bar card mb-4 text-secondary">
+  <div class="d-flex flex-column gap-2 align-items-center">
+    <div class="border-bottom pb-2">
+      <div class="d-flex flex-row gap-5">
+        <div>
+          <span class="d-block text-uppercase text-center fs-smaller">Dziś</span>
+
+          <div class="d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="48" height="48"
+                 viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                 stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/>
+              <path
+                d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"/>
+            </svg>
+            <strong class="ms-1 text-body">3°C</strong>
+          </div>
+        </div>
+
+        <div>
+          <span class="d-block text-uppercase text-center fs-smaller">Jutro</span>
+
+          <div class="d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="text-info" width="32" height="32" viewBox="0 0 24 24"
+                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                 stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7"/>
+              <path d="M11 13v2m0 3v2m4 -5v2m0 3v2"/>
+            </svg>
+            <strong class="ms-1 text-body">5°C</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-bottom pb-2 text-center">
+      <p class="m-0 fw-bold fs-6">{{ date('')|format_datetime(pattern='eeee, d MMMM y')|capitalize }}</p>
+      <p class="m-0 fs-smaller"><small>Imieniny</small> <strong>Anatola</strong>, <strong>Edyty</strong></p>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <span class="me-1 fs-smaller">Najbliższa niedziela</span>
+      <span title="niehandlowa">
+              <img src="{{ asset('build/images/icons/shopping-cart-off.svg') }}" alt="Ikona przekreślonego koszyka"/>
+            </span>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <span class="me-1 fs-smaller">Jakość powietrza</span>
+      <span title="bardzo zła">
+              <img src="{{ asset('build/images/icons/lungs-off.svg') }}" alt="Ikona przekreślonych płuc"/>
+            </span>
+    </div>
+
+  </div>
+</div>

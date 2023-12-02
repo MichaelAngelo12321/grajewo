@@ -28,10 +28,13 @@ class Category
     private Collection $articles;
 
     #[ORM\Column]
-    private ?bool $isTop = false;
+    private int $positionOrder = 0;
 
     #[ORM\Column]
     private ?bool $isRoot = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $color = null;
 
     public function __construct()
     {
@@ -85,6 +88,18 @@ class Category
         return $this;
     }
 
+    public function getPositionOrder(): int
+    {
+        return $this->positionOrder;
+    }
+
+    public function setPositionOrder(int $positionOrder): static
+    {
+        $this->positionOrder = $positionOrder;
+
+        return $this;
+    }
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -100,11 +115,6 @@ class Category
     public function isIsRoot(): ?bool
     {
         return $this->isRoot;
-    }
-
-    public function isIsTop(): ?bool
-    {
-        return $this->isTop;
     }
 
     public function removeArticle(Article $article): static
@@ -126,9 +136,14 @@ class Category
         return $this;
     }
 
-    public function setIsTop(bool $isTop): static
+    public function getColor(): ?string
     {
-        $this->isTop = $isTop;
+        return $this->color;
+    }
+
+    public function setColor(?string $color): static
+    {
+        $this->color = $color;
 
         return $this;
     }

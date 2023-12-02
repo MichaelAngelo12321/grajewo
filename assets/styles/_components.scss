@@ -1,6 +1,4 @@
 .widget {
-  margin-bottom: 3rem;
-
   & .section-title {
     margin-bottom: 1.5rem;
     position: relative;
@@ -96,6 +94,26 @@
     }
   }
 }
+
+main {
+  .widget {
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 992px) {
+    .widget {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+aside {
+  .widget {
+    margin-bottom: 3rem;
+  }
+}
+// Widget end
+
 
 .big-news {
   & .meta {

@@ -1,0 +1,111 @@
+{% macro horizontal(category, articles, headerColor) %}
+  <div class="widget">
+    <h2 class="section-title {{ headerColor }}">
+      {% if category.slug is defined %}
+        <a
+          href="{{ path('article_category', { '__category': category.slug }) }}"
+          title="{{ category.name }}"
+          class="nab-link"
+        >
+          {{ category.name }}
+        </a>
+      {% else %}
+        {{ category }}
+      {% endif %}
+    </h2>
+
+    <div class="row mb-4 mb-md-0">
+      {% for article in articles %}
+        <div class="col-6 col-lg-3 mb-3 big-news">
+          <a
+            href="{{ path('article_details',
+              {
+                '__category': article.category.slug|default('info'),
+                'id': article.id,
+                'slug': article.name|lower|slug
+              }) }}"
+            title="{{ article.name }}"
+          >
+            <img
+              class="rounded-1 img-fluid w-100 mb-2"
+              src="{{ article.imageUrl|default('/build/images/empty-photo.png')|imagine_filter('article_list_image') }}"
+              alt="Opis użytkownika"
+            />
+
+            <h3 class="fs-6 mb-1">
+              {{ article.name }}
+            </h3>
+          </a>
+
+          <div class="meta d-flex justify-content-between">
+            <div class="date">
+              {{ article.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro vertical(category, articles, headerColor) %}
+  <div class="widget">
+    <h3 class="section-title {{ headerColor }}">
+      {% if category.slug is defined %}
+        <a
+          href="{{ path('article_category', { '__category': category.slug }) }}"
+          title="{{ category.name }}"
+          class="nab-link"
+        >
+          {{ category.name }}
+        </a>
+      {% else %}
+        {{ category }}
+      {% endif %}
+    </h3>
+
+    {% for article in articles %}
+      <div class="small-news d-flex align-items-center">
+        <div class="news-image flex-shrink-0">
+          <a
+            href="{{ path('article_details',
+              {
+                '__category': article.category.slug,
+                'id': article.id,
+                'slug': article.name|lower|slug
+              }) }}"
+            title="{{ article.name }}"
+          >
+            <img
+              class="rounded-1 img-fluid w-100 mb-2"
+              src="{{ article.imageUrl|default('/build/images/empty-photo.png')|imagine_filter('round_small') }}"
+              alt="Opis użytkownika"
+              loading="lazy"
+            />
+          </a>
+        </div>
+
+        <div class="flex-grow-1">
+          <h4 class="fs-6 mb-1">
+            <a
+              href="{{ path('article_details',
+                {
+                  '__category': article.category.slug,
+                  'id': article.id,
+                  'slug': article.name|lower|slug
+                }) }}"
+            >
+              {{ article.name }}
+            </a>
+          </h4>
+
+          <div class="meta mb-2">
+            <div class="date">
+              {{ article.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endmacro %}

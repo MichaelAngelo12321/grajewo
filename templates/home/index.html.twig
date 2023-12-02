@@ -1,7 +1,40 @@
 {% extends 'layout/base.html.twig' %}
 
 {% block body %}
-    <h1>Strona główna</h1>
+  {% import "home/partials/articles-list.html.twig" as articlesList %}
 
-    <a href="{{ path('article_category', {'__category': 'sport'}) }}">Sport</a>
+  {% include 'home/partials/top-category-articles.html.twig' %}
+
+  {{ articlesList.horizontal('Najczęściej czytane', mostPopularArticles, 'info') }}
+
+  {% for category in categories %}
+    {% if category.isRoot or category.positionOrder == 0 %}
+    {% else %}
+      {% if loop.index == 3 %}
+        <div class="row">
+      {% endif %}
+
+      {% if loop.index == 3 or loop.index == 4 %}
+        <div class="col-12 col-lg-6">
+          {{ articlesList.vertical(
+            category,
+            articles[category.id],
+            category.color
+          ) }}
+        </div>
+      {% endif %}
+
+      {% if loop.index == 4 %}
+        </div>
+      {% endif %}
+
+      {% if loop.index > 4 %}
+        {{ articlesList.horizontal(
+          category,
+          articles[category.id],
+          category.color
+        ) }}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
 {% endblock %}

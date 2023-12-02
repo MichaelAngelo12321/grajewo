@@ -8,10 +8,18 @@ liip_imagine:
     filter_sets:
         cache: ~
         article_main_image:
-            quality: 75
+            quality: 70
             filters:
                 thumbnail: { size: [ 900, 500 ], mode: outbound }
         article_list_image:
             quality: 70
             filters:
-                thumbnail: { size: [ 200, 133 ], mode: outbound }
+                thumbnail: { size: [ 150, 100 ], mode: outbound }
+        home_page_article_image:
+            quality: 70
+            filters:
+                thumbnail: { size: [ 550, 300 ], mode: outbound }
+        round_small:
+            quality: 70
+            filters:
+                thumbnail: { size: [ 60, 60 ], mode: outbound }

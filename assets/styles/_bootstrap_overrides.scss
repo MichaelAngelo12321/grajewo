@@ -10,30 +10,21 @@
 }
 
 .container-main {
-  margin-top: 5.75rem;
+  margin-top: 1rem;
 }
 
 .fs-smaller {
   font-size: 0.75rem;
 }
 
-.icon {
-  &-green {
-    filter: invert(73%) sepia(10%) saturate(3085%) hue-rotate(36deg) brightness(85%) contrast(82%);
-  }
+.scrolled-down {
+  transform: translateY(-100%);
+  transition: all 0.3s ease-in-out;
+}
 
-  &-muted {
-    filter: invert(56%) sepia(0%) saturate(506%) hue-rotate(157deg) brightness(98%) contrast(82%);
-    opacity: 0.8;
-  }
-
-  &-orange {
-    filter: invert(41%) sepia(24%) saturate(3684%) hue-rotate(5deg) brightness(105%) contrast(103%);
-  }
-
-  &-red {
-    filter: invert(29%) sepia(15%) saturate(5273%) hue-rotate(328deg) brightness(93%) contrast(87%);
-  }
+.scrolled-up {
+  transform: translateY(0);
+  transition: all 0.3s ease-in-out;
 }
 
 .top-nav-item {

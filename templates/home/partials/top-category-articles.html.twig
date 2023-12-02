@@ -1,0 +1,94 @@
+<div class="widget">
+  <h1 class="section-title primary">
+    <a href="{{ path('article_category', { '__category': topCategory.slug }) }}">
+      Aktualności
+    </a>
+  </h1>
+
+  <div class="row">
+    <div class="col-lg-7 mb-3 mb-lg-0">
+      <div class="big-news">
+        {% set topCategoryLastArticle = topCategoryArticles[0] %}
+
+        <a
+          href="{{ path(
+            'article_details',
+            {
+              '__category': topCategory.slug,
+              'id': topCategoryLastArticle.id,
+              'slug': topCategoryLastArticle.name|lower|slug
+            }
+          ) }}"
+          title="{{ topCategoryLastArticle.name }}"
+        >
+          <img
+            class="rounded-1 img-fluid mb-2"
+            src="{{ topCategoryLastArticle.imageUrl|default('/build/images/empty-photo.png')|imagine_filter('home_page_article_image') }}"
+            alt="Zdjęcie najnowszego artykułu kategorii"
+          />
+
+          <h3 class="fs-4 fw-bold mb-0">
+            {{ topCategoryLastArticle.name }}
+          </h3>
+        </a>
+
+        <div class="meta d-flex justify-content-between mb-3 gap-2">
+          <div class="date me-auto">
+            {{ topCategoryLastArticle.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+          </div>
+        </div>
+
+        <p>
+          {{ topCategoryLastArticle.excerpt }}
+        </p>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      {% for article in topCategoryArticles %}
+        {% if loop.first == false %}
+          <div class="small-news d-flex">
+            <div class="news-image flex-shrink-0">
+              <a
+                href="{{ path('article_details',
+                  {
+                    '__category': topCategory.slug,
+                    'id': article.id,
+                    'slug': article.name|lower|slug
+                  }) }}"
+                title="{{ article.name }}"
+              >
+                <img
+                  class="rounded-1 img-fluid mb-2"
+                  src="{{ article.imageUrl|default('/build/images/empty-photo.png')|imagine_filter('round_small') }}"
+                  alt="Zdjęcie artykułu"
+                />
+              </a>
+            </div>
+
+            <div class="d-flex flex-column justify-content-center">
+              <h4 class="fs-6 mb-1">
+                <a
+                  href="{{ path('article_details',
+                    {
+                      '__category': topCategory.slug,
+                      'id': article.id,
+                      'slug': article.name|lower|slug
+                    }) }}"
+                >
+                  {{ article.name }}
+                </a>
+              </h4>
+
+              <div class="meta mb-2">
+                <div class="date">
+                  {{ article.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
