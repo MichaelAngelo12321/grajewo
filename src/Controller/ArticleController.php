@@ -47,17 +47,15 @@ class ArticleController extends AbstractController
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('article_details',
-                [
-                    '_fragment' => 'article-comment-' . $comment->getId(),
-                    '__category' => $category->getSlug(),
-                    'id' => $id,
-                    'slug' => $slug,
-                ]
-            );
-        }
+            $this->addFlash('success', 'Twój komentarz został dodany');
 
-        // TODO: add captcha to comment form
+            return $this->redirectToRoute('article_details', [
+                '_fragment' => 'comment-' . $comment->getId(),
+                '__category' => $category->getSlug(),
+                'id' => $id,
+                'slug' => $slug,
+            ]);
+        }
 
         return $this->render('article/details.html.twig', [
             'article' => $article,

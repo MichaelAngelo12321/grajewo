@@ -1,3 +1,59 @@
+.big-news {
+  & .meta {
+    @include meta;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+.list-news {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.875rem;
+
+  @media ((min-width: 576px) and (max-width: 767px)) or (min-width: 992px) {
+    flex-direction: row;
+  }
+
+  & .meta {
+    @include meta;
+    margin-bottom: 0.875rem;
+  }
+}
+
+.small-news {
+  margin-bottom: 0.875rem;
+
+  & .news-image {
+    margin-right: 0.5rem;
+  }
+
+  & .meta {
+    @include meta;
+    margin-bottom: 0.875rem;
+  }
+}
+
+.share-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: $light;
+  border: 1px solid darken($light, 10%);
+  border-radius: $border-radius;
+  font-size: 0.875rem;
+  text-decoration: none !important;
+  padding: 0.375rem 0.75rem;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: darken($light, 5%)
+  }
+}
+
 .widget {
   & .section-title {
     margin-bottom: 1.5rem;
@@ -113,56 +169,3 @@ aside {
   }
 }
 // Widget end
-
-
-.big-news {
-  & .meta {
-    @include meta;
-    margin-bottom: 0.5rem;
-  }
-}
-
-.small-news {
-  margin-bottom: 0.875rem;
-
-  & .news-image {
-    margin-right: 0.5rem;
-  }
-
-  & .meta {
-    @include meta;
-    margin-bottom: 0.875rem;
-  }
-}
-
-.list-news {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.875rem;
-
-  @media ((min-width: 576px) and (max-width: 767px)) or (min-width: 992px) {
-    flex-direction: row;
-  }
-
-  & .meta {
-    @include meta;
-    margin-bottom: 0.875rem;
-  }
-}
-
-.share-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: $light;
-  border: 1px solid darken($light, 10%);
-  border-radius: $border-radius;
-  font-size: 0.875rem;
-  text-decoration: none !important;
-  padding: 0.375rem 0.75rem;
-  transition: background-color 0.2s ease-in-out;
-
-  &:hover {
-    background-color: darken($light, 5%)
-  }
-}
