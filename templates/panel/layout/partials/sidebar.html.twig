@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
+          aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <h1 class="navbar-brand navbar-brand-autodark">
+    <a href="{{ path('panel_dashboard') }}">
+      <img src="{{ asset('build/images/logo-dark.svg') }}" id="logo-top" alt="Logo serwisu" class="my-2"
+           height="42"/>
+    </a>
+  </h1>
+
+  <div class="navbar-nav flex-row d-lg-none"></div>
+
+  <div class="navbar-collapse collapse" id="sidebar-menu" style="">
+    <ul class="navbar-nav pt-lg-3">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('panel_article_list') }}">
+          <i class="ti ti-list-tree me-2"></i>
+          <span class="nav-link-title">Artykuły</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link disabled text-muted opacity-50" href="#">
+          <i class="ti ti-pills me-2"></i>
+
+          <span class="nav-link-title">Dyżury aptek</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link disabled text-muted opacity-50" href="#">
+          <i class="ti ti-users me-2"></i>
+
+          <span class="nav-link-title">Użytkownicy</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link disabled text-muted opacity-50" href="#">
+          <i class="ti ti-settings me-2"></i>
+
+          <span class="nav-link-title">Ustawienia</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('homepage') }}">
+          <i class="ti ti-arrow-back-up me-2"></i>
+
+          <span class="nav-link-title">Przejdź do serwisu</span>
+        </a>
+      </li>
+
+      <li class="nav-item mt-3">
+        <a class="nav-link" href="{{ path('panel_logout') }}">
+          <i class="ti ti-logout me-2"></i>
+
+          <span class="nav-link-title">Wyloguj</span>
+        </a>
+      </li>
+
+      <li class="nav-item d-flex align-items-center">
+        <div class="form-check form-switch my-3">
+          <input class="form-check-input" type="checkbox" role="switch" id="theme-switcher">
+          <label class="form-check-label" for="theme-switcher">
+            <span class="d-none" id="theme-switcher-sun">🌞</span>
+            <span class="d-none" id="theme-switcher-moon">🌙</span>
+            ️</label>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

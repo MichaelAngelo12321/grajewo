@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\User;
+use App\Enum\ArticleStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Monolog\DateTimeImmutable;
@@ -78,6 +79,7 @@ class AppFixtures extends Fixture
                 $article->setExcerpt($faker->sentences(3, true));
                 $article->setImageUrl(rand(0, 3) !== 1 ? "/media/upload/photos/img$imgNumber.jpg" : null);
                 $article->setName(rtrim($faker->sentence(), '.'));
+                $article->setStatus(ArticleStatus::PUBLISHED);
                 $article->setUpdatedAt($date);
                 $article->setUpdateAuthor($admin);
 

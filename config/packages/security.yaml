@@ -16,6 +16,16 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            custom_authenticator: App\Security\PanelAuthenticator
+            logout:
+                path: panel_logout
+                target: homepage
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                always_remember_me: true
         image_resolver:
             pattern: ^/media/cache/resolve
             security: false
@@ -29,7 +39,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/panel/login, roles: PUBLIC_ACCESS }
+         - { path: ^/panel, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

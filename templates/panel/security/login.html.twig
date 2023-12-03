@@ -1,0 +1,55 @@
+{% extends 'panel/layout/minimal.html.twig' %}
+
+{% block title %}Logowanie do panelu{% endblock %}
+
+{% block body %}
+  <div class="page page-center">
+    <div class="container container-tight py-4">
+      <div class="text-center mb-4">
+        <a href="{{ path('homepage') }}" class="navbar-brand navbar-brand-autodark">
+          <img src="{{ asset('build/images/logo-dark.svg') }}" width="180"/>
+        </a>
+      </div>
+      <div class="card card-md">
+        <div class="card-body">
+          <h2 class="h2 text-center mb-4">Logowanie do panelu</h2>
+
+          <form method="post" autocomplete="off" novalidate="">
+            {% if error %}
+              <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+              <div class="mb-3">
+                Zalogowany jako: <strong>{{ app.user.userIdentifier }}</strong>, <a href="{{ path('panel_logout') }}">wyloguj</a>
+              </div>
+            {% endif %}
+
+            <div class="mb-3">
+              <label class="form-label">Adres email</label>
+              <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"
+                     autocomplete="email" required autofocus>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label">
+                Hasło
+              </label>
+
+              <div class="input-group input-group-flat">
+                <input type="password" name="password" id="inputPassword" class="form-control"
+                       autocomplete="current-password" required>
+              </div>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+
+            <div class="form-footer">
+              <button type="submit" class="btn btn-primary w-100">Zaloguj</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

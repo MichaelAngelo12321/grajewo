@@ -1,0 +1,19 @@
+panel_dashboard:
+  path: /panel
+  controller: App\Controller\Panel\ArticleController::list
+
+panel_login:
+  path: /panel/login
+  controller: App\Controller\Panel\SecurityController::login
+
+panel_logout:
+    path: /panel/logout
+    controller: App\Controller\Panel\SecurityController::logout
+
+panel_article_change_status:
+    path: /panel/articles/{id}/change-status/{status}
+    controller: App\Controller\Panel\ArticleController::changeStatus
+
+panel_article_list:
+    path: /panel/articles
+    controller: App\Controller\Panel\ArticleController::list

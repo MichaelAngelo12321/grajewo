@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\ArticleStatus;
 use App\Repository\ArticleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -54,6 +55,9 @@ class Article
 
     #[ORM\OneToMany(mappedBy: 'article', targetEntity: ArticleComment::class, orphanRemoval: true)]
     private Collection $comments;
+
+    #[ORM\Column(type: Types::SMALLINT)]
+    private int $status = 0;
 
     public function __construct()
     {
@@ -223,6 +227,18 @@ class Article
                 $comment->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ArticleStatus
+    {
+        return ArticleStatus::from($this->status);
+    }
+
+    public function setStatus(ArticleStatus $status): static
+    {
+        $this->status = $status->value;
 
         return $this;
     }

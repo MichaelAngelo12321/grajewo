@@ -1,6 +1,6 @@
 import {Collapse} from 'bootstrap'
 
-import './styles/app.scss'
+import './styles/app/index.scss'
 import './theme-switcher.js'
 
 const collapseElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="collapse"]'))

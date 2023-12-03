@@ -9,6 +9,7 @@ use App\Entity\Category;
 use App\Form\CommentType;
 use App\Helper\Paginator;
 use App\Repository\ArticleRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +40,7 @@ class ArticleController extends AbstractController
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $comment->setArticle($article);
             $comment->setIpAddress($request->getClientIp());
-            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setCreatedAt(new DateTimeImmutable());
 
             $article->setCommentsNumber($article->getCommentsNumber() + 1);
 
@@ -57,7 +58,7 @@ class ArticleController extends AbstractController
             ]);
         }
 
-        return $this->render('article/details.html.twig', [
+        return $this->render('app/article/details.html.twig', [
             'article' => $article,
             'category' => $category,
             'commentForm' => $commentForm->createView(),
@@ -72,7 +73,7 @@ class ArticleController extends AbstractController
         $itemsPerPage = 10;
         $articles = $this->articleRepository->findLatestByCategory($category, $itemsPerPage, $currentPage - 1);
 
-        return $this->render('article/list.html.twig', [
+        return $this->render('app/article/list.html.twig', [
             'articles' => $articles,
             'category' => $category,
             'paginator' => new Paginator(

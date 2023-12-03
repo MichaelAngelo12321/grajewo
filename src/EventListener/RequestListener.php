@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
-use App\Repository\CategoryCachedRepository;
+use App\Repository\Cached\CategoryCachedRepository;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RequestListener
 {
@@ -16,7 +17,7 @@ class RequestListener
     ) {
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         $event->getRequest()->setLocale($this->defaultLocale);
 
@@ -24,6 +25,9 @@ class RequestListener
             '/_wdt/',
             '/_profiler/',
             '/_fragment',
+            '/build',
+            '/media',
+            '/panel',
         ];
         $request = $event->getRequest();
         $pathInfo = $request->getPathInfo();
@@ -36,12 +40,19 @@ class RequestListener
 
         if (preg_match('#^/([^/]+)#', $pathInfo, $matches)) {
             $categories = $this->categoryRepository->findAll();
+            $categoryFound = false;
 
             foreach ($categories as $category) {
                 if ($category->getSlug() === rtrim($matches[1], '/')) {
                     $request->attributes->set('category', $category);
+                    $categoryFound = true;
                     break;
                 }
+            }
+
+            // TODO: liip imagine filter
+            if (!$categoryFound) {
+                throw new NotFoundHttpException();
             }
         }
     }

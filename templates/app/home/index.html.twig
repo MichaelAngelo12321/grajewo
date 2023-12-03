@@ -1,9 +1,9 @@
-{% extends 'layout/base.html.twig' %}
+{% extends 'app/layout/base.html.twig' %}
 
 {% block body %}
-  {% import "home/partials/articles-list.html.twig" as articlesList %}
+  {% import "app/home/partials/articles-list.html.twig" as articlesList %}
 
-  {% include 'home/partials/top-category-articles.html.twig' %}
+  {% include 'app/home/partials/top-category-articles.html.twig' %}
 
   {{ articlesList.horizontal('Najczęściej czytane', mostPopularArticles, 'info') }}
 

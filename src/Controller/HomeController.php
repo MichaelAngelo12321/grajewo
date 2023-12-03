@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Repository\ArticleCachedRepository;
-use App\Repository\CategoryCachedRepository;
+use App\Repository\Cached\ArticleCachedRepository;
+use App\Repository\Cached\CategoryCachedRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +23,6 @@ class HomeController extends AbstractController
         $topCategoryArticles = $this->articleRepository->findLatestArticlesFromCategory($topCategory, 7);
         $mostPopularArticles = $this->articleRepository->findMostPopularArticles(4);
 
-        dump($mostPopularArticles);
         $categories = $this->categoryRepository->findAll();
         $articles = [];
 
@@ -32,7 +31,7 @@ class HomeController extends AbstractController
         }
 
         return $this->render(
-            'home/index.html.twig',
+            'app/home/index.html.twig',
             [
                 'articles' => $articles,
                 'categories' => $categories,

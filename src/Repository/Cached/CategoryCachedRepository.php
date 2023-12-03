@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Repository\Cached;
 
 use App\Entity\Category;
+use App\Repository\CategoryRepository;
 use DateInterval;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -20,7 +21,7 @@ class CategoryCachedRepository
 
     public function findAll(): array
     {
-        return $this->cache->get('categories', function (ItemInterface $item) {
+        return $this->cache->get(CacheKeyPrefix::CATEGORY_ALL, function (ItemInterface $item) {
             $item->expiresAfter(new DateInterval('P1Y'));
 
             return $this->categoryRepository->findAll();
@@ -29,7 +30,7 @@ class CategoryCachedRepository
 
     public function findTopCategory(): Category
     {
-        return $this->cache->get('top_category', function (ItemInterface $item) {
+        return $this->cache->get(CacheKeyPrefix::CATEGORY_TOP, function (ItemInterface $item) {
             $item->expiresAfter(new DateInterval('P1Y'));
 
             return $this->categoryRepository->findOneBy(['positionOrder' => 0, 'isRoot' => false]);

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Repository\Cached;
 
 use App\Entity\Category;
+use App\Repository\ArticleRepository;
 use DateInterval;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -19,7 +20,7 @@ class ArticleCachedRepository
 
     public function findLatestArticlesFromCategory(Category $category, int $limit = 10)
     {
-        $cacheKey = 'latest_articles_category_' . $category->getId() . '_limit_' . $limit;
+        $cacheKey = CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY . $category->getId() . '_limit_' . $limit;
 
         return $this->cache->get($cacheKey, function (ItemInterface $item) use ($category, $limit) {
             $item->expiresAfter(DateInterval::createFromDateString('1 hour'));
@@ -39,10 +40,10 @@ class ArticleCachedRepository
 
     public function findMostPopularArticles(int $limit = 5): array
     {
-        $cacheKey = 'most_popular_articles_limit_' . $limit;
+        $cacheKey = CacheKeyPrefix::ARTICLE_MOST_POPULAR . $limit;
 
         return $this->cache->get($cacheKey, function (ItemInterface $item) use ($limit) {
-            $item->expiresAfter(DateInterval::createFromDateString('10 second'));
+            $item->expiresAfter(DateInterval::createFromDateString('1 hour'));
 
             return $this->articleRepository->createQueryBuilder('a')
                 ->addSelect('c')

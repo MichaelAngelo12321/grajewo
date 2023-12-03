@@ -31,3 +31,5 @@ yarn-error.log
 ###< liip/imagine-bundle ###
 
 /public/media/upload/
+/assets/images/logo-light.svg
+/assets/images/logo-dark.svg
