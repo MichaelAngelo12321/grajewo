@@ -15,6 +15,12 @@
         </div>
 
         <div class="card-body border-bottom py-3">
+          {% for type, messages in app.flashes %}
+            {% for message in messages %}
+              <div class="alert alert-{{ type }}">{{ message }}</div>
+            {% endfor %}
+          {% endfor %}
+
           <div class="d-flex flex-column flex-md-row">
             <div class="text-secondary">
               Pokaż
