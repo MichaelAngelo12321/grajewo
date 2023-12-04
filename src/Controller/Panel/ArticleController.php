@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Controller\Panel;
 
 use App\Enum\ArticleStatus;
+use App\Helper\Paginator;
 use App\Repository\ArticleRepository;
 use App\Repository\Cached\CacheKeyPrefix;
 use App\Repository\Cached\CategoryCachedRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends AbstractController
@@ -48,25 +50,37 @@ class ArticleController extends AbstractController
         $this->cachePool->clear(CacheKeyPrefix::ARTICLE_MOST_POPULAR);
     }
 
-    public function list(): Response
+    public function list(Request $request): Response
     {
-        $articlesNumber = 15;
-        $page = 1;
+        $articlesNumber = (int) $request->get('number', 15);
+        $page = (int) $request->get('page', 1);
+        $criteria = [];
+
+        if ($request->get('category', '') !== '') {
+            $criteria['category'] = $request->get('category');
+        }
+
+        if ($request->get('search_query', '') !== '') {
+            $criteria['name'] = ['FULLTEXT', $request->get('search_query')];
+        }
 
         $articles = $this->articleRepository->findBy(
-            [],
+            $criteria,
             ['id' => 'DESC'],
             $articlesNumber,
-            ($page - 1) * $articlesNumber,
+            $page - 1,
         );
         $categories = $this->categoryRepository->findAll();
 
-        // TODO: Add pagination
         return $this->render('panel/article/list.html.twig', [
             'articles' => $articles,
-            'articlesNumber' => $articlesNumber,
             'categories' => $categories,
-            'page' => $page,
+            'paginator' => new Paginator(
+                $this->articleRepository->count($criteria),
+                $articlesNumber,
+                $page,
+                $request->getUri()
+            ),
         ]);
     }
 

@@ -69,7 +69,7 @@ class ArticleController extends AbstractController
 
     public function list(Category $category, Request $request): Response
     {
-        $currentPage = $request->query->getInt('p', 1);
+        $currentPage = $request->query->getInt('page', 1);
         $itemsPerPage = 10;
         $articles = $this->articleRepository->findLatestByCategory($category, $itemsPerPage, $currentPage - 1);
 
@@ -77,10 +77,10 @@ class ArticleController extends AbstractController
             'articles' => $articles,
             'category' => $category,
             'paginator' => new Paginator(
-                $category->getArticlesNumber(),
+                $this->articleRepository->count(['category' => $category]),
                 $itemsPerPage,
                 $currentPage,
-                $request->getPathInfo() . '?p=(:num)',
+                $request->getPathInfo(),
             ),
         ]);
     }

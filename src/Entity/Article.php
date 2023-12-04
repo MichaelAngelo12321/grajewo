@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ORM\Index(columns: ['updated_at'])]
+#[ORM\Index(columns: ['name', 'content'], flags: ['fulltext'])]
 class Article
 {
     #[ORM\ManyToOne(inversedBy: 'articles')]

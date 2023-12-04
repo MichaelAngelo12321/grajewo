@@ -8,8 +8,6 @@ use InvalidArgumentException;
 
 class Paginator
 {
-    public const NUM_PLACEHOLDER = '(:num)';
-
     protected int $totalItems;
     protected int $numPages;
     protected int $itemsPerPage;
@@ -88,7 +86,17 @@ class Paginator
 
     public function getPageUrl(int $pageNum): array|string
     {
-        return str_replace(self::NUM_PLACEHOLDER, (string)$pageNum, $this->urlPattern);
+        $urlPattern = parse_url($this->urlPattern);
+
+        if ($urlPattern['query'] ?? null) {
+            parse_str($urlPattern['query'], $query);
+            $query['page'] = $pageNum;
+            $urlPattern['query'] = http_build_query($query);
+        } else {
+            $urlPattern['query'] = 'page=' . $pageNum;
+        }
+
+        return $urlPattern['path'] . '?' . $urlPattern['query'];
     }
 
     public function getPages(): array
