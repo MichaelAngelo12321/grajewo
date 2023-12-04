@@ -49,7 +49,7 @@ class ArticleCachedRepository
                 ->addSelect('c')
                 ->join('a.category', 'c')
                 ->orderBy('a.viewsNumber', 'DESC')
-                ->where("a.createdAt > DATE_SUB(CURRENT_DATE(), 3, 'DAY')")
+                ->where("a.createdAt > DATE_SUB(CURRENT_DATE(), 5, 'DAY')")
                 ->setMaxResults($limit)
                 ->getQuery()
                 ->getResult();
