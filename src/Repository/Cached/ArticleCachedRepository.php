@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository\Cached;
 
 use App\Entity\Category;
+use App\Enum\ArticleStatus;
 use App\Repository\ArticleRepository;
 use DateInterval;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -30,6 +31,8 @@ class ArticleCachedRepository
                 ->join('a.category', 'c')
                 ->where('a.category = :category')
                 ->setParameter('category', $category)
+                ->andWhere('a.status = :status')
+                ->setParameter('status', ArticleStatus::PUBLISHED)
                 ->orderBy('a.createdAt', 'DESC')
                 ->setMaxResults($limit)
                 ->getQuery()
@@ -50,6 +53,8 @@ class ArticleCachedRepository
                 ->join('a.category', 'c')
                 ->orderBy('a.viewsNumber', 'DESC')
                 ->where("a.createdAt > DATE_SUB(CURRENT_DATE(), 5, 'DAY')")
+                ->andWhere('a.status = :status')
+                ->setParameter('status', ArticleStatus::PUBLISHED)
                 ->setMaxResults($limit)
                 ->getQuery()
                 ->getResult();

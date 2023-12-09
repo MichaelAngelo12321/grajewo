@@ -14,6 +14,28 @@ panel_article_change_status:
     path: /panel/articles/{id}/change-status/{status}
     controller: App\Controller\Panel\ArticleController::changeStatus
 
+panel_article_delete:
+  path: /panel/articles/{id}/delete
+  controller: App\Controller\Panel\ArticleController::delete
+
+panel_article_edit:
+  path: /panel/articles/{id}/edit
+  controller: App\Controller\Panel\ArticleController::edit
+
 panel_article_list:
     path: /panel/articles
     controller: App\Controller\Panel\ArticleController::list
+
+panel_article_create:
+    path: /panel/articles/create
+    controller: App\Controller\Panel\ArticleController::create
+
+panel_article_comment_hide:
+    path: /panel/articles/comments/{commentId}/hide
+    controller: App\Controller\Panel\ArticleCommentController::hideComment
+
+panel_article_comment_unlock:
+    path: /panel/articles/comments/{commentId}/unlock
+    controller: App\Controller\Panel\ArticleCommentController::unlockComment
+
+# TODO: move to controllers with low priority for application_category

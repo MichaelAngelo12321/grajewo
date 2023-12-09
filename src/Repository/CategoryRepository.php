@@ -20,4 +20,15 @@ class CategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Category::class);
     }
+
+    public function updateArticlesCount(Category $category): void
+    {
+        $this->createQueryBuilder('c')
+            ->update()
+            ->set('c.articlesNumber', '(SELECT COUNT(a.id) FROM App\Entity\Article a WHERE a.category = c)')
+            ->where('c.id = :id')
+            ->setParameter('id', $category->getId())
+            ->getQuery()
+            ->execute();
+    }
 }

@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\ArticleComment;
 use App\Entity\Category;
+use App\Enum\ArticleStatus;
 use App\Form\CommentType;
 use App\Helper\Paginator;
 use App\Repository\ArticleRepository;
@@ -27,7 +28,7 @@ class ArticleController extends AbstractController
     {
         $article = $this->articleRepository->find($id);
 
-        if (!$article) {
+        if (!$article || $article->getStatus() !== ArticleStatus::PUBLISHED) {
             throw $this->createNotFoundException('Article not found');
         }
 
@@ -37,7 +38,7 @@ class ArticleController extends AbstractController
         $commentForm = $this->createForm(CommentType::class, $comment);
         $commentForm->handleRequest($request);
 
-        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+        if ($commentForm->isSubmitted() && $commentForm->isValid() && !$article->isHasCommentsDisabled()) {
             $comment->setArticle($article);
             $comment->setIpAddress($request->getClientIp());
             $comment->setCreatedAt(new DateTimeImmutable());
@@ -71,7 +72,11 @@ class ArticleController extends AbstractController
     {
         $currentPage = $request->query->getInt('page', 1);
         $itemsPerPage = 10;
-        $articles = $this->articleRepository->findLatestByCategory($category, $itemsPerPage, $currentPage - 1);
+        $articles = $this->articleRepository->findLatestByCategory(
+            $category,
+            $itemsPerPage,
+            ($currentPage - 1) * $itemsPerPage
+        );
 
         return $this->render('app/article/list.html.twig', [
             'articles' => $articles,

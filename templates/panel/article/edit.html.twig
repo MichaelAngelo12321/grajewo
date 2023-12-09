@@ -1,0 +1,171 @@
+{% extends 'panel/layout/base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block title %}Edycja artykułu{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">Edycja artykułu</h1>
+
+          <a href="{{ path('panel_article_list') }}" class="col-auto btn btn-outline-secondary">
+            <i class="ti ti-arrow-back me-1"></i> Powrót do listy
+          </a>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="card-body py-3">
+          <div class="row">
+            <div class="col-lg-8">
+              <fieldset class="form-fieldset">
+                <div class="row">
+                  {{ form_row(form.name, {attr: { class: 'form-control form-control-lg'}}) }}
+
+                  {{ form_row(form.category, {attr: { class: 'form-select'}}) }}
+
+                  {{ form_row(form.isEvent, {attr: {class: 'form-check form-switch', id: 'is-event-switcher'}}) }}
+
+                  <div class="mb-4 {{ app.request.get('is-event') == 'on' ? '' : 'd-none' }} row"
+                       id="event-details-wrapper">
+                    <div class="col-6 col-md-4">
+                      <label class="w-100">
+                        <span class="form-label">{{ field_label(form.eventDate) }}</span>
+                        <input
+                          type="date"
+                          class="form-control"
+                          name="{{ field_name(form.eventDate) }}"
+                          value="{{ field_value(form.eventDate) }}"
+                        />
+                      </label>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                      <label class="w-100">
+                        <span class="form-label">{{ field_label(form.eventTime) }}</span>
+                        <input
+                          type="time"
+                          class="form-control"
+                          name="{{ field_name(form.eventTime) }}"
+                          value="{{ field_value(form.eventTime) }}"
+                        />
+                      </label>
+                    </div>
+
+                    <div class="col-12 col-md-5 mt-3 mt-md-0">
+                      <label class="w-100">
+                        <span class="form-label">{{ field_label(form.eventPlace) }}</span>
+
+                        <div class="input-icon">
+                          <input
+                            type="text"
+                            class="form-control w-100"
+                            name="{{ field_name(form.eventPlace) }}"
+                            value="{{ field_value(form.eventPlace) }}"
+                          />
+                          <span class="input-icon-addon">
+                              <i class="ti ti-map-pin"></i>
+                            </span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {{ form_row(form.hasCommentsDisabled, {attr: {class: 'form-check form-switch'}}) }}
+
+                  {{ form_row(form.excerpt, {attr: {class: 'form-control'}}) }}
+
+                  {{ form_row(form.content, {attr: {class: 'form-control', rows: 10}}) }}
+                </div>
+              </fieldset>
+            </div>
+
+            <div class="col-lg-4">
+              <fieldset class="form-fieldset">
+                <label class="form-label" for="main-image-input">Zdjęcie główne</label>
+
+                <div class="d-flex align-items-center justify-content-center">
+                  <i class="ti ti-photo-off text-muted mb-2" style="font-size: 74px;" id="main-image-no-photo"></i>
+
+                  <img
+                    src=""
+                    id="main-image-preview"
+                    class="mb-2 rounded-2"
+                    height="150"
+                  />
+                </div>
+
+                <input
+                  type="file"
+                  name="{{ field_name(form.mainImageFile) }}"
+                  value="{{ field_value(form.mainImageFile) }}"
+                  class="form-control"
+                  accept="image/jpeg, image/png, image/gif"
+                  id="main-image-input"
+                />
+
+                {% if field_errors(form.mainImageFile) %}
+                  {{ form_errors(form.mainImageFile) }}
+                {% endif %}
+              </fieldset>
+
+              <fieldset class="form-fieldset">
+                <div class="form-label">
+                  Galeria artykułu
+
+                  <div class="text-muted mt-1">
+                    > To se będzie kiedyś działać 😝
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer text-end">
+          <div class="d-flex">
+            <button type="submit" class="btn btn-primary ms-auto">
+              <i class="ti ti-check me-1"></i> Zapisz artykuł
+            </button>
+          </div>
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('article_add') }}"/>
+        {{ form_end(form) }}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  <script type="application/javascript">
+    addEventListener('DOMContentLoaded', () => {
+      // thumbnail preview
+      const imageInput = document.getElementById('main-image-input')
+      const imagePreview = document.getElementById('main-image-preview')
+      const imageNoPhoto = document.getElementById('main-image-no-photo')
+
+      imageInput.addEventListener('change', event => {
+        if (event.target.files.length > 0) {
+          imagePreview.src = URL.createObjectURL(
+            event.target.files[0],
+          )
+
+          imagePreview.classList.remove('d-none')
+          imagePreview.classList.add('d-block')
+          imageNoPhoto.classList.add('d-none')
+        }
+      })
+
+      // is event switcher
+      document.getElementById('article_isEvent').addEventListener('change', event => {
+        if (event.target.checked) {
+          document.getElementById('event-details-wrapper').classList.remove('d-none')
+        } else {
+          document.getElementById('event-details-wrapper').classList.add('d-none')
+        }
+      })
+    })
+  </script>
+{% endblock %}

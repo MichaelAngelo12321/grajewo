@@ -32,6 +32,9 @@ class ArticleComment
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
+    #[ORM\Column]
+    private ?bool $isHidden = false;
+
     public function getArticle(): ?Article
     {
         return $this->article;
@@ -93,6 +96,18 @@ class ArticleComment
     public function setIpAddress(string $ipAddress): static
     {
         $this->ipAddress = $ipAddress;
+
+        return $this;
+    }
+
+    public function isIsHidden(): ?bool
+    {
+        return $this->isHidden;
+    }
+
+    public function setIsHidden(bool $isHidden): static
+    {
+        $this->isHidden = $isHidden;
 
         return $this;
     }

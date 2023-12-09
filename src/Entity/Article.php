@@ -48,6 +48,7 @@ class Article
     private ?int $viewsNumber = 0;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
     #[ORM\ManyToOne]
@@ -59,6 +60,18 @@ class Article
 
     #[ORM\Column(type: Types::SMALLINT)]
     private int $status = 0;
+
+    #[ORM\Column]
+    private ?bool $hasCommentsDisabled = false;
+
+    #[ORM\Column]
+    private ?bool $isEvent = false;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $eventDateTime = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $eventPlace = null;
 
     public function __construct()
     {
@@ -240,6 +253,54 @@ class Article
     public function setStatus(ArticleStatus $status): static
     {
         $this->status = $status->value;
+
+        return $this;
+    }
+
+    public function isHasCommentsDisabled(): ?bool
+    {
+        return $this->hasCommentsDisabled;
+    }
+
+    public function setHasCommentsDisabled(bool $hasCommentsDisabled): static
+    {
+        $this->hasCommentsDisabled = $hasCommentsDisabled;
+
+        return $this;
+    }
+
+    public function isIsEvent(): ?bool
+    {
+        return $this->isEvent;
+    }
+
+    public function setIsEvent(bool $isEvent): static
+    {
+        $this->isEvent = $isEvent;
+
+        return $this;
+    }
+
+    public function getEventDateTime(): ?\DateTimeInterface
+    {
+        return $this->eventDateTime;
+    }
+
+    public function setEventDateTime(?\DateTimeInterface $eventDateTime): static
+    {
+        $this->eventDateTime = $eventDateTime;
+
+        return $this;
+    }
+
+    public function getEventPlace(): ?string
+    {
+        return $this->eventPlace;
+    }
+
+    public function setEventPlace(?string $eventPlace): static
+    {
+        $this->eventPlace = $eventPlace;
 
         return $this;
     }

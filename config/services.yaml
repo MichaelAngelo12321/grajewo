@@ -6,6 +6,10 @@
 parameters:
     locale: 'pl'
     google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+    public_directory: '%kernel.project_dir%/public'
+    upload_directory: 'media/upload'
+    max_image_width: 1200
+    max_image_height: 1200
 
 services:
     # default configuration for services in *this* file
@@ -30,3 +34,19 @@ services:
             $defaultLocale: '%locale%'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    App\Service\FileUploader:
+        arguments:
+            $publicDirectory: '%public_directory%'
+            $targetDirectory: '%upload_directory%'
+
+    App\Service\FileCleaner:
+        arguments:
+            $publicDirectory: '%public_directory%'
+
+    App\Service\ImageResizer:
+        arguments:
+            $imagine: '@liip_imagine.gd'
+            $maxWidth: '%max_image_width%'
+            $maxHeight: '%max_image_height%'
+            $publicDirectory: '%public_directory%'

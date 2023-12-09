@@ -77,7 +77,7 @@ class AppFixtures extends Fixture
                 $article->setContent($this->replaceWithParagraphTags($faker->paragraphs(rand(3, 14), true)));
                 $article->setCreatedAt($date);
                 $article->setExcerpt($faker->sentences(3, true));
-                $article->setImageUrl(rand(0, 3) !== 1 ? "/media/upload/photos/img$imgNumber.jpg" : null);
+                $article->setImageUrl(rand(0, 3) !== 1 ? "/media/upload/article/2023/12/img$imgNumber.jpg" : null);
                 $article->setName(rtrim($faker->sentence(), '.'));
                 $article->setStatus(ArticleStatus::PUBLISHED);
                 $article->setUpdatedAt($date);

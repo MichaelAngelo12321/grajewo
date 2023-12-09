@@ -132,64 +132,91 @@
     Komentarze
   </h3>
 
-  {% if article.comments.empty %}
+  {% if article.hasCommentsDisabled %}
     <div class="card my-3">
-      <span>Jeszcze nikt nie skomentował tego artykułu. Bądź pierwszy i podziel się swoją opinią.</span>
+      <span>Komentarze do tego artykułu zostały wyłączone.</span>
     </div>
   {% else %}
-    {% for comment in article.comments %}
-      <div class="card mb-3" id="comment-{{ comment.id }}">
-        <div class="d-flex justify-content-between mb-1">
-          <div class="fw-bold">
-            {{ comment.author|default('Czytelnik') }}
-          </div>
-
-          <div class="fs-smaller text-muted">
-            {{ comment.createdAt|date|format_datetime(pattern=app_datetime_format) }}
-          </div>
-        </div>
-
-        <p class="m-0">{{ comment.content|preg_replace('/[\r\n]+/', '\n\n')|nl2br }}</p>
+    {% if article.comments.empty %}
+      <div class="card my-3">
+        <span>Jeszcze nikt nie skomentował tego artykułu. Bądź pierwszy i podziel się swoją opinią.</span>
       </div>
-    {% endfor %}
-  {% endif %}
+    {% else %}
+      {% for comment in article.comments %}
+        {% if comment.isHidden == false or (is_granted('ROLE_ADMIN') and comment.isHidden) %}
+          <div class="card mb-3" id="comment-{{ comment.id }}">
+            <div class="d-flex justify-content-between mb-1">
+              <div class="fw-bold">
+                {{ comment.author|default('Czytelnik') }}
+              </div>
 
-  <h4 class="fs-6 fw-bold mt-4 mb-3">Dodaj swój komentarz</h4>
+              <div class="fs-smaller text-muted">
+                {{ comment.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+              </div>
+            </div>
 
-  <div class="mb-md-5" id="comment-form">
-    {{ form_start(commentForm, { 'action': "#{app.request.uri}#comment-form"}) }}
-    {% if commentForm.vars.errors|length > 0 %}
-      {% for error in commentForm.vars.errors %}
-        <div class="alert alert-danger">
-          {{ error.message|trans({}, 'validators') }}
-        </div>
+            <p class="m-0">{{ comment.content|preg_replace('/[\r\n]+/', '\n\n')|nl2br }}</p>
+
+            {% if is_granted('ROLE_ADMIN') %}
+              <div class="d-flex justify-content-end align-items-center mt-2 pt-2 border-top">
+                <div class="me-auto text-muted fs-smaller">
+                  Adres IP czytelnika: <strong>{{ comment.ipAddress }}</strong>
+                </div>
+
+                {% if comment.isHidden %}
+                  <a href="{{ path('panel_article_comment_unlock', {'commentId': comment.id}) }}" class="btn btn-sm btn-outline-success">
+                    Odblokuj komentarz
+                  </a>
+                {% else %}
+                  <a href="{{ path('panel_article_comment_hide', {'commentId': comment.id}) }}" class="btn btn-sm btn-outline-primary">
+                    Ukryj komentarz
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
       {% endfor %}
     {% endif %}
 
-    {% for success in app.flashes('success') %}
-      <div class="alert alert-success">
-        {{ success }}
-      </div>
-    {% endfor %}
+    <h4 class="fs-6 fw-bold mt-4 mb-3">Dodaj swój komentarz</h4>
 
-    <div class="form-group mb-3">
-      {{ form_row(commentForm.content, { attr: { class: 'form-control', rows: 4 } }) }}
-    </div>
+    <div class="mb-md-5" id="comment-form">
+      {{ form_start(commentForm, { 'action': "#{app.request.uri}#comment-form"}) }}
+      {% if commentForm.vars.errors|length > 0 %}
+        {% for error in commentForm.vars.errors %}
+          <div class="alert alert-danger">
+            {{ error.message|trans({}, 'validators') }}
+          </div>
+        {% endfor %}
+      {% endif %}
 
-    <div class="row row-cols-lg-auto g-4 align-items-end justify-content-between">
-      <div class="col-12">
-        {{ form_row(commentForm.author, { attr: { class: 'form-control' } }) }}
-      </div>
-      <div class="col-12">
-        {{ form_row(commentForm.submit, { attr: { class: 'btn btn-primary' } }) }}
-      </div>
-    </div>
+      {% for success in app.flashes('success') %}
+        <div class="alert alert-success">
+          {{ success }}
+        </div>
+      {% endfor %}
 
-    <div class="fs-smaller text-muted mt-2">
-      Formularz chroniony przez reCAPTCHA i Google (<a class="text-muted" href="https://policies.google.com/privacy">Polityka prywatności</a>)
+      <div class="form-group mb-3">
+        {{ form_row(commentForm.content, { attr: { class: 'form-control', rows: 4 } }) }}
+      </div>
+
+      <div class="row row-cols-lg-auto g-4 align-items-end justify-content-between">
+        <div class="col-12">
+          {{ form_row(commentForm.author, { attr: { class: 'form-control' } }) }}
+        </div>
+        <div class="col-12">
+          {{ form_row(commentForm.submit, { attr: { class: 'btn btn-primary' } }) }}
+        </div>
+      </div>
+
+      <div class="fs-smaller text-muted mt-2">
+        Formularz chroniony przez reCAPTCHA i Google (<a class="text-muted" href="https://policies.google.com/privacy">Polityka
+          prywatności</a>)
+      </div>
+      {{ form_end(commentForm) }}
     </div>
-    {{ form_end(commentForm) }}
-  </div>
+  {% endif %}
 
   <hr class="d-md-none my-5"/>
 

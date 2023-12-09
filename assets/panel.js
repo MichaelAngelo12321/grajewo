@@ -6,29 +6,32 @@ const forms = document.getElementsByClassName('list-form')
 
 for (let form of forms) {
   for (let element of form.elements) {
-    const resetFilter = element.classList.contains('reset-filter');
-    element.addEventListener(resetFilter ? 'click' : 'change', () => {
-      if (resetFilter) {
-        for (let element of form.elements) {
-          switch (element.type) {
-            case 'radio':
-            case 'checkbox':
-              element.checked = false;
-              break;
-            case 'select-one':
-              element.selectedIndex = -1;
-              break;
-            case 'text':
-            case 'number':
-              element.value = 0;
-              break;
-          }
+    const isResetFilter = element.classList.contains('reset-filter')
+
+    element.addEventListener(isResetFilter ? 'click' : 'change', () => {
+      if (isResetFilter) {
+        const elements = form.querySelectorAll('input, select, textarea')
+
+        for (let element of elements) {
+          element.disabled = true
         }
+
+        form.submit()
       } else {
-        form.submit();
+        form.submit()
       }
-    });
+    })
   }
 }
 
+// Confirm elements
+const confirmElements = document.getElementsByClassName('confirm')
+
+for (let element of confirmElements) {
+  element.addEventListener('click', (event) => {
+    if (!confirm('Potwierdź operację, którą chcesz wykonać')) {
+      event.preventDefault()
+    }
+  })
+}
 
