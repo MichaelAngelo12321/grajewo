@@ -1,5 +1,6 @@
 twig:
   default_path: '%kernel.project_dir%/templates'
+  form_themes: ['bundles/TwigBundle/Form/bootstrap_5_layout.html.twig']
   globals:
     app_datetime_format: "eee, d MMMM y', godz.' H:mm" # https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
     app_name: '%env(APP_NAME)%'
