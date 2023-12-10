@@ -1,5 +1,7 @@
 {% extends 'app/layout/base.html.twig' %}
 
+{% block title %}{{ app_meta_title }}{% endblock %}
+
 {% block body %}
   {% import "app/home/partials/articles-list.html.twig" as articlesList %}
 

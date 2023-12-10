@@ -1,5 +1,8 @@
 {% extends 'app/layout/base.html.twig' %}
 
+{% block title %}{{ article.name }} - {{ app_name }}{% endblock %}
+{% block description %}{{ article.excerpt }}{% endblock %}
+
 {% block topContent %}
   <nav class="mb-3">
     <ol class="breadcrumb">

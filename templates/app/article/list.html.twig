@@ -1,5 +1,8 @@
 {% extends 'app/layout/base.html.twig' %}
 
+{% block title %}{{ category.name }} - {{ app_name }}{% endblock %}
+{% block description %}Najnowsze artykuły z kategorii: {{ category.name }} w serwisie regionalnym {{ app_name }}.{% endblock %}
+
 {% block topContent %}
   <nav class="mb-2 border-left border-danger-subtle border-2">
     <ol class="breadcrumb">
