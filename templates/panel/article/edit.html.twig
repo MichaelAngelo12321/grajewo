@@ -85,14 +85,18 @@
                 <label class="form-label" for="main-image-input">Zdjęcie główne</label>
 
                 <div class="d-flex align-items-center justify-content-center mb-2">
-                    <img
-                      src="{% if article.imageUrl %}{{ article.imageUrl }}{% endif %}"
-                      id="main-image-preview"
-                      class="rounded-2 {% if article.imageUrl == null %}d-none{% endif %}"
-                      height="150"
-                    />
+                  <img
+                    src="{% if article.imageUrl %}{{ article.imageUrl }}{% endif %}"
+                    id="main-image-preview"
+                    class="rounded-2 {% if article.imageUrl == null %}d-none{% endif %}"
+                    height="150"
+                  />
 
-                  <button type="button" class="btn btn-outline-danger ms-auto {% if article.imageUrl == null %}d-none{% endif %}" id="main-image-remove">
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger ms-auto {% if article.imageUrl == null %}d-none{% endif %}"
+                    id="main-image-remove"
+                  >
                     <i class="ti ti-trash me-1"></i> Usuń
                   </button>
                 </div>

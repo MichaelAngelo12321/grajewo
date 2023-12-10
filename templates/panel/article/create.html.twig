@@ -86,15 +86,21 @@
               <fieldset class="form-fieldset">
                 <label class="form-label" for="main-image-input">Zdjęcie główne</label>
 
-                <div class="d-flex align-items-center justify-content-center">
-                  <i class="ti ti-photo-off text-muted mb-2" style="font-size: 74px;" id="main-image-no-photo"></i>
-
+                <div class="d-flex align-items-center justify-content-center mb-2">
                   <img
                     src=""
                     id="main-image-preview"
-                    class="mb-2 rounded-2"
+                    class="rounded-2 d-none"
                     height="150"
                   />
+
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger ms-auto d-none"
+                    id="main-image-remove"
+                  >
+                    <i class="ti ti-trash me-1"></i> Usuń
+                  </button>
                 </div>
 
                 <input
@@ -147,7 +153,7 @@
       // thumbnail preview
       const imageInput = document.getElementById('main-image-input')
       const imagePreview = document.getElementById('main-image-preview')
-      const imageNoPhoto = document.getElementById('main-image-no-photo')
+      const imageRemove = document.getElementById('main-image-remove')
 
       imageInput.addEventListener('change', event => {
         if (event.target.files.length > 0) {
@@ -156,9 +162,19 @@
           )
 
           imagePreview.classList.remove('d-none')
+          imageRemove.classList.remove('d-none')
           imagePreview.classList.add('d-block')
-          imageNoPhoto.classList.add('d-none')
         }
+      })
+
+      // image remove
+      imageRemove.addEventListener('click', () => {
+        imageInput.value = ''
+        imageInput.classList.remove('d-none')
+        imagePreview.src = ''
+        imagePreview.classList.remove('d-block')
+        imagePreview.classList.add('d-none')
+        imageRemove.classList.add('d-none')
       })
 
       // is event switcher
