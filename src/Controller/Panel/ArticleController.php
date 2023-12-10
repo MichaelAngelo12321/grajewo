@@ -7,6 +7,7 @@ namespace App\Controller\Panel;
 use App\Entity\Article;
 use App\Enum\ArticleStatus;
 use App\Enum\UploadDirectory;
+use App\Form\ArticleEditType;
 use App\Form\ArticleType;
 use App\Helper\Paginator;
 use App\Repository\ArticleRepository;
@@ -139,7 +140,7 @@ class ArticleController extends AbstractController
 
         $categories = $this->categoryCachedRepository->findAll();
 
-        $articleForm = $this->createForm(ArticleType::class, $article);
+        $articleForm = $this->createForm(ArticleEditType::class, $article);
         $articleForm->handleRequest($request);
 
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {

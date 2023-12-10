@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
-class ArticleType extends AbstractType
+class ArticleEditType extends AbstractType
 {
     public function __construct(private Security $security)
     {
@@ -57,11 +57,6 @@ class ArticleType extends AbstractType
                     ])
                 ],
                 'label' => 'Zdjęcie',
-                'mapped' => false,
-                'required' => false,
-            ])
-            ->add('publishArticle', CheckboxType::class, [
-                'label' => 'Opublikuj artykuł po zapisaniu',
                 'mapped' => false,
                 'required' => false,
             ])
