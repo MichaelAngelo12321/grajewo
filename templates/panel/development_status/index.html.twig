@@ -1,0 +1,196 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Development status{% endblock %}
+
+{% block body %}
+<div class="page-body">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="col card-title fw-bold">Development status</h1>
+      </div>
+
+      <div class="card-body border-bottom py-3">
+        <h2>Front</h2>
+        <ul class="list-unstyled">
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" checked disabled> Strona główna
+
+            <ul class="list-unstyled mt-3">
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" checked disabled> Artykuły z kategorii
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" checked disabled> Najczęściej czytane
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Ogłoszenia z zakładkami kategorii
+              </li>
+            </ul>
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Sidebar
+
+            <ul class="list-unstyled mt-3">
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Pogoda
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Imieniny
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Niedziela handlowa
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Jakość powietrza
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Najnowsze raporty
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Kalendarz wydarzeń
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Apteka dyżurna
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Zdjęcie dnia
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Film dnia
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Ceny paliw
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Kursy walut
+              </li>
+            </ul>
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Artykuły
+
+            <ul class="list-unstyled mt-3">
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" checked disabled> Lista
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" checked disabled> Szczegóły
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" checked disabled> Komentarze w szczegółach (z moderacją)
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Wyświetlanie galerii
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Wyświetlanie filmów
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Wyświetlanie ankiety
+              </li>
+            </ul>
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Treści użytkowników
+
+            <ul class="list-unstyled mt-3">
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Dodawanie raportu
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Dodawanie zdjęcia
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Dodawanie filmu
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Dodawanie cen paliw
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Zgłaszanie treści (raporty, komentarze, ceny paliw, zdjęcia, filmy, itd.)
+              </li>
+            </ul>
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Ogłoszenia
+
+            <ul class="list-unstyled mt-3">
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Wyświetlanie
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Dodawania
+              </li>
+            </ul>
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Firmy i instytucje
+
+            <ul class="list-unstyled mt-3">
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Wyświetlanie
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Dodawania
+              </li>
+            </ul>
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Wyszukiwarka
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Reklamy
+          </li>
+        </ul>
+
+        <h2>Panel</h2>
+
+        <ul class="list-unstyled">
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" checked disabled> Logowanie
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Zarządzanie kategoriami
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" checked disabled> Zarządzanie artykułami
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Zarządzanie treściami użytkowników
+
+            <ul class="list-unstyled mt-3">
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Zdjęcia
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Filmy
+              </li>
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" disabled> Ceny paliw
+              </li>
+            </ul>
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Zarządzanie ankietami
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Zarządzanie użytkownikami
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Zarządzanie ogłoszeniami
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Zarządzanie firmami i instytucjami
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Ustawienia serwisu
+          </li>
+          <li class="form-check">
+            <input type="checkbox" class="form-check-input" disabled> Zarządzanie reklamami
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

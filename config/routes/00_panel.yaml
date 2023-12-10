@@ -38,4 +38,7 @@ panel_article_comment_unlock:
     path: /panel/articles/comments/{commentId}/unlock
     controller: App\Controller\Panel\ArticleCommentController::unlockComment
 
+panel_temporary_development_status:
+    path: /panel/development-status
+    controller: App\Controller\Panel\DevelopmentStatusController::index
 # TODO: move to controllers with low priority for application_category
