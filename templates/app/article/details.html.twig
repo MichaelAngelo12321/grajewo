@@ -20,11 +20,17 @@
       <div class="big-news">
         {% if article.imageUrl %}
           <img
-            class="rounded-1 img-fluid mb-3 w-100"
+            class="rounded-1 img-fluid {% if article.imageCaption == null %}mb-3{% endif %} w-100"
             src="{{ article.imageUrl|imagine_filter('article_main_image') }}"
             alt="Opis użytkownika"
             fetchpriority="high"
           />
+
+          {% if article.imageCaption %}
+            <div class="mt-1 mb-3 text-muted text-end fst-italic">
+              {{ article.imageCaption }}
+            </div>
+          {% endif %}
         {% endif %}
 
         <h1 class="fs-2 mb-2">

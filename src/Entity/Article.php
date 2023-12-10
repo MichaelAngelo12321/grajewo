@@ -38,7 +38,7 @@ class Article
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 300)]
     private ?string $excerpt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -72,6 +72,9 @@ class Article
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $eventPlace = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageCaption = null;
 
     public function __construct()
     {
@@ -301,6 +304,18 @@ class Article
     public function setEventPlace(?string $eventPlace): static
     {
         $this->eventPlace = $eventPlace;
+
+        return $this;
+    }
+
+    public function getImageCaption(): ?string
+    {
+        return $this->imageCaption;
+    }
+
+    public function setImageCaption(?string $imageCaption): static
+    {
+        $this->imageCaption = $imageCaption;
 
         return $this;
     }

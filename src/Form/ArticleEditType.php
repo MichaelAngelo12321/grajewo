@@ -44,10 +44,10 @@ class ArticleEditType extends AbstractType
                 'help' => 'Jeśli pozostawisz puste, zostaną użyte 3 pierwsze zdania pełnej treści artykułu',
                 'required' => false,
             ])
-            ->add('mainImageFile', FileType::class, [
+            ->add('imageUrl', FileType::class, [
                 'constraints' => [
                     new File([
-                        'maxSize' => '10m',
+                        'maxSize' => '12m',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -58,6 +58,10 @@ class ArticleEditType extends AbstractType
                 ],
                 'label' => 'Zdjęcie',
                 'mapped' => false,
+                'required' => false,
+            ])
+            ->add('imageCaption', TextType::class, [
+                'label' => 'Podpis pod zdjęciem',
                 'required' => false,
             ])
             ->add('hasCommentsDisabled', CheckboxType::class, [
@@ -88,10 +92,6 @@ class ArticleEditType extends AbstractType
                 $article->setAuthor($this->security->getUser());
                 $article->setUpdateAuthor($this->security->getUser());
 
-                if ($form->get('publishArticle')->getData() === true) {
-                    $article->setStatus(ArticleStatus::PUBLISHED);
-                }
-
                 if (
                     $form->get('isEvent')->getData() === true
                     && $form->get('eventDate')->getData() !== null
@@ -106,16 +106,20 @@ class ArticleEditType extends AbstractType
                 }
 
                 if ($form->get('excerpt')->getData() === null) {
-                    $article->setExcerpt(
-                        implode(
-                            '. ',
-                            array_slice(
-                                explode('. ', $article->getContent()),
-                                0,
-                                3,
-                            ),
+                    $excerpt = implode(
+                        '. ',
+                        array_slice(
+                            explode('. ', $article->getContent()),
+                            0,
+                            3,
                         ),
                     );
+
+                    if (strlen($excerpt) > 300) {
+                        $excerpt = substr($excerpt, 0, 297) . '...';
+                    }
+
+                    $article->setExcerpt($excerpt);
                 }
             });
     }

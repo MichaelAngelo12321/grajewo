@@ -26,7 +26,7 @@
 
                   {{ form_row(form.isEvent, {attr: {class: 'form-check form-switch', id: 'is-event-switcher'}}) }}
 
-                  <div class="mb-4 {{ app.request.get('is-event') == 'on' ? '' : 'd-none' }} row"
+                  <div class="mb-4 {{ app.request.get('is-event')|default(form.isEvent) == 'on' ? '' : 'd-none' }} row"
                        id="event-details-wrapper">
                     <div class="col-6 col-md-4">
                       <label class="w-100">
@@ -84,29 +84,33 @@
               <fieldset class="form-fieldset">
                 <label class="form-label" for="main-image-input">Zdjęcie główne</label>
 
-                <div class="d-flex align-items-center justify-content-center">
-                  <i class="ti ti-photo-off text-muted mb-2" style="font-size: 74px;" id="main-image-no-photo"></i>
+                <div class="d-flex align-items-center justify-content-center mb-2">
+                    <img
+                      src="{% if article.imageUrl %}{{ article.imageUrl }}{% endif %}"
+                      id="main-image-preview"
+                      class="rounded-2 {% if article.imageUrl == null %}d-none{% endif %}"
+                      height="150"
+                    />
 
-                  <img
-                    src=""
-                    id="main-image-preview"
-                    class="mb-2 rounded-2"
-                    height="150"
-                  />
+                  <button type="button" class="btn btn-outline-danger ms-auto {% if article.imageUrl == null %}d-none{% endif %}" id="main-image-remove">
+                    <i class="ti ti-trash me-1"></i> Usuń
+                  </button>
                 </div>
 
                 <input
                   type="file"
-                  name="{{ field_name(form.mainImageFile) }}"
-                  value="{{ field_value(form.mainImageFile) }}"
-                  class="form-control"
+                  name="{{ field_name(form.imageUrl) }}"
+                  value="{{ field_value(form.imageUrl) }}"
+                  class="form-control {% if article.imageUrl %}d-none{% endif %}"
                   accept="image/jpeg, image/png, image/gif"
                   id="main-image-input"
                 />
 
-                {% if field_errors(form.mainImageFile) %}
-                  {{ form_errors(form.mainImageFile) }}
+                {% if field_errors(form.imageUrl) %}
+                  {{ form_errors(form.imageUrl) }}
                 {% endif %}
+
+                {{ form_row(form.imageCaption, {attr: { class: 'form-control'}, row_attr: { class: 'mt-3 mb-0' }}) }}
               </fieldset>
 
               <fieldset class="form-fieldset">
@@ -143,7 +147,7 @@
       // thumbnail preview
       const imageInput = document.getElementById('main-image-input')
       const imagePreview = document.getElementById('main-image-preview')
-      const imageNoPhoto = document.getElementById('main-image-no-photo')
+      const imageRemove = document.getElementById('main-image-remove')
 
       imageInput.addEventListener('change', event => {
         if (event.target.files.length > 0) {
@@ -153,12 +157,22 @@
 
           imagePreview.classList.remove('d-none')
           imagePreview.classList.add('d-block')
-          imageNoPhoto.classList.add('d-none')
+          imageRemove.classList.remove('d-none')
         }
       })
 
+      // image remove
+      imageRemove.addEventListener('click', () => {
+        imageInput.value = ''
+        imageInput.classList.remove('d-none')
+        imagePreview.src = ''
+        imagePreview.classList.remove('d-block')
+        imagePreview.classList.add('d-none')
+        imageRemove.classList.add('d-none')
+      })
+
       // is event switcher
-      document.getElementById('article_isEvent').addEventListener('change', event => {
+      document.getElementById('article_edit_isEvent').addEventListener('change', event => {
         if (event.target.checked) {
           document.getElementById('event-details-wrapper').classList.remove('d-none')
         } else {

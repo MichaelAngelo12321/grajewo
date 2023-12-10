@@ -17,6 +17,7 @@ use App\Repository\CategoryRepository;
 use App\Service\FileCleaner;
 use App\Service\FileUploader;
 use App\Service\ImageResizer;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -75,18 +76,18 @@ class ArticleController extends AbstractController
         $articleForm->handleRequest($request);
 
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
-            /** @var UploadedFile $mainImageFile */
-            $mainImageFile = $articleForm->get('mainImageFile')->getData();
+            /** @var UploadedFile $imageFile */
+            $imageFile = $articleForm->get('imageUrl')->getData();
 
-            if ($mainImageFile !== null) {
-                $mainImageFileName = $this->fileUploader->upload($mainImageFile, UploadDirectory::ARTICLE);
-                $this->imageResizer->resize($mainImageFileName);
+            if ($imageFile !== null) {
+                $imageFileName = $this->fileUploader->upload($imageFile, UploadDirectory::ARTICLE);
+                $this->imageResizer->resize($imageFileName);
 
-                $article->setImageUrl($mainImageFileName);
+                $article->setImageUrl($imageFileName);
             }
 
-            $article->setCreatedAt(new \DateTimeImmutable());
-            $article->setUpdatedAt(new \DateTimeImmutable());
+            $article->setCreatedAt(new DateTimeImmutable());
+            $article->setUpdatedAt(new DateTimeImmutable());
 
             $this->entityManager->persist($article);
             $this->entityManager->flush();
@@ -140,21 +141,29 @@ class ArticleController extends AbstractController
 
         $categories = $this->categoryCachedRepository->findAll();
 
+        $articleImage = $article->getImageUrl();
         $articleForm = $this->createForm(ArticleEditType::class, $article);
         $articleForm->handleRequest($request);
 
         if ($articleForm->isSubmitted() && $articleForm->isValid()) {
-            /** @var UploadedFile $mainImageFile */
-            $mainImageFile = $articleForm->get('mainImageFile')->getData();
+            /** @var UploadedFile|null $imageFile */
+            $imageFile = $articleForm->get('imageUrl')->getData();
 
-            if ($mainImageFile !== null) {
-                $mainImageFileName = $this->fileUploader->upload($mainImageFile, UploadDirectory::ARTICLE);
-                $this->imageResizer->resize($mainImageFileName);
+            if ($imageFile !== null) {
+                if ($articleImage) {
+                    $this->fileCleaner->removeFile($articleImage);
+                }
 
-                $article->setImageUrl($mainImageFileName);
+                $imageFileName = $this->fileUploader->upload($imageFile, UploadDirectory::ARTICLE);
+                $this->imageResizer->resize($imageFileName);
+
+                $article->setImageUrl($imageFileName);
+            } elseif ($articleImage) {
+                $article->setImageUrl(null);
+                $this->fileCleaner->removeFile($articleImage);
             }
 
-            $article->setUpdatedAt(new \DateTimeImmutable());
+            $article->setUpdatedAt(new DateTimeImmutable());
 
             $this->entityManager->persist($article);
             $this->entityManager->flush();
@@ -166,6 +175,7 @@ class ArticleController extends AbstractController
         }
 
         return $this->render('panel/article/edit.html.twig', [
+            'article' => $article,
             'categories' => $categories,
             'form' => $articleForm->createView(),
         ]);

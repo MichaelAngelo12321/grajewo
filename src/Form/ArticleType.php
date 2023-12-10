@@ -44,10 +44,10 @@ class ArticleType extends AbstractType
                 'help' => 'Jeśli pozostawisz puste, zostaną użyte 3 pierwsze zdania pełnej treści artykułu',
                 'required' => false,
             ])
-            ->add('mainImageFile', FileType::class, [
+            ->add('imageUrl', FileType::class, [
                 'constraints' => [
                     new File([
-                        'maxSize' => '10m',
+                        'maxSize' => '12m',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -58,6 +58,10 @@ class ArticleType extends AbstractType
                 ],
                 'label' => 'Zdjęcie',
                 'mapped' => false,
+                'required' => false,
+            ])
+            ->add('imageCaption', TextType::class, [
+                'label' => 'Podpis pod zdjęciem',
                 'required' => false,
             ])
             ->add('publishArticle', CheckboxType::class, [
@@ -111,16 +115,20 @@ class ArticleType extends AbstractType
                 }
 
                 if ($form->get('excerpt')->getData() === null) {
-                    $article->setExcerpt(
-                        implode(
-                            '. ',
-                            array_slice(
-                                explode('. ', $article->getContent()),
-                                0,
-                                3,
-                            ),
+                    $excerpt = implode(
+                        '. ',
+                        array_slice(
+                            explode('. ', $article->getContent()),
+                            0,
+                            3,
                         ),
                     );
+
+                    if (strlen($excerpt) > 300) {
+                        $excerpt = substr($excerpt, 0, 297) . '...';
+                    }
+
+                    $article->setExcerpt($excerpt);
                 }
             });
     }
