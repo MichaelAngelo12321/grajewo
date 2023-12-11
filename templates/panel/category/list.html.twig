@@ -1,0 +1,55 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Zarządzanie kategoriami{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">Zarządzanie kategoriami</h1>
+
+          <a href="{{ path('panel_categories_create') }}" class="col-auto btn btn-primary">
+            <i class="ti ti-plus me-1"></i> Dodaj nową kategorię
+          </a>
+        </div>
+
+        <div class="list-group list-group-flush js-sortable" data-url="{{ path('panel_categories_change_order') }}">
+          {% for category in categories %}
+            {% if category.isRoot != true %}
+              <div class="list-group-item js-category-row" data-element-id="{{ category.id }}">
+                <div class="row align-items-center">
+                  <div class="col-auto js-drag-handler">
+                    <i class="ti ti-grip-vertical text-muted cursor-grab"></i>
+                  </div>
+
+                  <div class="col-auto">
+                    <div>
+                      <strong>{{ category.name }}</strong> <code>{{ category.slug }}</code>
+                    </div>
+                  </div>
+
+                  <div class="col-auto ms-auto">
+                    <a
+                      href="{{ path('panel_categories_edit', {id: category.id}) }}"
+                      class="btn text-muted btn-icon"
+                    >
+                      <i class="ti ti-edit-circle"></i>
+                    </a>
+
+                    <a
+                      href="{{ path('panel_categories_delete', {id: category.id}) }}"
+                      class="btn btn-icon btn-danger js-confirm"
+                    >
+                      <i class="ti ti-trash"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

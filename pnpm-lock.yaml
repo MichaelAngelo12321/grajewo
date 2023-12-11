@@ -23,6 +23,9 @@ dependencies:
   sass-loader:
     specifier: ^13.3.2
     version: 13.3.2(sass@1.69.5)(webpack@5.89.0)
+  sortablejs:
+    specifier: ^1.15.1
+    version: 1.15.1
 
 devDependencies:
   '@babel/core':
@@ -4467,6 +4470,10 @@ packages:
       uuid: 8.3.2
       websocket-driver: 0.7.4
     dev: true
+
+  /sortablejs@1.15.1:
+    resolution: {integrity: sha512-P5Cjvb0UG1ZVNiDPj/n4V+DinttXG6K8n7vM/HQf0C25K3YKQTQY6fsr/sEGsJGpQ9exmPxluHxKBc0mLKU1lQ==}
+    dev: false
 
   /source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}

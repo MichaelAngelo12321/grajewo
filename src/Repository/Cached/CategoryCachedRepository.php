@@ -24,7 +24,7 @@ class CategoryCachedRepository
         return $this->cache->get(CacheKeyPrefix::CATEGORY_ALL, function (ItemInterface $item) {
             $item->expiresAfter(new DateInterval('P1Y'));
 
-            return $this->categoryRepository->findAll();
+            return $this->categoryRepository->findBy([], ['positionOrder' => 'ASC']);
         });
     }
 

@@ -2,6 +2,7 @@ panel_dashboard:
   path: /panel
   controller: App\Controller\Panel\ArticleController::list
 
+# Auth
 panel_login:
   path: /panel/login
   controller: App\Controller\Panel\SecurityController::login
@@ -10,6 +11,7 @@ panel_logout:
     path: /panel/logout
     controller: App\Controller\Panel\SecurityController::logout
 
+# Articles
 panel_article_change_status:
     path: /panel/articles/{id}/change-status/{status}
     controller: App\Controller\Panel\ArticleController::changeStatus
@@ -38,6 +40,28 @@ panel_article_comment_unlock:
     path: /panel/articles/comments/{commentId}/unlock
     controller: App\Controller\Panel\ArticleCommentController::unlockComment
 
+# Categories
+panel_categories_change_order:
+    path: /panel/categories/change-order
+    controller: App\Controller\Panel\CategoryController::changeOrder
+
+panel_categories_create:
+    path: /panel/categories/create
+    controller: App\Controller\Panel\CategoryController::create
+
+panel_categories_edit:
+    path: /panel/categories/{id}/edit
+    controller: App\Controller\Panel\CategoryController::edit
+
+panel_categories_list:
+  path: /panel/categories
+  controller: App\Controller\Panel\CategoryController::list
+
+panel_categories_delete:
+  path: /panel/categories/{id}/delete
+  controller: App\Controller\Panel\CategoryController::delete
+
+# Temp
 panel_temporary_development_status:
     path: /panel/development-status
     controller: App\Controller\Panel\DevelopmentStatusController::index

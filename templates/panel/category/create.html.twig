@@ -1,0 +1,23 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Dodawanie nowej kategorii{% endblock %}
+
+{% block body %}
+<div class="page-body">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="col card-title fw-bold">Dodawanie nowej kategorii</h1>
+
+        <a href="{{ path('panel_categories_list') }}" class="col-auto btn btn-outline-secondary">
+          <i class="ti ti-arrow-back me-1"></i> Powrót do listy
+        </a>
+      </div>
+
+      <div class="card-body py-3">
+        {{ form(form) }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

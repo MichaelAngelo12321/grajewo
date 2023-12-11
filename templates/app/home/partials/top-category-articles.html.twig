@@ -1,47 +1,49 @@
 <div class="widget">
   <h1 class="section-title primary">
     <a href="{{ path('article_category', { '__category': topCategory.slug }) }}">
-      Aktualności
+      {{ topCategory.name }}
     </a>
   </h1>
 
   <div class="row">
     <div class="col-lg-7 mb-3 mb-lg-0">
-      <div class="big-news">
-        {% set topCategoryLastArticle = topCategoryArticles[0] %}
+      {% set topCategoryLastArticle = topCategoryArticles[0]|default(null) %}
 
-        <a
-          href="{{ path(
-            'article_details',
-            {
-              '__category': topCategory.slug,
-              'id': topCategoryLastArticle.id,
-              'slug': topCategoryLastArticle.name|lower|slug
-            }
-          ) }}"
-          title="{{ topCategoryLastArticle.name }}"
-        >
-          <img
-            class="rounded-1 img-fluid mb-2"
-            src="{{ topCategoryLastArticle.imageUrl|default('/build/images/empty-photo.png')|imagine_filter('home_page_article_image') }}"
-            alt="Zdjęcie najnowszego artykułu kategorii"
-          />
+      {% if topCategoryLastArticle %}
+        <div class="big-news">
+          <a
+            href="{{ path(
+              'article_details',
+              {
+                '__category': topCategory.slug,
+                'id': topCategoryLastArticle.id,
+                'slug': topCategoryLastArticle.name|lower|slug
+              }
+            ) }}"
+            title="{{ topCategoryLastArticle.name }}"
+          >
+            <img
+              class="rounded-1 img-fluid mb-2"
+              src="{{ topCategoryLastArticle.imageUrl|default('/build/images/empty-photo.png')|imagine_filter('home_page_article_image') }}"
+              alt="Zdjęcie najnowszego artykułu kategorii"
+            />
 
-          <h3 class="fs-4 fw-bold mb-0">
-            {{ topCategoryLastArticle.name }}
-          </h3>
-        </a>
+            <h3 class="fs-4 fw-bold mb-0">
+              {{ topCategoryLastArticle.name }}
+            </h3>
+          </a>
 
-        <div class="meta d-flex justify-content-between mb-3 gap-2">
-          <div class="date me-auto">
-            {{ topCategoryLastArticle.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+          <div class="meta d-flex justify-content-between mb-3 gap-2">
+            <div class="date me-auto">
+              {{ topCategoryLastArticle.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+            </div>
           </div>
-        </div>
 
-        <p>
-          {{ topCategoryLastArticle.excerpt }}
-        </p>
-      </div>
+          <p>
+            {{ topCategoryLastArticle.excerpt }}
+          </p>
+        </div>
+      {% endif %}
     </div>
 
     <div class="col-lg-5">
