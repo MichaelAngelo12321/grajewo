@@ -110,6 +110,8 @@
                   id="main-image-input"
                 />
 
+                {{ form_row(form.hasChangedImageUrl, {id: 'main-image-is-changed', row_attr: {hidden: true}, checked: false}) }}
+
                 {% if field_errors(form.imageUrl) %}
                   {{ form_errors(form.imageUrl) }}
                 {% endif %}
@@ -150,6 +152,7 @@
     addEventListener('DOMContentLoaded', () => {
       // thumbnail preview
       const imageInput = document.getElementById('main-image-input')
+      const imageIsChanged = document.getElementById('main-image-is-changed')
       const imagePreview = document.getElementById('main-image-preview')
       const imageRemove = document.getElementById('main-image-remove')
 
@@ -159,6 +162,7 @@
             event.target.files[0],
           )
 
+          imageIsChanged.checked = true
           imagePreview.classList.remove('d-none')
           imagePreview.classList.add('d-block')
           imageRemove.classList.remove('d-none')
@@ -169,6 +173,7 @@
       imageRemove.addEventListener('click', () => {
         imageInput.value = ''
         imageInput.classList.remove('d-none')
+        imageIsChanged.checked = true
         imagePreview.src = ''
         imagePreview.classList.remove('d-block')
         imagePreview.classList.add('d-none')

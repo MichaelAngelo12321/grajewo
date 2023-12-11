@@ -44,6 +44,10 @@ class ArticleEditType extends AbstractType
                 'help' => 'Jeśli pozostawisz puste, zostaną użyte 3 pierwsze zdania pełnej treści artykułu',
                 'required' => false,
             ])
+            ->add('hasChangedImageUrl', CheckboxType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('imageUrl', FileType::class, [
                 'constraints' => [
                     new File([

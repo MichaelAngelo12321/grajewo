@@ -158,7 +158,7 @@ class ArticleController extends AbstractController
                 $this->imageResizer->resize($imageFileName);
 
                 $article->setImageUrl($imageFileName);
-            } elseif ($articleImage) {
+            } elseif ($articleForm->get('hasChangedImageUrl')->getData()) {
                 $article->setImageUrl(null);
                 $this->fileCleaner->removeFile($articleImage);
             }
