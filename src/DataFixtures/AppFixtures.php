@@ -55,7 +55,6 @@ class AppFixtures extends Fixture
         foreach ($categories as $name => $slug) {
             $articlesNumber = rand(175, 300);
             $category = new Category();
-            $category->setArticlesNumber($articlesNumber);
             $category->setColor($categoryColors[array_rand($categoryColors)]);
             $category->setIsRoot($slug === 'info');
             $category->setName($name);
