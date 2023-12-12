@@ -31,11 +31,13 @@
       {% endif %}
 
       {% if loop.index > 4 %}
-        {{ articlesList.horizontal(
-          category,
-          articles[category.id],
-          category.color
-        ) }}
+        {% if articles[category.id] %}
+          {{ articlesList.horizontal(
+            category,
+            articles[category.id],
+            category.color
+          ) }}
+        {% endif %}
       {% endif %}
     {% endif %}
   {% endfor %}

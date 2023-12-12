@@ -61,6 +61,10 @@ panel_categories_delete:
   path: /panel/categories/{id}/delete
   controller: App\Controller\Panel\CategoryController::delete
 
+panel_categories_move_articles:
+  path: /panel/categories/move-articles/{fromCategoryId}/{toCategoryId}
+  controller: App\Controller\Panel\CategoryController::moveArticles
+
 # Temp
 panel_temporary_development_status:
     path: /panel/development-status

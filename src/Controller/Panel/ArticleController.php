@@ -92,8 +92,9 @@ class ArticleController extends AbstractController
             $this->entityManager->persist($article);
             $this->entityManager->flush();
 
-            $this->categoryRepository->updateArticlesCount($article->getCategory());
             $this->clearCache();
+
+            $this->addFlash('success', 'Artykuł został dodany');
 
             return $this->redirectToRoute('panel_article_list');
         }
@@ -121,7 +122,6 @@ class ArticleController extends AbstractController
         $this->entityManager->remove($article);
         $this->entityManager->flush();
 
-        $this->categoryRepository->updateArticlesCount($articleCategory);
         $this->clearCache();
 
         $this->addFlash('success', 'Artykuł został usunięty');
@@ -168,8 +168,9 @@ class ArticleController extends AbstractController
             $this->entityManager->persist($article);
             $this->entityManager->flush();
 
-            $this->categoryRepository->updateArticlesCount($article->getCategory());
             $this->clearCache();
+
+            $this->addFlash('success', 'Artykuł został zaktualizowany');
 
             return $this->redirectToRoute('panel_article_list');
         }

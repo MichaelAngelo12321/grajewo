@@ -10,9 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
-    #[ORM\Column]
-    private int $articlesNumber = 0;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -57,18 +54,6 @@ class Category
     public function getArticles(): Collection
     {
         return $this->articles;
-    }
-
-    public function getArticlesNumber(): ?int
-    {
-        return $this->articlesNumber;
-    }
-
-    public function setArticlesNumber(int $articlesNumber): static
-    {
-        $this->articlesNumber = $articlesNumber;
-
-        return $this;
     }
 
     public function getId(): ?int

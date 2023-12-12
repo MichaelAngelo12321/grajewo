@@ -1,6 +1,11 @@
 import Sortable from 'sortablejs'
 import './styles/panel/index.scss'
 import './theme-switcher.js'
+import {Toast} from 'bootstrap'
+
+// Toasts
+const toastsList = document.querySelectorAll('.toast')
+const toasts = [...toastsList].map(element => new Toast(element).show())
 
 // List forms
 const forms = document.getElementsByClassName('list-form')
@@ -30,7 +35,9 @@ const confirmElements = document.getElementsByClassName('js-confirm')
 
 for (let element of confirmElements) {
   element.addEventListener('click', (event) => {
-    if (!confirm('Potwierdź operację, którą chcesz wykonać')) {
+    const message = event.target.dataset['confirm'] || 'Potwierdź operację, którą chcesz wykonać'
+
+    if (!confirm(message)) {
       event.preventDefault()
     }
   })

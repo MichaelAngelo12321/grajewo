@@ -6,6 +6,7 @@ namespace App\Controller\Panel;
 
 use App\Entity\Category;
 use App\Form\CategoryType;
+use App\Repository\ArticleRepository;
 use App\Repository\Cached\CacheKeyPrefix;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CategoryController extends AbstractController
 {
     public function __construct(
+        private ArticleRepository $articleRepository,
         private CacheItemPoolInterface $cachePool,
         private CategoryRepository $categoryRepository,
         private EntityManagerInterface $entityManager,
@@ -44,6 +46,7 @@ class CategoryController extends AbstractController
     {
         $this->cachePool->clear(CacheKeyPrefix::CATEGORY_ALL);
         $this->cachePool->clear(CacheKeyPrefix::CATEGORY_TOP);
+        $this->cachePool->clear(CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY);
     }
 
     public function create(Request $request): Response
@@ -61,6 +64,8 @@ class CategoryController extends AbstractController
             $this->entityManager->flush();
             $this->clearCache();
 
+            $this->addFlash('success', 'Kategoria została dodana');
+
             return $this->redirectToRoute('panel_categories_list');
         }
 
@@ -77,6 +82,14 @@ class CategoryController extends AbstractController
             throw $this->createNotFoundException('Category not found');
         }
 
+        $categoryArticles = $this->articleRepository->count(['category' => $category]);
+
+        if ($categoryArticles > 0) {
+            $this->addFlash('danger', 'Nie można usunąć kategorii, która posiada artykuły');
+
+            return $this->redirectToRoute('panel_categories_list');
+        }
+
         $this->entityManager->remove($category);
 
         $categories = $this->categoryRepository->findBy(['isRoot' => false], ['positionOrder' => 'ASC']);
@@ -91,7 +104,9 @@ class CategoryController extends AbstractController
         $this->entityManager->flush();
         $this->clearCache();
 
-        return $this->redirect($this->generateUrl('panel_categories_list'));
+        $this->addFlash('success', 'Kategoria została usunięta');
+
+        return $this->redirectToRoute('panel_categories_list');
     }
 
     public function edit(int $id, Request $request): Response
@@ -102,6 +117,7 @@ class CategoryController extends AbstractController
             throw $this->createNotFoundException('Category not found');
         }
 
+        $articlesNumber = $this->articleRepository->count(['category' => $category]);
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
@@ -110,11 +126,15 @@ class CategoryController extends AbstractController
             $this->entityManager->flush();
             $this->clearCache();
 
+            $this->addFlash('success', 'Kategoria została zaktualizowana');
+
             return $this->redirectToRoute('panel_categories_list');
         }
 
         return $this->render('panel/category/edit.html.twig', [
+            'articlesNumber' => $articlesNumber,
             'category' => $category,
+            'categories' => $this->categoryRepository->findBy(['isRoot' => false], ['positionOrder' => 'ASC']),
             'form' => $form->createView(),
         ]);
     }
@@ -126,5 +146,34 @@ class CategoryController extends AbstractController
         return $this->render('panel/category/list.html.twig', [
             'categories' => $categories,
         ]);
+    }
+
+    public function moveArticles(int $fromCategoryId, int $toCategoryId): Response
+    {
+        $editFormRedirection = $this->redirectToRoute('panel_categories_edit', [
+            'id' => $fromCategoryId,
+        ]);
+        $fromCategory = $this->categoryRepository->find($fromCategoryId);
+
+        if ($fromCategory === null) {
+            $this->addFlash('danger', 'Kategoria z której przenoszone są artykuły nie istnieje');
+
+            return $editFormRedirection;
+        }
+
+        $toCategory = $this->categoryRepository->find($toCategoryId);
+
+        if ($toCategory === null) {
+            $this->addFlash('danger', 'Kategoria do której przenoszone są artykuły nie istnieje');
+
+            return $editFormRedirection;
+        }
+
+        $this->categoryRepository->moveArticlesFromCategoryTo($fromCategory, $toCategory);
+        $this->clearCache();
+
+        $this->addFlash('success', 'Artykuły zostały przeniesione');
+
+        return $editFormRedirection;
     }
 }

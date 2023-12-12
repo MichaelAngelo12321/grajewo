@@ -3,21 +3,84 @@
 {% block title %}Edycja kategorii{% endblock %}
 
 {% block body %}
-<div class="page-body">
-  <div class="container-fluid">
-    <div class="card">
-      <div class="card-header">
-        <h1 class="col card-title fw-bold">Edycja kategorii</h1>
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">Edycja kategorii</h1>
 
-        <a href="{{ path('panel_categories_list') }}" class="col-auto btn btn-outline-secondary">
-          <i class="ti ti-arrow-back me-1"></i> Powrót do listy
-        </a>
-      </div>
+          <a href="{{ path('panel_categories_list') }}" class="col-auto btn btn-outline-secondary">
+            <i class="ti ti-arrow-back me-1"></i> Powrót do listy
+          </a>
+        </div>
 
-      <div class="card-body py-3">
-        {{ form(form) }}
+        <div class="card-body py-3">
+          <div class="row">
+            <div class="col-12 col-md-8">
+              {{ form(form) }}
+            </div>
+
+            <div class="col-12 col-md-4 ms-auto">
+              <fieldset class="form-fieldset">
+                <div>Dodatkowe informacje o kategorii</div>
+
+                <ul class="list-unstyled mt-3">
+                  <li class="list-item">Liczba artykułów: <strong>{{ articlesNumber }}</strong></li>
+                  <li class="list-item">Pozycja na liście: <strong>{{ category.positionOrder }}</strong></li>
+                  <li class="list-item">Kolor wyróżnienia: <strong>{{ category.color }}</strong></li>
+                </ul>
+
+                <hr/>
+
+                <div>
+                  <div class="mb-2">Przenieś wszystkie artykuły do kategorii:</div>
+
+                  <select name="category" class="form-select mb-2">
+                    <option value="">-- wybierz</option>
+
+                    {% for selectCategory in categories %}
+                      {% if selectCategory.isRoot != true %}
+                        <option value="{{ selectCategory.id }}"
+                                {% if selectCategory.id == category.id %}disabled{% endif %}>{{ selectCategory.name }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+
+                  <a
+                    href="{{ path('panel_categories_move_articles', {fromCategoryId: category.id, toCategoryId: 0}) }}"
+                    class="btn btn-outline-warning mt-2 disabled js-confirm"
+                  >
+                    <i class="ti ti-arrow-bounce me-1"></i>
+                    Przenieś artykuły
+                  </a>
+                </div>
+
+              </fieldset>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+{% endblock %}
+
+{% block javascripts %}
+  <script type="application/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      const link = document.querySelector('.js-confirm')
+
+      document.querySelector('select[name="category"]').addEventListener('change', function () {
+        const categoryId = this.value
+
+        if (!categoryId) {
+          link.classList.add('disabled')
+        } else {
+          link.classList.remove('disabled')
+        }
+
+        link.dataset.confirm = 'Czy na pewno chcesz przenieść wszystkie artykuły do kategorii ' + document.querySelector('select[name="category"] option:checked').text + '?'
+        link.href = '{{ path('panel_categories_move_articles', {fromCategoryId: category.id, toCategoryId: 0}) }}'.replace('0', categoryId)
+      })
+    })
+  </script>
 {% endblock %}

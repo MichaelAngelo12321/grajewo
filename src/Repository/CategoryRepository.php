@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Article;
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,13 +22,14 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    public function updateArticlesCount(Category $category): void
+    public function moveArticlesFromCategoryTo(Category $fromCategory, Category $toCategory): void
     {
-        $this->createQueryBuilder('c')
-            ->update()
-            ->set('c.articlesNumber', '(SELECT COUNT(a.id) FROM App\Entity\Article a WHERE a.category = c)')
-            ->where('c.id = :id')
-            ->setParameter('id', $category->getId())
+        $this->createQueryBuilder('a')
+            ->update(Article::class, 'a')
+            ->set('a.category', ':toCategory')
+            ->where('a.category = :fromCategory')
+            ->setParameter('fromCategory', $fromCategory)
+            ->setParameter('toCategory', $toCategory)
             ->getQuery()
             ->execute();
     }
