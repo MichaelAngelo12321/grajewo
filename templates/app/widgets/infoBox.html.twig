@@ -1,59 +1,84 @@
 <div class="top-bar card mb-4 text-secondary">
   <div class="d-flex flex-column gap-2 align-items-center">
-    <div class="border-bottom pb-2">
-      <div class="d-flex flex-row gap-5">
-        <div>
-          <span class="d-block text-uppercase text-center fs-smaller">Dziś</span>
+    {% set weather = get_current_weather() %}
 
-          <div class="d-flex align-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="48" height="48"
-                 viewBox="0 0 24 24"
-                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                 stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-              <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/>
-              <path
-                d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"/>
-            </svg>
-            <strong class="ms-1 text-body">3°C</strong>
+    {% if weather != null %}
+      <div class="border-bottom pb-2">
+        <div class="d-flex flex-row gap-2 gap-lg-4">
+          <div>
+            <span class="d-block text-uppercase text-center fs-smaller">Dziś</span>
+
+            <div class="d-flex align-items-center" title="{{ weather.tomorrow.description }}">
+              <img
+                src="{{ asset('build/images/icons/weather-'~weather.today.icon~'.svg') }}"
+                width="44"
+                alt="Ikona ukazująca dzisiejszą pogodę"
+              />
+              <div class="d-flex flex-column ms-1">
+                <strong class="text-body fs-5">{{ weather.today.temperature }}°C</strong>
+                <span class="fs-smaller">{{ weather.today.pressure }} hPa</span>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div>
-          <span class="d-block text-uppercase text-center fs-smaller">Jutro</span>
+          <div>
+            <span class="d-block text-uppercase text-center fs-smaller">Jutro</span>
 
-          <div class="d-flex align-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="text-info" width="32" height="32" viewBox="0 0 24 24"
-                 stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                 stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-              <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7"/>
-              <path d="M11 13v2m0 3v2m4 -5v2m0 3v2"/>
-            </svg>
-            <strong class="ms-1 text-body">5°C</strong>
+            <div class="d-flex align-items-center" title="{{ weather.tomorrow.description }}">
+              <img
+                src="{{ asset('build/images/icons/weather-'~weather.tomorrow.icon~'.svg') }}"
+                width="32"
+                alt="Ikona ukazująca jutrzejszą pogodę"
+              />
+              <div class="d-flex flex-column ms-1">
+                <strong class="text-body">{{ weather.tomorrow.temperature }}°C</strong>
+                <span class="fs-smaller">{{ weather.tomorrow.pressure }} hPa</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    {% endif %}
 
     <div class="border-bottom pb-2 text-center">
       <p class="m-0 fw-bold fs-6">{{ date('')|format_datetime(pattern='eeee, d MMMM y')|capitalize }}</p>
-      <p class="m-0 fs-smaller"><small>Imieniny</small> <strong>Anatola</strong>, <strong>Edyty</strong></p>
+      <p class="m-0 fs-smaller"><small>Imieniny</small> <strong>{{ get_current_day_names() }}</strong></p>
     </div>
 
     <div class="d-flex align-items-center">
-      <span class="me-1 fs-smaller">Najbliższa niedziela</span>
-      <span title="niehandlowa">
-              <img src="{{ asset('build/images/icons/shopping-cart-off.svg') }}" alt="Ikona przekreślonego koszyka"/>
-            </span>
+      <div class="me-1 fs-smaller">Najbliższa niedziela</div>
+      {% if get_setting('nextSundayIsShopping') == 'true' %}
+        <div title="Handlowa">
+          <img
+            src="{{ asset('build/images/icons/shopping-cart.svg') }}"
+            width="20"
+            alt="Ikona koszyka"
+          />
+        </div>
+      {% else %}
+        <div title="Niehandlowa">
+          <img
+            src="{{ asset('build/images/icons/shopping-cart-off.svg') }}"
+            width="20"
+            alt="Ikona przekreślonego koszyka"
+          />
+        </div>
+      {% endif %}
     </div>
 
-    <div class="d-flex align-items-center">
-      <span class="me-1 fs-smaller">Jakość powietrza</span>
-      <span title="bardzo zła">
-              <img src="{{ asset('build/images/icons/lungs-off.svg') }}" alt="Ikona przekreślonych płuc"/>
-            </span>
-    </div>
+    {% set airQuality = get_current_air_quality_level() %}
 
+    {% if airQuality != null %}
+      <div class="d-flex align-items-center">
+        <span class="me-1 fs-smaller">Jakość powietrza</span>
+        <span title="{{ airQuality[0] }}">
+        <img
+          src="{{ asset('build/images/icons/air-quality-'~airQuality[1]~'.svg') }}"
+          width="20"
+          alt="Ikona jakości powietrza"
+        />
+      </span>
+      </div>
+    {% endif %}
   </div>
 </div>

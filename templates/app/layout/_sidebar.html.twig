@@ -71,8 +71,14 @@
   <h3 class="section-title success">Dyżurująca apteka</h3>
 
   <div class="card">
-    <p class="fw-medium">Apteka Zdrowaśka</p>
-    <span>ul. Zdrowia naszego 66, tel. 512 432 540</span>
+    {% set todayPharmacyDuty = get_today_pharmacy_duty() %}
+
+    {% if todayPharmacyDuty %}
+      <p class="fw-medium">{{ todayPharmacyDuty.name }}</p>
+      <span>{{ todayPharmacyDuty.address }}</span>
+    {% else %}
+      <p class="m-0">Brak dyżurującej apteki</p>
+    {% endif %}
   </div>
 </div>
 

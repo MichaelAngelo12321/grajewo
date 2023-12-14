@@ -5,11 +5,26 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Enum\ArticleStatus;
+use App\Repository\Cached\NameDayCachedRepository;
+use App\Repository\Cached\PharmacyDutyCachedRepository;
+use App\Repository\Cached\SettingCachedRepository;
+use App\Repository\External\AirPollutionRepository;
+use App\Repository\External\WeatherRepository;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
+    public function __construct(
+        private AirPollutionRepository $airPollutionRepository,
+        private NameDayCachedRepository $nameDayCachedRepository,
+        private PharmacyDutyCachedRepository $pharmacyDutyCachedRepository,
+        private SettingCachedRepository $settingCachedRepository,
+        private WeatherRepository $weatherRepository,
+    ) {
+    }
+
     public function articleStatusColor(ArticleStatus $status): string
     {
         return match ($status) {
@@ -36,6 +51,17 @@ class AppExtension extends AbstractExtension
             new TwigFilter('article_status_color', [$this, 'articleStatusColor']),
             new TwigFilter('article_status_name', [$this, 'articleStatusName']),
             new TwigFilter('preg_replace', [$this, 'pregReplace']),
+        ];
+    }
+
+    public function getFunctions(): array
+    {
+        return [
+            new TwigFunction('get_current_air_quality_level', [$this->airPollutionRepository, 'getAirQuality']),
+            new TwigFunction('get_current_day_names', [$this->nameDayCachedRepository, 'findToday']),
+            new TwigFunction('get_current_weather', [$this->weatherRepository, 'getWeather']),
+            new TwigFunction('get_setting', [$this->settingCachedRepository, 'get']),
+            new TwigFunction('get_today_pharmacy_duty', [$this->pharmacyDutyCachedRepository, 'getTodayPharmacyDuty']),
         ];
     }
 

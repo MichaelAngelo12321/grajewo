@@ -4,12 +4,16 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    air_pollution_data_url: '%env(APP_AIR_POLLUTION_DATA_URL)%'
     locale: 'pl'
     google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
     public_directory: '%kernel.project_dir%/public'
     upload_directory: 'media/upload'
     max_image_width: 1200
     max_image_height: 1200
+    weather_api_key: '%env(APP_WEATHER_API_KEY)%'
+    weather_api_lat: '%env(APP_WEATHER_API_LAT)%'
+    weather_api_lon: '%env(APP_WEATHER_API_LON)%'
 
 services:
     # default configuration for services in *this* file
@@ -34,6 +38,16 @@ services:
             $defaultLocale: '%locale%'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    App\Repository\External\AirPollutionRepository:
+        arguments:
+            $dataUrl: '%air_pollution_data_url%'
+
+    App\Repository\External\WeatherRepository:
+        arguments:
+            $apiKey: '%weather_api_key%'
+            $lat: '%weather_api_lat%'
+            $lon: '%weather_api_lon%'
 
     App\Service\FileUploader:
         arguments:

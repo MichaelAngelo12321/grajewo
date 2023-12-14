@@ -1,0 +1,172 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="row row-deck row-cards">
+        <div class="col-12">
+          <div class="row row-cards">
+            <div class="col-12 col-md-6">
+              <div class="card">
+                <form action="{{ path('panel_dashboard_save_pharmacy_duty') }}" method="post">
+                  <div class="card-header">
+                    <h3 class="card-title">Dyżury aptek</h3>
+                  </div>
+
+                  <div class="list-group list-group-flush list-group-hoverable">
+                    {% if pharmacyDuties %}
+                      {% for duty in pharmacyDuties %}
+                        <div class="list-group-item">
+                          <div class="d-flex flex-column">
+                            <div class="mb-2">
+                              <strong>{{ daysOfWeek[loop.index0] }}</strong>
+                            </div>
+
+                            <div class="row g-3">
+                              <div class="col-12 col-md-4">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="pharmacyDuty[{{ loop.index0 }}][name]"
+                                  placeholder="Nazwa"
+                                  value="{{ duty.name }}"
+                                />
+                              </div>
+
+                              <div class="col-12 col-md-8">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="pharmacyDuty[{{ loop.index0 }}][address]"
+                                  placeholder="Adres"
+                                  value="{{ duty.address }}"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    {% else %}
+                      {% for i in range(0, 6) %}
+                        <div class="list-group-item">
+                          <div class="d-flex flex-column">
+                            <div class="mb-2">
+                              <strong>{{ daysOfWeek[i] }}</strong>
+                            </div>
+
+                            <div class="row g-3">
+                              <div class="col-12 col-md-4">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="pharmacyDuty[{{ i }}][name]"
+                                  placeholder="Nazwa"
+                                />
+                              </div>
+
+                              <div class="col-12 col-md-8">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="pharmacyDuty[{{ i }}][address]"
+                                  placeholder="Adres"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+                  </div>
+
+                  <div class="card-footer">
+                    <div class="d-flex">
+                      <button type="submit" class="btn btn-primary ms-auto">Zapisz zmiany</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="row g-3">
+                <div class="col-12">
+                  <div class="card card-sm">
+                    <div class="card-header">
+                      <h3 class="card-title">Moderacja treści użytkowników</h3>
+                    </div>
+
+                    <div class="card-body">
+                      TODO
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="card card-sm">
+                    <div class="card-header">
+                      <h3 class="card-title">Akceptacja cen paliw użytkowników</h3>
+                    </div>
+
+                    <div class="card-body">
+                      TODO
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <h3 class="card-title">Niedziela handlowa</h3>
+                    </div>
+
+                    <div class="card-body">
+                      <form
+                        action="{{ path('panel_dashboard_save_next_sunday_is_shopping') }}"
+                        method="post"
+                        id="next-sunday-form"
+                      >
+                        <label class="row align-items-center">
+                          <div class="col {% if nextSundayIsShopping != true %}text-muted{% endif %}">
+                            <strong>{{ nextSunday|date|format_datetime(pattern='d MMMM') }}</strong> jest niedzielą
+                            handlową
+                          </div>
+
+                          <div class="col-auto">
+                            <label class="form-check form-check-single form-switch">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                name="nextSundayIsShopping"
+                                {% if nextSundayIsShopping %}checked{% endif %}
+                              />
+                            </label>
+                          </div>
+                        </label>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      const nextSundayForm = document.getElementById('next-sunday-form')
+      const checkbox = nextSundayForm.querySelector('input[type="checkbox"]')
+
+      checkbox.addEventListener('change', function () {
+        nextSundayForm.submit()
+      })
+    })
+  </script>
+{% endblock %}

@@ -1,6 +1,16 @@
 panel_dashboard:
   path: /panel
-  controller: App\Controller\Panel\ArticleController::list
+  controller: App\Controller\Panel\DashboardController::index
+
+panel_dashboard_save_next_sunday_is_shopping:
+  path: /panel/save-next-sunday-is-shopping
+  methods: [POST]
+  controller: App\Controller\Panel\DashboardController::saveNextSundayIsShopping
+
+panel_dashboard_save_pharmacy_duty:
+  path: /panel/save-pharmacy-duty
+  methods: [POST]
+  controller: App\Controller\Panel\DashboardController::savePharmacyDuty
 
 # Auth
 panel_login:
