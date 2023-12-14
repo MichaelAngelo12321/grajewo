@@ -11,6 +11,7 @@ class CacheKeyPrefix
     public const ARTICLE_MOST_POPULAR = 'most_popular_articles_limit_';
     public const CATEGORY_ALL = 'categories';
     public const CATEGORY_TOP = 'top_category';
+    public const CURRENCY_RATE = 'currency_rate_';
     public const NAME_DAY_TODAY = 'name_day_today';
     public const PHARMACY_DUTY_TODAY = 'pharmacy_duty_today';
     public const SETTING = 'setting_';

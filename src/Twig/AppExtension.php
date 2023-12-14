@@ -9,6 +9,7 @@ use App\Repository\Cached\NameDayCachedRepository;
 use App\Repository\Cached\PharmacyDutyCachedRepository;
 use App\Repository\Cached\SettingCachedRepository;
 use App\Repository\External\AirPollutionRepository;
+use App\Repository\External\CurrencyRateRepository;
 use App\Repository\External\WeatherRepository;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -18,6 +19,7 @@ class AppExtension extends AbstractExtension
 {
     public function __construct(
         private AirPollutionRepository $airPollutionRepository,
+        private CurrencyRateRepository $currencyRateRepository,
         private NameDayCachedRepository $nameDayCachedRepository,
         private PharmacyDutyCachedRepository $pharmacyDutyCachedRepository,
         private SettingCachedRepository $settingCachedRepository,
@@ -57,6 +59,7 @@ class AppExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('get_currency_rate', [$this->currencyRateRepository, 'getRate']),
             new TwigFunction('get_current_air_quality_level', [$this->airPollutionRepository, 'getAirQuality']),
             new TwigFunction('get_current_day_names', [$this->nameDayCachedRepository, 'findToday']),
             new TwigFunction('get_current_weather', [$this->weatherRepository, 'getWeather']),

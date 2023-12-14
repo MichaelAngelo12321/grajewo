@@ -225,23 +225,19 @@
   </table>
 </div>
 
-<div class="widget">
-  <h3 class="section-title primary">Kursy walut</h3>
+{% set currency_rate = get_currency_rate(['USD', 'EUR', 'GBP', 'LTL', 'GBP', 'CHF']) %}
 
-  <div class="d-flex justify-content-between px-3">
-    <div class="text-center">
-      <p class="mb-2">1 USD</p>
-      <span class="fw-bold fs-5 ">4.34 zł</span>
-    </div>
+{% if currency_rate != null %}
+  <div class="widget">
+    <h3 class="section-title primary">Kursy walut</h3>
 
-    <div class="text-center">
-      <p class="mb-2">1 USD</p>
-      <span class="fw-bold fs-5 ">4.21 zł</span>
-    </div>
-
-    <div class="text-center">
-      <p class="mb-2">1 USD</p>
-      <span class="fw-bold fs-5 ">5.89 zł</span>
+    <div class="row g-2 justify-content-between">
+      {% for currency, rate in currency_rate %}
+        <div class="col-4 col-md-12 col-xl-6 d-flex align-items-center mx-auto">
+          <div class="">1 {{ currency }} =</div>
+          <div class="fw-bold fs-5 ms-2">{{ rate }} zł</div>
+        </div>
+      {% endfor %}
     </div>
   </div>
-</div>
+{% endif %}
