@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Panel;
 
 use App\Entity\PharmacyDuty;
+use App\Repository\Cached\CacheKeyPrefix;
 use App\Repository\PharmacyDutyRepository;
 use App\Repository\SettingRepository;
 use DateTime;
@@ -12,10 +13,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class DashboardController extends AbstractController
 {
     public function __construct(
+        private CacheInterface $cache,
         private EntityManagerInterface $entityManager,
         private PharmacyDutyRepository $pharmacyDutyRepository,
         private SettingRepository $settingRepository,
@@ -71,6 +74,7 @@ class DashboardController extends AbstractController
             }
 
             $this->entityManager->flush();
+            $this->cache->delete(CacheKeyPrefix::PHARMACY_DUTY_TODAY);
             $this->addFlash('success', 'Dyżury aptek zostały zapisane');
 
         } else {
