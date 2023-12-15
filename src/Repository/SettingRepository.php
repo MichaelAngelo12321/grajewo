@@ -3,10 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Setting;
-use App\Repository\Cached\CacheKeyPrefix;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @extends ServiceEntityRepository<Setting>
@@ -20,7 +18,6 @@ class SettingRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
-        private CacheInterface $cache,
     ) {
         parent::__construct($registry, Setting::class);
     }
@@ -38,7 +35,5 @@ class SettingRepository extends ServiceEntityRepository
 
         $this->getEntityManager()->persist($setting);
         $this->getEntityManager()->flush();
-
-        $this->cache->delete(CacheKeyPrefix::SETTING . $name);
     }
 }

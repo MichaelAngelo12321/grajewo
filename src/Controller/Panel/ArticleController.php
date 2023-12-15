@@ -11,15 +11,12 @@ use App\Form\ArticleEditType;
 use App\Form\ArticleType;
 use App\Helper\Paginator;
 use App\Repository\ArticleRepository;
-use App\Repository\Cached\CacheKeyPrefix;
 use App\Repository\Cached\CategoryCachedRepository;
-use App\Repository\CategoryRepository;
 use App\Service\FileCleaner;
 use App\Service\FileUploader;
 use App\Service\ImageResizer;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,9 +26,7 @@ class ArticleController extends AbstractController
 {
     public function __construct(
         private ArticleRepository $articleRepository,
-        private CacheItemPoolInterface $cachePool,
         private CategoryCachedRepository $categoryCachedRepository,
-        private CategoryRepository $categoryRepository,
         private EntityManagerInterface $entityManager,
         private FileCleaner $fileCleaner,
         private FileUploader $fileUploader,
@@ -51,7 +46,6 @@ class ArticleController extends AbstractController
 
         $this->entityManager->persist($article);
         $this->entityManager->flush();
-        $this->clearCache();
 
         $this->addFlash('success', 'Status został zmieniony');
 
@@ -59,13 +53,6 @@ class ArticleController extends AbstractController
             ? $this->redirect($request->headers->get('referer'))
             : $this->redirectToRoute('panel_article_list');
     }
-
-    private function clearCache(): void
-    {
-        $this->cachePool->clear(CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY);
-        $this->cachePool->clear(CacheKeyPrefix::ARTICLE_MOST_POPULAR);
-    }
-
 
     public function create(Request $request): Response
     {
@@ -92,8 +79,6 @@ class ArticleController extends AbstractController
             $this->entityManager->persist($article);
             $this->entityManager->flush();
 
-            $this->clearCache();
-
             $this->addFlash('success', 'Artykuł został dodany');
 
             return $this->redirectToRoute('panel_article_list');
@@ -113,16 +98,12 @@ class ArticleController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $articleCategory = $article->getCategory();
-
         if ($article->getImageUrl()) {
             $this->fileCleaner->removeFile($article->getImageUrl());
         }
 
         $this->entityManager->remove($article);
         $this->entityManager->flush();
-
-        $this->clearCache();
 
         $this->addFlash('success', 'Artykuł został usunięty');
 
@@ -167,8 +148,6 @@ class ArticleController extends AbstractController
 
             $this->entityManager->persist($article);
             $this->entityManager->flush();
-
-            $this->clearCache();
 
             $this->addFlash('success', 'Artykuł został zaktualizowany');
 

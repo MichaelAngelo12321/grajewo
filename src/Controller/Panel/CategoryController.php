@@ -7,10 +7,8 @@ namespace App\Controller\Panel;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\ArticleRepository;
-use App\Repository\Cached\CacheKeyPrefix;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +17,6 @@ class CategoryController extends AbstractController
 {
     public function __construct(
         private ArticleRepository $articleRepository,
-        private CacheItemPoolInterface $cachePool,
         private CategoryRepository $categoryRepository,
         private EntityManagerInterface $entityManager,
     ) {
@@ -37,16 +34,8 @@ class CategoryController extends AbstractController
         }
 
         $this->entityManager->flush();
-        $this->clearCache();
 
         return $this->json(['success' => true]);
-    }
-
-    private function clearCache(): void
-    {
-        $this->cachePool->clear(CacheKeyPrefix::CATEGORY_ALL);
-        $this->cachePool->clear(CacheKeyPrefix::CATEGORY_TOP);
-        $this->cachePool->clear(CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY);
     }
 
     public function create(Request $request): Response
@@ -62,7 +51,6 @@ class CategoryController extends AbstractController
 
             $this->entityManager->persist($category);
             $this->entityManager->flush();
-            $this->clearCache();
 
             $this->addFlash('success', 'Kategoria została dodana');
 
@@ -102,7 +90,6 @@ class CategoryController extends AbstractController
         }
 
         $this->entityManager->flush();
-        $this->clearCache();
 
         $this->addFlash('success', 'Kategoria została usunięta');
 
@@ -124,7 +111,6 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($category);
             $this->entityManager->flush();
-            $this->clearCache();
 
             $this->addFlash('success', 'Kategoria została zaktualizowana');
 
@@ -170,7 +156,6 @@ class CategoryController extends AbstractController
         }
 
         $this->categoryRepository->moveArticlesFromCategoryTo($fromCategory, $toCategory);
-        $this->clearCache();
 
         $this->addFlash('success', 'Artykuły zostały przeniesione');
 
