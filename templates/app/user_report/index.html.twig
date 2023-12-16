@@ -53,57 +53,57 @@
 
   {% for report in reports %}
     {% if report.isHidden == false or (is_granted('ROLE_ADMIN') and report.isHidden) %}
-    <div class="card mb-4" id="report-{{ report.id }}">
-      <div class="d-flex">
-        {% if report.imageUrl %}
-          <div class="me-3 mb-3">
-            <a href="{{ report.imageUrl }}" target="_blank" title="Kliknij, aby powiększyć">
-              <img
-                src="{{ report.imageUrl|imagine_filter('user_report') }}"
-                class="img-fluid rounded-1"
-                alt="Zdjęcie z raportu czytelnika"
-              />
-            </a>
-          </div>
-        {% endif %}
+      <div class="card mb-4" id="report-{{ report.id }}">
+        <div class="d-flex">
+          {% if report.imageUrl %}
+            <div class="me-3 mb-3">
+              <a href="{{ report.imageUrl }}" target="_blank" title="Kliknij, aby powiększyć">
+                <img
+                  src="{{ report.imageUrl|imagine_filter('user_report') }}"
+                  class="img-fluid rounded-1"
+                  alt="Zdjęcie z raportu czytelnika"
+                />
+              </a>
+            </div>
+          {% endif %}
 
-        <div>
-          <div class="fs-5 fw-bold">{{ report.name }}</div>
-          <div class="user-report mb-2">Dodano
-            <strong>{{ report.createdAt|relative_datetime }}</strong> przez
-            <strong>{{ report.author|default('Czytelnik') }}</strong>
-          </div>
+          <div>
+            <div class="fs-5 fw-bold">{{ report.name }}</div>
+            <div class="user-report mb-2">Dodano
+              <strong>{{ report.createdAt|relative_datetime }}</strong> przez
+              <strong>{{ report.author|default('Czytelnik') }}</strong>
+            </div>
 
-          <div class="mb-4">
-            <div class="d-flex">
-              <div>
-                {{ report.content|preg_replace('/[\r\n]+/', '\n\n')|nl2br }}
+            <div class="mb-4">
+              <div class="d-flex">
+                <div>
+                  {{ report.content|preg_replace('/[\r\n]+/', '\n\n')|nl2br }}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {% if is_granted('ROLE_ADMIN') %}
-        <div class="d-flex justify-content-end align-items-center mt-2 pt-3 border-top">
-          <div class="me-auto text-muted fs-smaller">
-            Adres IP czytelnika: <strong>{{ report.ipAddress }}</strong>
+        {% if is_granted('ROLE_ADMIN') %}
+          <div class="d-flex justify-content-end align-items-center mt-2 pt-3 border-top">
+            <div class="me-auto text-muted fs-smaller">
+              Adres IP czytelnika: <strong>{{ report.ipAddress }}</strong>
+            </div>
+
+            {% if report.isHidden %}
+              <a href="{{ path('panel_user_report_unlock', {'reportId': report.id}) }}"
+                 class="btn btn-sm btn-success text-white">
+                Odblokuj raport
+              </a>
+            {% else %}
+              <a href="{{ path('panel_user_report_hide', {'reportId': report.id}) }}"
+                 class="btn btn-sm btn-danger">
+                Ukryj raport
+              </a>
+            {% endif %}
           </div>
-
-          {% if report.isHidden %}
-            <a href="{{ path('panel_user_report_unlock', {'reportId': report.id}) }}"
-               class="btn btn-sm btn-success text-white">
-              Odblokuj raport
-            </a>
-          {% else %}
-            <a href="{{ path('panel_user_report_hide', {'reportId': report.id}) }}"
-               class="btn btn-sm btn-danger">
-              Ukryj raport
-            </a>
-          {% endif %}
-        </div>
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
     {% endif %}
   {% endfor %}
 
