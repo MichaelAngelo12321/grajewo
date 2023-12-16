@@ -1,70 +1,81 @@
 {% include 'app/widgets/infoBox.html.twig' %}
 
 <div class="widget">
-  <h3 class="section-title primary"><a href="">Czytelnicy RAPORTują</a></h3>
+  <h3 class="section-title primary"><a href="{{ path('user_report') }}">Czytelnicy RAPORTują</a></h3>
 
   <ul class="post-list">
-    <li class="item">
-      <img class="item-image" src="https://picsum.photos/50/50?2" alt="">
-      <div class="item-description">
-        <a class="name" href="#">Stłuczka na światłach</a>
-        <p class="date-place">15 minut temu</p>
-      </div>
-    </li>
-    <li class="item">
-      <div class="item-description">
-        <a class="name" href="#">Ktoś wylał pomyje za okno, uważajcie na siebie</a>
-        <p class="date-place">23 minuty temu</p>
-      </div>
-    </li>
-    <li class="item">
-      <div class="item-description">
-        <a class="name" href="#">Odnaleziono psa</a>
-        <p class="date-place">2 godziny temu</p>
-      </div>
-    </li>
-    <li class="item">
-      <div class="item-description">
-        <a class="name" href="#">Zgubiono telefon Samsung w parku</a>
-        <p class="date-place">5 godzin temu</p>
-      </div>
-    </li>
+    {% for report in get_latest_user_reports() %}
+      <li class="item">
+        {% if report.imageUrl %}
+          <img class="item-image" src="https://picsum.photos/50/50?2" alt="">
+        {% endif %}
+
+        <div class="item-description">
+          <a class="name" href="{{ path('user_report', {'_fragment': 'report-'~report.id }) }}">
+            {% if report.name != '' %}
+              {{ report.name }}
+            {% else %}
+              {{ report.content|slice(0, 50) }}...
+            {% endif %}
+          </a>
+          <p class="date-place">{{ report.createdAt|relative_datetime }}</p>
+        </div>
+      </li>
+    {% endfor %}
   </ul>
 </div>
+
 
 <div class="widget">
   <h3 class="section-title info"><a href="">Nadchodzące wydarzenia</a></h3>
 
-  <ul class="post-list">
-    <li class="item">
-      <img class="item-image" src="https://picsum.photos/50/50" alt="">
-      <div class="item-description">
-        <a class="name" href="#">Konkurs na bimbrownika roku</a>
-        <p class="date-place">19.08 // Bimbrownia u Staśka</p>
-      </div>
-    </li>
-    <li class="item">
-      <img class="item-image" src="https://picsum.photos/50/50?" alt="">
-      <div class="item-description">
-        <a class="name" href="#">Sianokosy</a>
-        <p class="date-place">23.08 - 30.08 // Polany grajewskie</p>
-      </div>
-    </li>
-    <li class="item">
-      <img class="item-image" src="https://picsum.photos/50/50?1" alt="">
-      <div class="item-description">
-        <a class="name" href="#">Batorzenie Jarka</a>
-        <p class="date-place">01.09 // Plac Niepodległości</p>
-      </div>
-    </li>
-    <li class="item">
-      <img class="item-image" src="https://picsum.photos/50/50?3" alt="">
-      <div class="item-description">
-        <a class="name" href="#">Świniobicie</a>
-        <p class="date-place">01.09 // Chlewek Marjana</p>
-      </div>
-    </li>
-  </ul>
+  {% set time = "now"|date("U") %}
+
+  <table class="w-100">
+    <thead>
+    <tr>
+      <th colspan="7" class="w-100 text-secondary pb-2">
+        {{ time|date|format_datetime(pattern="LLLL yyyy") }}
+      </th>
+    </tr>
+    <tr>
+      <th>Pn.</th>
+      <th>Wt.</th>
+      <th>Śr.</th>
+      <th>Cz.</th>
+      <th>Pt.</th>
+      <th>Sb.</th>
+      <th>Nd.</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      {% set daysInMonth = time|date('t') %}
+      {% set startDow = time|date('F 1\\s\\t Y')|date('N') - 1 %}
+      {% set dow = startDow %}
+      {% for day in range(1,daysInMonth) %}
+      {% if loop.first and startDow != 0 %}
+        <td colspan="{{ startDow }}"></td>
+      {% endif %}
+      <td>
+        <div>
+          {{ day }}
+        </div>
+      </td>
+      {% if loop.last and dow != 6 %}
+        <td colspan="{{ 6 - dow }}">&nbsp;</td>
+      {% endif %}
+      {% if dow == 6 %}
+      {% set dow = 0 %}
+    </tr>
+    <tr>
+      {% else %}
+        {% set dow = dow + 1 %}
+      {% endif %}
+      {% endfor %}
+    </tr>
+    </tbody>
+  </table>
 </div>
 
 <div class="widget">

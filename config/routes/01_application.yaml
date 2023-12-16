@@ -2,6 +2,15 @@ homepage:
   path: /
   controller: App\Controller\HomeController::index
 
+# User report
+user_report:
+  path: /raport
+  controller: App\Controller\UserReportController::index
+
+user_report_add:
+  path: /raport/dodaj
+  controller: App\Controller\UserReportController::add
+
 # Article category
 article_category_old_redirect:
   path: /dzial-{__category}

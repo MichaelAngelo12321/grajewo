@@ -8,9 +8,12 @@ use App\Enum\ArticleStatus;
 use App\Repository\Cached\NameDayCachedRepository;
 use App\Repository\Cached\PharmacyDutyCachedRepository;
 use App\Repository\Cached\SettingCachedRepository;
+use App\Repository\Cached\UserReportCachedRepository;
 use App\Repository\External\AirPollutionRepository;
 use App\Repository\External\CurrencyRateRepository;
 use App\Repository\External\WeatherRepository;
+use DateTime;
+use DateTimeImmutable;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -23,6 +26,7 @@ class AppExtension extends AbstractExtension
         private NameDayCachedRepository $nameDayCachedRepository,
         private PharmacyDutyCachedRepository $pharmacyDutyCachedRepository,
         private SettingCachedRepository $settingCachedRepository,
+        private UserReportCachedRepository $userReportCachedRepository,
         private WeatherRepository $weatherRepository,
     ) {
     }
@@ -53,6 +57,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('article_status_color', [$this, 'articleStatusColor']),
             new TwigFilter('article_status_name', [$this, 'articleStatusName']),
             new TwigFilter('preg_replace', [$this, 'pregReplace']),
+            new TwigFilter('relative_datetime', [$this, 'getRelativeDateTime']),
         ];
     }
 
@@ -63,9 +68,24 @@ class AppExtension extends AbstractExtension
             new TwigFunction('get_current_air_quality_level', [$this->airPollutionRepository, 'getAirQuality']),
             new TwigFunction('get_current_day_names', [$this->nameDayCachedRepository, 'findToday']),
             new TwigFunction('get_current_weather', [$this->weatherRepository, 'getWeather']),
+            new TwigFunction('get_latest_user_reports', [$this->userReportCachedRepository, 'findLatest']),
             new TwigFunction('get_setting', [$this->settingCachedRepository, 'get']),
             new TwigFunction('get_today_pharmacy_duty', [$this->pharmacyDutyCachedRepository, 'getTodayPharmacyDuty']),
         ];
+    }
+
+    public function getRelativeDateTime(DateTimeImmutable $dateTime): string
+    {
+        $now = new DateTime();
+        $diff = $now->diff($dateTime);
+
+        if ($diff->d === 0) {
+            return 'dzisiaj, ' . $dateTime->format('H:i');
+        } elseif ($diff->d === 1) {
+            return 'wczoraj, ' . $dateTime->format('H:i');
+        } else {
+            return $dateTime->format('Y-m-d');
+        }
     }
 
     public function pregReplace($string, $regex = '', $replace = ''): string

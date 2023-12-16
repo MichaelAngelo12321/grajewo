@@ -75,6 +75,16 @@ panel_categories_move_articles:
   path: /panel/categories/move-articles/{fromCategoryId}/{toCategoryId}
   controller: App\Controller\Panel\CategoryController::moveArticles
 
+# User report
+panel_user_report_hide:
+  path: /panel/user-report/{reportId}/hide
+  controller: App\Controller\Panel\UserReportController::hideReport
+
+panel_user_report_unlock:
+  path: /panel/user-report/{reportId}/unlock
+  controller: App\Controller\Panel\UserReportController::unlockReport
+
+
 # Temp
 panel_temporary_development_status:
     path: /panel/development-status

@@ -15,5 +15,6 @@ class CacheKeyPrefix
     public const NAME_DAY_TODAY = 'name_day_today';
     public const PHARMACY_DUTY_TODAY = 'pharmacy_duty_today';
     public const SETTING = 'setting_';
+    public const USER_REPORT_LAST = 'user_report_last_';
     public const WEATHER = 'weather';
 }

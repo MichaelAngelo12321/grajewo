@@ -1,0 +1,35 @@
+{% extends 'app/layout/base.html.twig' %}
+
+{% block title %}Dodawanie Raportu Czytelnika - {{ app_name }}{% endblock %}
+
+{% block topContent %}
+  <nav class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
+      <li class="breadcrumb-item"><a href="{{ path('user_report') }}">Raport Czytelników</a></li>
+      <li class="breadcrumb-item active">Dodaj raport</li>
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block body %}
+  <h1 class="fs-5 fw-bold mb-4">Dodaj nowy raport</h1>
+
+  {{ form_start(form) }}
+  {% if form.vars.errors|length > 0 %}
+    {% for error in form.vars.errors %}
+      <div class="alert alert-danger">
+        {{ error.message|trans({}, 'validators') }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {{ form_end(form) }}
+
+  <div class="fs-smaller text-muted mt-2">
+    Formularz chroniony przez reCAPTCHA i Google (<a class="text-muted" href="https://policies.google.com/privacy">Polityka
+      prywatności</a>)
+  </div>
+
+  <hr class="d-block d-md-none my-5" />
+{% endblock %}

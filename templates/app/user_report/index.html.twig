@@ -1,0 +1,83 @@
+{% extends 'app/layout/base.html.twig' %}
+
+{% block title %}Raport Czytelników - {{ app_name }}{% endblock %}
+{% block description %}Przejrzyj najnowsze zgłoszenia awarii, wypadków i zdarzeń miejskich zgłaszane przez mieszkańców. Bądź na bieżąco z sytuacją na drogach, komunikacją i infrastrukturą. Pomagamy rozwiązywać problemy lokalne.{% endblock %}
+
+{% block topContent %}
+  <nav class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
+      <li class="breadcrumb-item active">Raport Czytelników</li>
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block body %}
+  <div class="card mb-5">
+    <div class="row">
+      <div class="col-12 col-lg-8">
+        <p class="fs-6 fw-bold">
+          <svg xmlns="http://www.w3.org/2000/svg" class="me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 9v4" /><path d="M12 16v.01" /></svg>
+          To jest wersja beta Raportu Czytelników
+        </p>
+        <p class="m-0 text-secondary">Obecnie prezentujemy 30 ostatnich raportów czytelników. Wkrótce dodane zostanie wyszukiwanie,
+          wyświetlanie oraz komentowanie wszystkich raportów.</p>
+      </div>
+      <div class="col-12 col-lg-auto ms-auto d-flex align-items-center justify-content-end">
+        <a href="{{ path('user_report_add') }}" class="btn btn-primary fw-medium w-100 mt-3 m-lg-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+               stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M12 5l0 14"/>
+            <path d="M5 12l14 0"/>
+          </svg>
+          Dodaj raport
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {% for success in app.flashes('success') %}
+    <div class="alert alert-success">
+      {{ success }}
+    </div>
+  {% endfor %}
+
+  {% for report in reports %}
+    {% if report.isHidden == false or (is_granted('ROLE_ADMIN') and report.isHidden) %}
+      <div class="card mb-4" id="report-{{ report.id }}">
+        <div class="fs-5 fw-bold">{{ report.name }}</div>
+        <div class="user-report mb-2">Dodano
+          <strong>{{ report.createdAt|relative_datetime }}</strong> przez
+          <strong>{{ report.author|default('Czytelnik') }}</strong>
+        </div>
+        <div class="mb-4">
+          {{ report.content|preg_replace('/[\r\n]+/', '\n\n')|nl2br }}
+        </div>
+
+        {% if is_granted('ROLE_ADMIN') %}
+          <div class="d-flex justify-content-end align-items-center mt-2 pt-3 border-top">
+            <div class="me-auto text-muted fs-smaller">
+              Adres IP czytelnika: <strong>{{ report.ipAddress }}</strong>
+            </div>
+
+            {% if report.isHidden %}
+              <a href="{{ path('panel_user_report_unlock', {'reportId': report.id}) }}"
+                 class="btn btn-sm btn-success text-white">
+                Odblokuj raport
+              </a>
+            {% else %}
+              <a href="{{ path('panel_user_report_hide', {'reportId': report.id}) }}"
+                 class="btn btn-sm btn-danger">
+                Ukryj raport
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  <hr class="d-block d-md-none my-5" />
+{% endblock %}

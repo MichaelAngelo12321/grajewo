@@ -167,17 +167,19 @@
             <p class="m-0">{{ comment.content|preg_replace('/[\r\n]+/', '\n\n')|nl2br }}</p>
 
             {% if is_granted('ROLE_ADMIN') %}
-              <div class="d-flex justify-content-end align-items-center mt-2 pt-2 border-top">
+              <div class="d-flex justify-content-end align-items-center mt-2 pt-3 border-top">
                 <div class="me-auto text-muted fs-smaller">
                   Adres IP czytelnika: <strong>{{ comment.ipAddress }}</strong>
                 </div>
 
                 {% if comment.isHidden %}
-                  <a href="{{ path('panel_article_comment_unlock', {'commentId': comment.id}) }}" class="btn btn-sm btn-outline-success">
+                  <a href="{{ path('panel_article_comment_unlock', {'commentId': comment.id}) }}"
+                     class="btn btn-sm btn-success text-white">
                     Odblokuj komentarz
                   </a>
                 {% else %}
-                  <a href="{{ path('panel_article_comment_hide', {'commentId': comment.id}) }}" class="btn btn-sm btn-outline-primary">
+                  <a href="{{ path('panel_article_comment_hide', {'commentId': comment.id}) }}"
+                     class="btn btn-sm btn-danger">
                     Ukryj komentarz
                   </a>
                 {% endif %}
@@ -218,12 +220,12 @@
           {{ form_row(commentForm.submit, { attr: { class: 'btn btn-primary' } }) }}
         </div>
       </div>
+      {{ form_end(commentForm) }}
 
       <div class="fs-smaller text-muted mt-2">
         Formularz chroniony przez reCAPTCHA i Google (<a class="text-muted" href="https://policies.google.com/privacy">Polityka
           prywatności</a>)
       </div>
-      {{ form_end(commentForm) }}
     </div>
   {% endif %}
 

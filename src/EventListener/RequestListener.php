@@ -28,6 +28,7 @@ class RequestListener
             '/build',
             '/media',
             '/panel',
+            '/raport'
         ];
         $request = $event->getRequest();
         $pathInfo = $request->getPathInfo();
@@ -50,7 +51,6 @@ class RequestListener
                 }
             }
 
-            // TODO: liip imagine filter
             if (!$categoryFound) {
                 throw new NotFoundHttpException();
             }
