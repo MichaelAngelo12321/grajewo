@@ -56,7 +56,7 @@
       <div class="card mb-4" id="report-{{ report.id }}">
         <div class="d-flex">
           {% if report.imageUrl %}
-            <div class="me-3 mb-3">
+            <div class="me-3">
               <a href="{{ report.imageUrl }}" target="_blank" title="Kliknij, aby powiększyć">
                 <img
                   src="{{ report.imageUrl|imagine_filter('user_report') }}"
@@ -74,7 +74,7 @@
               <strong>{{ report.author|default('Czytelnik') }}</strong>
             </div>
 
-            <div class="mb-4">
+            <div>
               <div class="d-flex">
                 <div>
                   {{ report.content|preg_replace('/[\r\n]+/', '\n\n')|nl2br }}
@@ -85,7 +85,7 @@
         </div>
 
         {% if is_granted('ROLE_ADMIN') %}
-          <div class="d-flex justify-content-end align-items-center mt-2 pt-3 border-top">
+          <div class="d-flex justify-content-end align-items-center mt-4 pt-3 border-top">
             <div class="me-auto text-muted fs-smaller">
               Adres IP czytelnika: <strong>{{ report.ipAddress }}</strong>
             </div>
