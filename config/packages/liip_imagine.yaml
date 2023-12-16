@@ -45,3 +45,17 @@ liip_imagine:
         thumbnail:
           mode: outbound
           size: [ 60, 60 ]
+
+    round_small_sidebar:
+      quality: 60
+      filters:
+        thumbnail:
+          mode: outbound
+          size: [ 50, 50 ]
+
+    user_report:
+      quality: 70
+      filters:
+        thumbnail:
+          mode: outbound
+          size: [ 150, 100 ]

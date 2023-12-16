@@ -6,9 +6,11 @@ use App\Entity\UserReport;
 use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
 use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class UserReportType extends AbstractType
 {
@@ -27,6 +29,22 @@ class UserReportType extends AbstractType
                     'rows' => 5,
                 ],
                 'label' => 'Napisz coś więcej',
+            ])
+            ->add('image', FileType::class, [
+                'constraints' => [
+                    new File([
+                        'maxSize' => '12m',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'Wybierz dozwolony typ grafiki (jpg, png, gif)',
+                    ])
+                ],
+                'label' => 'Zdjęcie (opcjonalnie)',
+                'mapped' => false,
+                'required' => false,
             ])
             ->add('author', null, [
                 'label' => 'Twój podpis (opcjonalnie)',

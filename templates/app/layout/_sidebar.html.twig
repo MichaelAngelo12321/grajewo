@@ -7,7 +7,7 @@
     {% for report in get_latest_user_reports() %}
       <li class="item">
         {% if report.imageUrl %}
-          <img class="item-image" src="https://picsum.photos/50/50?2" alt="">
+          <img class="item-image" src="{{ report.imageUrl|imagine_filter('round_small_sidebar') }}" alt="">
         {% endif %}
 
         <div class="item-description">
