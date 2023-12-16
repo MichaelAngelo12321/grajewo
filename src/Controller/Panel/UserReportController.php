@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Panel;
 
+use App\Repository\Cached\CacheKeyPrefix;
 use App\Repository\UserReportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class UserReportController extends AbstractController
 {
     public function __construct(
+        private CacheInterface $cache,
         private EntityManagerInterface $entityManager,
         private UserReportRepository $userReportRepository,
     ) {
@@ -30,6 +33,7 @@ class UserReportController extends AbstractController
         $this->entityManager->persist($report);
         $this->entityManager->flush();
 
+        $this->cache->delete(CacheKeyPrefix::USER_REPORT_LAST);
         $this->addFlash('success', 'Raport został ukryty');
 
         return $this->redirect($request->headers->get('referer'));
@@ -48,6 +52,7 @@ class UserReportController extends AbstractController
         $this->entityManager->persist($report);
         $this->entityManager->flush();
 
+        $this->cache->delete(CacheKeyPrefix::USER_REPORT_LAST);
         $this->addFlash('success', 'Raport został odblokowany');
 
         return $this->redirect($request->headers->get('referer'));

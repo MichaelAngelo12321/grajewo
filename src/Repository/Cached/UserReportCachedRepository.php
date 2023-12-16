@@ -24,7 +24,7 @@ class UserReportCachedRepository
             function (ItemInterface $item) use ($count) {
                 $item->expiresAfter(DateInterval::createFromDateString('24 hour'));
 
-                return $this->userReportRepository->findBy([], ['createdAt' => 'DESC'], $count);
+                return $this->userReportRepository->findBy(['isHidden' => false], ['createdAt' => 'DESC'], $count);
             },
         );
     }

@@ -27,7 +27,7 @@ class UserReport
     private ?string $author = null;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $is_hidden = null;
+    private ?bool $isHidden = false;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageUrl = null;
@@ -90,12 +90,12 @@ class UserReport
 
     public function isIsHidden(): ?bool
     {
-        return $this->is_hidden;
+        return $this->isHidden;
     }
 
-    public function setIsHidden(?bool $is_hidden): static
+    public function setIsHidden(?bool $isHidden): static
     {
-        $this->is_hidden = $is_hidden;
+        $this->isHidden = $isHidden;
 
         return $this;
     }
