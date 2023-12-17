@@ -5,8 +5,9 @@ namespace App\Entity;
 use App\Repository\UserReportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 #[ORM\Entity(repositoryClass: UserReportRepository::class)]
+#[ORM\Index(columns: ['created_at'])]
+#[ORM\Index(columns: ['is_hidden'])]
 class UserReport
 {
     #[ORM\Id]
