@@ -1,5 +1,7 @@
 import {Collapse} from 'bootstrap'
+import Chocolat from 'chocolat'
 
+import 'chocolat/dist/css/chocolat.css'
 import './styles/app/index.scss'
 import './theme-switcher.js'
 
@@ -9,28 +11,28 @@ const collapseElementList = [].slice.call(document.querySelectorAll('[data-bs-to
 collapseElementList.map(collapseTriggerEl => new Collapse(collapseTriggerEl))
 
 // Header with auto hide
-const header = document.getElementsByTagName('header')[0];
+const header = document.getElementsByTagName('header')[0]
 
 if (header) {
-  const headerHeight = header.offsetHeight;
-  document.body.style.paddingTop = `${headerHeight}px`;
+  const headerHeight = header.offsetHeight
+  document.body.style.paddingTop = `${headerHeight}px`
 
-  let lastScrollTop = 0;
+  let lastScrollTop = 0
   window.addEventListener('scroll', function () {
-    const scroll_top = window.scrollY;
-    const scrolled_up = 'scrolled-up';
-    const scrolled_down = 'scrolled-down';
+    const scroll_top = window.scrollY
+    const scrolled_up = 'scrolled-up'
+    const scrolled_down = 'scrolled-down'
 
     if (scroll_top < lastScrollTop) {
-      header.classList.remove(scrolled_down);
-      header.classList.add(scrolled_up);
+      header.classList.remove(scrolled_down)
+      header.classList.add(scrolled_up)
     } else {
-      header.classList.remove(scrolled_up);
-      header.classList.add(scrolled_down);
+      header.classList.remove(scrolled_up)
+      header.classList.add(scrolled_down)
     }
 
-    lastScrollTop = scroll_top;
-  });
+    lastScrollTop = scroll_top
+  })
 }
 
 // Share button
@@ -48,3 +50,10 @@ if (shareButtonClipboard) {
     navigator.clipboard.writeText(window.location.href)
   })
 }
+
+// Lightbox
+Chocolat(document.querySelectorAll('.image-lightbox'), {
+  className: 'gallery-is-open',
+  linkImages: false,
+  pagination: () => '',
+})

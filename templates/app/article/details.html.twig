@@ -19,12 +19,19 @@
     <div class="col-12">
       <div class="big-news">
         {% if article.imageUrl %}
+          <a
+            class="image-lightbox"
+            href="{{ article.imageUrl }}"
+            target="_blank"
+            title="{{ article.imageCaption|default('Zdjęcie artykułu') }}"
+          >
           <img
             class="rounded-1 img-fluid {% if article.imageCaption == null %}mb-3{% endif %} w-100"
             src="{{ article.imageUrl|imagine_filter('article_main_image') }}"
-            alt="Opis użytkownika"
+            alt="Zdjęcie artykułu"
             fetchpriority="high"
           />
+          </a>
 
           {% if article.imageCaption %}
             <div class="mt-1 mb-3 text-muted text-end fst-italic">
