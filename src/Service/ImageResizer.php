@@ -22,10 +22,17 @@ class ImageResizer
         $maxHeight = $height ?? $this->maxHeight;
 
         $image = $this->imagine->open($this->publicDirectory . $path);
+        $imageWidth = $image->getSize()->getWidth();
+        $imageHeight = $image->getSize()->getHeight();
 
         // resize only if image is bigger than max width or height
-        if ($image->getSize()->getWidth() > $maxWidth && $image->getSize()->getHeight() > $maxHeight) {
-            $image->resize($image->getSize()->widen($width ?? $this->maxWidth));
+        if ($imageWidth > $maxWidth || $imageHeight > $maxHeight) {
+            if ($imageWidth > $imageHeight) {
+                $image->resize($image->getSize()->widen($width ?? $this->maxWidth));
+            } else {
+                $image->resize($image->getSize()->heighten($height ?? $this->maxHeight));
+            }
+
             $image->save($this->publicDirectory . $path);
         }
     }

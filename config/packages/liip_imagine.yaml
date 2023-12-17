@@ -59,8 +59,8 @@ liip_imagine:
         thumbnail:
           allow_upscale: true
           mode: outbound
-          size: [ 900, 400 ]
+          size: [ 800, 400 ]
         background:
           color: '#f1f1f1'
           position: center
-          size: [ 900, 400 ]
+          size: [ 800, 400 ]
