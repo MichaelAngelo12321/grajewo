@@ -88,6 +88,16 @@ class ArticleEditType extends AbstractType
                 'label' => 'Lokalizacja',
                 'required' => false,
             ])
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+                /** @var Article $article */
+                $article = $event->getData();
+                $form = $event->getForm();
+
+                if ($article->getEventDateTime() !== null) {
+                    $form->get('eventDate')->setData($article->getEventDateTime()->format('Y-m-d'));
+                    $form->get('eventTime')->setData($article->getEventDateTime()->format('H:i'));
+                }
+            })
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 /** @var Article $article */
                 $article = $event->getData();

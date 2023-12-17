@@ -1,7 +1,27 @@
+import {Toast} from 'bootstrap'
 import Sortable from 'sortablejs'
+import tinymce from 'tinymce'
+import 'tinymce/icons/default'
+import 'tinymce/models/dom/model.min'
+import 'tinymce/plugins/link'
+import 'tinymce/plugins/lists'
+import 'tinymce/plugins/table'
+import 'tinymce/skins/ui/oxide/skin'
+import 'tinymce/themes/silver'
 import './styles/panel/index.scss'
 import './theme-switcher.js'
-import {Toast} from 'bootstrap'
+
+// Content editor
+const editor = tinymce.init({
+  content_css: false,
+  height: 500,
+  menubar: false,
+  plugins: ['link', 'lists', 'table'],
+  promotion: false,
+  selector: '.content-editor',
+  table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+  toolbar: 'styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists | forecolor backcolor | link table',
+})
 
 // Toasts
 const toastsList = document.querySelectorAll('.toast')

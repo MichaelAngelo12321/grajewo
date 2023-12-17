@@ -25,6 +25,7 @@
     "file-loader": "^6.2.0",
     "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
-    "sortablejs": "^1.15.1"
+    "sortablejs": "^1.15.1",
+    "tinymce": "^6"
   }
 }

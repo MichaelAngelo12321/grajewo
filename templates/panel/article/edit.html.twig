@@ -26,8 +26,10 @@
 
                   {{ form_row(form.isEvent, {attr: {class: 'form-check form-switch', id: 'is-event-switcher'}}) }}
 
-                  <div class="mb-4 {{ app.request.get('is-event')|default(form.isEvent) == 'on' ? '' : 'd-none' }} row"
-                       id="event-details-wrapper">
+                  <div
+                    class="mb-4 {{ app.request.get('is-event') == 'on' or field_value(form.isEvent) == '1' ? '' : 'd-none' }} row"
+                    id="event-details-wrapper"
+                  >
                     <div class="col-6 col-md-4">
                       <label class="w-100">
                         <span class="form-label">{{ field_label(form.eventDate) }}</span>
@@ -75,7 +77,7 @@
 
                   {{ form_row(form.excerpt, {attr: {class: 'form-control'}}) }}
 
-                  {{ form_row(form.content, {attr: {class: 'form-control', rows: 10}}) }}
+                  {{ form_row(form.content, {attr: {class: 'form-control content-editor'}, row_attr: { class: 'mb-0' }}) }}
                 </div>
               </fieldset>
             </div>

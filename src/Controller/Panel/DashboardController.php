@@ -36,7 +36,7 @@ class DashboardController extends AbstractController
         $nextSunday = new DateTime('next sunday');
         $nextSundayIsShopping = $this->settingRepository
                 ->findOneBy(['name' => 'nextSundayIsShopping'])
-                ->getValue() === 'true';
+                ?->getValue() === 'true' ?? false;
 
         return $this->render('panel/dashboard/index.html.twig', [
             'daysOfWeek' => $daysOfWeek,
