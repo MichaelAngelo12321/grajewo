@@ -26,7 +26,7 @@
 </div>
 
 <div class="widget">
-  <h3 class="section-title info"><a href="">Kalendarz wydarzeń</a></h3>
+  <h3 class="section-title info"><a href="{{ path('article_events_list') }}">Kalendarz wydarzeń</a></h3>
 
   {% set time = "now"|date("U") %}
   {% set monthCalendar = get_month_calendar(time|date('Y'), time|date('m')) %}
@@ -86,7 +86,7 @@
       <td class="py-1">
         <div class="{% if dow == 5 %}text-muted{% endif %} {% if dow == 6 %}text-danger{% endif %}">
           {% if day.hasEvents %}
-          <a href="{{ path('article_events_list', {date: day.date}) }}">
+          <a href="{{ path('article_events_list_date', {date: day.date}) }}">
             {% endif %}
 
             <span

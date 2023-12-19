@@ -8,6 +8,7 @@ use App\Entity\Category;
 use App\Enum\ArticleStatus;
 use App\Repository\ArticleRepository;
 use DateInterval;
+use DateTime;
 use DateTimeImmutable;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -25,7 +26,7 @@ class ArticleCachedRepository
         $cacheKey = CacheKeyPrefix::ARTICLE_EVENTS_FROM_THIS_MONTH;
 
         return $this->cache->get($cacheKey, function (ItemInterface $item) {
-            $item->expiresAfter(DateInterval::createFromDateString('last day of this month'));
+            $item->expiresAt(new DateTime('last day of this month'));
 
             $groupedEvents = [];
             $events = $this->articleRepository->createQueryBuilder('a')
@@ -90,6 +91,28 @@ class ArticleCachedRepository
                 ->andWhere('a.status = :status')
                 ->setParameter('status', ArticleStatus::PUBLISHED)
                 ->setMaxResults($limit)
+                ->getQuery()
+                ->getResult();
+        });
+    }
+
+    public function findUpcomingEvents(): array
+    {
+        $cacheKey = CacheKeyPrefix::ARTICLE_EVENTS_UPCOMING;
+
+        return $this->cache->get($cacheKey, function (ItemInterface $item) {
+            $item->expiresAt(new DateTime('today 23:59:59'));
+
+            return $this->articleRepository->createQueryBuilder('a')
+                ->addSelect('c')
+                ->join('a.category', 'c')
+                ->where('a.status = :status')
+                ->setParameter('status', ArticleStatus::PUBLISHED)
+                ->andWhere('a.isEvent = :isEvent')
+                ->setParameter('isEvent', true)
+                ->andWhere('DATE(a.eventDateTime) >= DATE(:eventDateTime)')
+                ->setParameter('eventDateTime', new DateTimeImmutable())
+                ->orderBy('a.eventDateTime', 'ASC')
                 ->getQuery()
                 ->getResult();
         });

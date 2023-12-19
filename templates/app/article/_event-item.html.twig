@@ -1,0 +1,50 @@
+<div class="col-12 col-lg-6 g-3">
+  <div class="card">
+    <a href="{{ path('article_details', {
+      '__category': event.category.slug,
+      'id': event.id,
+      'slug': event.name|lower|slug
+    }) }}"
+    >
+      <img
+        class="rounded-1 img-fluid mb-2"
+        src="{{ event.imageUrl|default('/build/images/empty-photo.png')|imagine_filter('home_page_article_image') }}"
+        alt="Zdjęcie najnowszego artykułu kategorii"
+      />
+    </a>
+
+    <h2 class="fs-4">
+      <a href="{{ path('article_details', {
+        '__category': event.category.slug,
+        'id': event.id,
+        'slug': event.name|lower|slug
+      }) }}"
+      >
+        {{ event.name }}
+      </a>
+    </h2>
+
+    <div class="mb-3">{{ event.excerpt }}</div>
+
+
+    {% set date = event.eventDateTime|date|format_date('long') %}
+    {% set time = event.eventDateTime|date|format_datetime(pattern='k:mm') %}
+
+    <div>
+      <span class="text-muted fs-smaller text-uppercase">Data:</span>
+      <strong class="text-primary">{{ date }}</strong>
+
+      {% if time != '24:00' %}
+        godz. <strong class="text-primary">{{ time }}</strong>
+      {% endif %}
+    </div>
+
+    {% if event.eventPlace %}
+      <div>
+        <span class="text-muted fs-smaller text-uppercase">Miejsce:</span>
+        <a href="http://maps.google.com/?q={{ event.eventPlace }}" class="fw-bold link-primary">{{ event.eventPlace }}</a>
+      </div>
+    {% endif %}
+
+  </div>
+</div>

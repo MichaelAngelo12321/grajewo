@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ORM\Index(columns: ['updated_at'])]
 #[ORM\Index(columns: ['is_event'])]
+#[ORM\Index(columns: ['event_date_time'])]
 #[ORM\Index(columns: ['status'])]
 #[ORM\Index(columns: ['name', 'content'], flags: ['fulltext'])]
 class Article

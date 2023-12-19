@@ -19,10 +19,6 @@ article_category_old_redirect:
     route: article_category
     permanent: true
 
-article_category:
-  path: /{__category}
-  controller: App\Controller\ArticleController::list
-
 # Article details
 article_details_old_redirect:
   path: /info/{slug}.{id}.html
@@ -37,6 +33,15 @@ article_details:
   path: /{__category}/{id}/{slug}
   controller: App\Controller\ArticleController::details
 
-article_events_list:
+article_events_list_date:
   path: /kalendarz-wydarzen/{date}
+  controller: App\Controller\ArticleController::eventsListDate
+
+article_events_list:
+  path: /kalendarz-wydarzen
   controller: App\Controller\ArticleController::eventsList
+
+# At the end of the file
+article_category:
+  path: /{__category}
+  controller: App\Controller\ArticleController::list

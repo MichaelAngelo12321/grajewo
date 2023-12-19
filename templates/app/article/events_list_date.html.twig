@@ -7,14 +7,15 @@
   <nav class="mb-2 border-left border-danger-subtle border-2">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
-      <li class="breadcrumb-item active">Kalendarz wydarzeń</li>
+      <li class="breadcrumb-item"><a href="{{ path('article_events_list') }}">Kalendarz wydarzeń</a></li>
+      <li class="breadcrumb-item active">{{ date|date('Y-m-d')|format_date('long') }}</li>
     </ol>
   </nav>
 {% endblock %}
 
 {% block body %}
   <div class="widget mt-1">
-    <h1 class="section-title primary">Lista nadchodzących wydarzeń</h1>
+    <h1 class="section-title primary">Lista wydarzeń {{ date|date('Y-m-d')|format_date('long') }}</h1>
 
     <div class="row">
       {% for event in events %}

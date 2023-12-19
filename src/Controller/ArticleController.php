@@ -10,6 +10,7 @@ use App\Enum\ArticleStatus;
 use App\Form\CommentType;
 use App\Helper\Paginator;
 use App\Repository\ArticleRepository;
+use App\Repository\Cached\ArticleCachedRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,6 +21,7 @@ class ArticleController extends AbstractController
 {
     public function __construct(
         private ArticleRepository $articleRepository,
+        private ArticleCachedRepository $articleCachedRepository,
         private EntityManagerInterface $entityManager,
     ) {
     }
@@ -68,11 +70,20 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    public function eventsList(string $date): Response
+    public function eventsList(): Response
+    {
+        $events = $this->articleCachedRepository->findUpcomingEvents();
+
+        return $this->render('app/article/events_list.html.twig', [
+            'events' => $events,
+        ]);
+    }
+
+    public function eventsListDate(string $date): Response
     {
         $events = $this->articleRepository->findEventsForDate($date);
 
-        return $this->render('app/article/events_list.html.twig', [
+        return $this->render('app/article/events_list_date.html.twig', [
             'date' => $date,
             'events' => $events,
         ]);
