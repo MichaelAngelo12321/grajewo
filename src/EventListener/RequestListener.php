@@ -28,7 +28,8 @@ class RequestListener
             '/build',
             '/media',
             '/panel',
-            '/raport'
+            '/raport',
+            '/kalendarz',
         ];
         $request = $event->getRequest();
         $pathInfo = $request->getPathInfo();

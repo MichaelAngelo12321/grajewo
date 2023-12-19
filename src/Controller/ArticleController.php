@@ -68,6 +68,16 @@ class ArticleController extends AbstractController
         ]);
     }
 
+    public function eventsList(string $date): Response
+    {
+        $events = $this->articleRepository->findEventsForDate($date);
+
+        return $this->render('app/article/events_list.html.twig', [
+            'date' => $date,
+            'events' => $events,
+        ]);
+    }
+
     public function list(Category $category, Request $request): Response
     {
         $currentPage = $request->query->getInt('page', 1);
@@ -75,7 +85,7 @@ class ArticleController extends AbstractController
         $articles = $this->articleRepository->findLatestByCategory(
             $category,
             $itemsPerPage,
-            ($currentPage - 1) * $itemsPerPage
+            ($currentPage - 1) * $itemsPerPage,
         );
 
         return $this->render('app/article/list.html.twig', [

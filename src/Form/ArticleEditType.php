@@ -93,7 +93,7 @@ class ArticleEditType extends AbstractType
                 $article = $event->getData();
                 $form = $event->getForm();
 
-                if ($article->getEventDateTime() !== null) {
+                if ($article->isIsEvent()) {
                     $form->get('eventDate')->setData($article->getEventDateTime()->format('Y-m-d'));
                     $form->get('eventTime')->setData($article->getEventDateTime()->format('H:i'));
                 }

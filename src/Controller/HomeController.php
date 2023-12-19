@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Repository\Cached\ArticleCachedRepository;
 use App\Repository\Cached\CategoryCachedRepository;
+use App\Service\PolishCalendarEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,12 +14,15 @@ class HomeController extends AbstractController
 {
     public function __construct(
         private ArticleCachedRepository $articleRepository,
-        private CategoryCachedRepository $categoryRepository
+        private CategoryCachedRepository $categoryRepository,
+        private PolishCalendarEvent $polishCalendarEvent,
     ) {
     }
 
     public function index(): Response
     {
+        $this->polishCalendarEvent->getHolidays();
+
         $topCategory = $this->categoryRepository->findTopCategory();
         $topCategoryArticles = $this->articleRepository->findLatestArticlesFromCategory($topCategory, 7);
         $mostPopularArticles = $this->articleRepository->findMostPopularArticles(4);

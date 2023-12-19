@@ -8,7 +8,7 @@
           <div>
             <span class="d-block text-uppercase text-center fs-smaller">Dziś</span>
 
-            <div class="d-flex align-items-center" title="{{ weather.tomorrow.description }}">
+            <div class="d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="{{ weather.tomorrow.description }}">
               <img
                 src="{{ asset('build/images/icons/weather-'~weather.today.icon~'.svg') }}"
                 width="44"
@@ -24,7 +24,7 @@
           <div>
             <span class="d-block text-uppercase text-center fs-smaller">Jutro</span>
 
-            <div class="d-flex align-items-center" title="{{ weather.tomorrow.description }}">
+            <div class="d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="{{ weather.tomorrow.description }}">
               <img
                 src="{{ asset('build/images/icons/weather-'~weather.tomorrow.icon~'.svg') }}"
                 width="32"
@@ -46,9 +46,9 @@
     </div>
 
     <div class="d-flex align-items-center">
-      <div class="me-1 fs-smaller">Najbliższa niedziela</div>
+      <div class="me-1 fs-smaller" >Najbliższa niedziela</div>
       {% if get_setting('nextSundayIsShopping') == 'true' %}
-        <div title="Handlowa">
+        <div data-bs-toggle="tooltip" data-bs-title="Handlowa">
           <img
             src="{{ asset('build/images/icons/shopping-cart.svg') }}"
             width="20"
@@ -56,7 +56,7 @@
           />
         </div>
       {% else %}
-        <div title="Niehandlowa">
+        <div data-bs-toggle="tooltip" data-bs-title="Niehandlowa">
           <img
             src="{{ asset('build/images/icons/shopping-cart-off.svg') }}"
             width="20"
@@ -71,7 +71,7 @@
     {% if airQuality != null %}
       <div class="d-flex align-items-center">
         <span class="me-1 fs-smaller">Jakość powietrza</span>
-        <span title="{{ airQuality[0] }}">
+        <span data-bs-toggle="tooltip" data-bs-title="{{ airQuality[0] }}">
         <img
           src="{{ asset('build/images/icons/air-quality-'~airQuality[1]~'.svg') }}"
           width="20"

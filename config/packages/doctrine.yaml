@@ -12,6 +12,7 @@ doctrine:
         enable_lazy_ghost_objects: true
         dql:
             string_functions:
+                DATE: DoctrineExtensions\Query\Mysql\Date
                 MATCH: App\Doctrine\Functions\MatchAgainst
         report_fields_where_declared: true
         validate_xml_mapping: true

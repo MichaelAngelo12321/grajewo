@@ -1,14 +1,18 @@
-import {Collapse} from 'bootstrap'
+import {Collapse, Tooltip} from 'bootstrap'
 import Chocolat from 'chocolat'
 
 import 'chocolat/dist/css/chocolat.css'
 import './styles/app/index.scss'
 import './theme-switcher.js'
 
-const collapseElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="collapse"]'))
 
 // Collapse elements init
+const collapseElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="collapse"]'))
 collapseElementList.map(collapseTriggerEl => new Collapse(collapseTriggerEl))
+
+// Tooltip init
+const tooltipElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+tooltipElementList.map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl))
 
 // Header with auto hide
 const header = document.getElementsByTagName('header')[0]

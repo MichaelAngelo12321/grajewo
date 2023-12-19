@@ -71,6 +71,22 @@ class ArticleRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    public function findEventsForDate(string $date): array
+    {
+        $query = $this->createQueryBuilder('a')
+            ->addSelect('c')
+            ->join('a.category', 'c')
+            ->where('a.status = :status')
+            ->andWhere('a.isEvent = :isEvent')
+            ->andWhere('DATE(a.eventDateTime) = :eventDate')
+            ->setParameter('status', ArticleStatus::PUBLISHED)
+            ->setParameter('isEvent', true)
+            ->setParameter('eventDate', $date)
+            ->orderBy('a.eventDateTime', 'ASC');
+
+        return $query->getQuery()->getResult();
+    }
+
     /**
      * @return Article[] Returns an array of Article objects
      */

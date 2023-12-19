@@ -12,6 +12,7 @@ use App\Repository\Cached\UserReportCachedRepository;
 use App\Repository\External\AirPollutionRepository;
 use App\Repository\External\CurrencyRateRepository;
 use App\Repository\External\WeatherRepository;
+use App\Service\PolishCalendar;
 use DateTime;
 use DateTimeImmutable;
 use Twig\Extension\AbstractExtension;
@@ -25,6 +26,7 @@ class AppExtension extends AbstractExtension
         private CurrencyRateRepository $currencyRateRepository,
         private NameDayCachedRepository $nameDayCachedRepository,
         private PharmacyDutyCachedRepository $pharmacyDutyCachedRepository,
+        private PolishCalendar $polishCalendar,
         private SettingCachedRepository $settingCachedRepository,
         private UserReportCachedRepository $userReportCachedRepository,
         private WeatherRepository $weatherRepository,
@@ -64,6 +66,7 @@ class AppExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('get_month_calendar', [$this->polishCalendar, 'getForYearMonth']),
             new TwigFunction('get_currency_rate', [$this->currencyRateRepository, 'getRate']),
             new TwigFunction('get_current_air_quality_level', [$this->airPollutionRepository, 'getAirQuality']),
             new TwigFunction('get_current_day_names', [$this->nameDayCachedRepository, 'findToday']),

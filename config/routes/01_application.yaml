@@ -36,3 +36,7 @@ article_details_old_redirect:
 article_details:
   path: /{__category}/{id}/{slug}
   controller: App\Controller\ArticleController::details
+
+article_events_list:
+  path: /kalendarz-wydarzen/{date}
+  controller: App\Controller\ArticleController::eventsList

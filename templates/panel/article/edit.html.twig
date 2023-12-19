@@ -27,7 +27,7 @@
                   {{ form_row(form.isEvent, {attr: {class: 'form-check form-switch', id: 'is-event-switcher'}}) }}
 
                   <div
-                    class="mb-4 {{ app.request.get('is-event') == 'on' or field_value(form.isEvent) == '1' ? '' : 'd-none' }} row"
+                    class="mb-4 {{ app.request.get('is-event') == 'on' or form.vars.value.isEvent ? '' : 'd-none' }} row"
                     id="event-details-wrapper"
                   >
                     <div class="col-6 col-md-4">

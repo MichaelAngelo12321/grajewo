@@ -23,6 +23,7 @@ class ArticleListener
     public function clearCache(): void
     {
         $this->cache->clear(CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY);
+        $this->cache->clear(CacheKeyPrefix::ARTICLE_EVENTS_FROM_THIS_MONTH);
         $this->cache->clear(CacheKeyPrefix::ARTICLE_MOST_POPULAR);
     }
 }
