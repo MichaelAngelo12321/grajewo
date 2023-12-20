@@ -17,7 +17,7 @@
         <div class="list-group list-group-flush js-sortable" data-url="{{ path('panel_categories_change_order') }}">
           {% for category in categories %}
             {% if category.isRoot != true %}
-              <div class="list-group-item js-category-row" data-element-id="{{ category.id }}">
+              <div class="list-group-item" data-element-id="{{ category.id }}">
                 <div class="row align-items-center">
                   <div class="col-auto js-drag-handler">
                     <i class="ti ti-grip-vertical text-muted cursor-grab"></i>

@@ -4,12 +4,12 @@ panel_dashboard:
 
 panel_dashboard_save_next_sunday_is_shopping:
   path: /panel/save-next-sunday-is-shopping
-  methods: [POST]
+  methods: [ POST ]
   controller: App\Controller\Panel\DashboardController::saveNextSundayIsShopping
 
 panel_dashboard_save_pharmacy_duty:
   path: /panel/save-pharmacy-duty
-  methods: [POST]
+  methods: [ POST ]
   controller: App\Controller\Panel\DashboardController::savePharmacyDuty
 
 # Auth
@@ -18,13 +18,13 @@ panel_login:
   controller: App\Controller\Panel\SecurityController::login
 
 panel_logout:
-    path: /panel/logout
-    controller: App\Controller\Panel\SecurityController::logout
+  path: /panel/logout
+  controller: App\Controller\Panel\SecurityController::logout
 
 # Articles
 panel_article_change_status:
-    path: /panel/articles/{id}/change-status/{status}
-    controller: App\Controller\Panel\ArticleController::changeStatus
+  path: /panel/articles/{id}/change-status/{status}
+  controller: App\Controller\Panel\ArticleController::changeStatus
 
 panel_article_delete:
   path: /panel/articles/{id}/delete
@@ -35,33 +35,33 @@ panel_article_edit:
   controller: App\Controller\Panel\ArticleController::edit
 
 panel_article_list:
-    path: /panel/articles
-    controller: App\Controller\Panel\ArticleController::list
+  path: /panel/articles
+  controller: App\Controller\Panel\ArticleController::list
 
 panel_article_create:
-    path: /panel/articles/create
-    controller: App\Controller\Panel\ArticleController::create
+  path: /panel/articles/create
+  controller: App\Controller\Panel\ArticleController::create
 
 panel_article_comment_hide:
-    path: /panel/articles/comments/{commentId}/hide
-    controller: App\Controller\Panel\ArticleCommentController::hideComment
+  path: /panel/articles/comments/{commentId}/hide
+  controller: App\Controller\Panel\ArticleCommentController::hideComment
 
 panel_article_comment_unlock:
-    path: /panel/articles/comments/{commentId}/unlock
-    controller: App\Controller\Panel\ArticleCommentController::unlockComment
+  path: /panel/articles/comments/{commentId}/unlock
+  controller: App\Controller\Panel\ArticleCommentController::unlockComment
 
 # Categories
 panel_categories_change_order:
-    path: /panel/categories/change-order
-    controller: App\Controller\Panel\CategoryController::changeOrder
+  path: /panel/categories/change-order
+  controller: App\Controller\Panel\CategoryController::changeOrder
 
 panel_categories_create:
-    path: /panel/categories/create
-    controller: App\Controller\Panel\CategoryController::create
+  path: /panel/categories/create
+  controller: App\Controller\Panel\CategoryController::create
 
 panel_categories_edit:
-    path: /panel/categories/{id}/edit
-    controller: App\Controller\Panel\CategoryController::edit
+  path: /panel/categories/{id}/edit
+  controller: App\Controller\Panel\CategoryController::edit
 
 panel_categories_list:
   path: /panel/categories
@@ -84,9 +84,29 @@ panel_user_report_unlock:
   path: /panel/user-report/{reportId}/unlock
   controller: App\Controller\Panel\UserReportController::unlockReport
 
+# Gas prices
+panel_gas_station:
+  path: /panel/gas-station
+  controller: App\Controller\Panel\GasPriceController::stationList
+
+panel_gas_station_change_order:
+  path: /panel/gas-station/change-order
+  controller: App\Controller\Panel\GasPriceController::changeStationOrder
+
+panel_gas_station_create:
+  path: /panel/gas-station/create
+  controller: App\Controller\Panel\GasPriceController::createStation
+
+panel_gas_station_edit:
+  path: /panel/gas-station/{id}/edit
+  controller: App\Controller\Panel\GasPriceController::editStation
+
+panel_gas_station_delete:
+  path: /panel/gas-station/{id}/delete
+  controller: App\Controller\Panel\GasPriceController::deleteStation
 
 # Temp
-panel_temporary_development_status:
-    path: /panel/development-status
-    controller: App\Controller\Panel\DevelopmentStatusController::index
 # TODO: move to controllers with low priority for application_category
+panel_temporary_development_status:
+  path: /panel/development-status
+  controller: App\Controller\Panel\DevelopmentStatusController::index

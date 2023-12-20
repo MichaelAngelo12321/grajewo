@@ -1,0 +1,27 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Edycja stacji paliw{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">Edycja stacji paliw</h1>
+
+          <a href="{{ path('panel_gas_station') }}" class="col-auto btn btn-outline-secondary">
+            <i class="ti ti-arrow-back me-1"></i> Powrót do listy
+          </a>
+        </div>
+
+        <div class="card-body py-3">
+          <div class="row">
+            <div class="col-12 col-md-8">
+              {{ form(form) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
