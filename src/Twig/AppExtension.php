@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Enum\ArticleStatus;
+use App\Repository\Cached\GasStationCachedRepository;
 use App\Repository\Cached\NameDayCachedRepository;
 use App\Repository\Cached\PharmacyDutyCachedRepository;
 use App\Repository\Cached\SettingCachedRepository;
@@ -24,6 +25,7 @@ class AppExtension extends AbstractExtension
     public function __construct(
         private AirPollutionRepository $airPollutionRepository,
         private CurrencyRateRepository $currencyRateRepository,
+        private GasStationCachedRepository $gasStationCachedRepository,
         private NameDayCachedRepository $nameDayCachedRepository,
         private PharmacyDutyCachedRepository $pharmacyDutyCachedRepository,
         private PolishCalendar $polishCalendar,
@@ -71,6 +73,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('get_current_air_quality_level', [$this->airPollutionRepository, 'getAirQuality']),
             new TwigFunction('get_current_day_names', [$this->nameDayCachedRepository, 'findToday']),
             new TwigFunction('get_current_weather', [$this->weatherRepository, 'getWeather']),
+            new TwigFunction('get_gas_stations', [$this->gasStationCachedRepository, 'findStationsWithPrices']),
             new TwigFunction('get_latest_user_reports', [$this->userReportCachedRepository, 'findLatest']),
             new TwigFunction('get_setting', [$this->settingCachedRepository, 'get']),
             new TwigFunction('get_today_pharmacy_duty', [$this->pharmacyDutyCachedRepository, 'getTodayPharmacyDuty']),

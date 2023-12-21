@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\UserReportRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
 #[ORM\Entity(repositoryClass: UserReportRepository::class)]
 #[ORM\Index(columns: ['created_at'])]
 #[ORM\Index(columns: ['is_hidden'])]
@@ -16,7 +18,7 @@ class UserReport
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
@@ -36,31 +38,14 @@ class UserReport
     #[ORM\Column(length: 255)]
     private ?string $ipAddress = null;
 
-    public function getId(): ?int
+    public function getAuthor(): ?string
     {
-        return $this->id;
+        return $this->author;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function setAuthor(?string $author): static
     {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
+        $this->author = $author;
 
         return $this;
     }
@@ -77,28 +62,21 @@ class UserReport
         return $this;
     }
 
-    public function getAuthor(): ?string
+    public function getCreatedAt(): ?DateTimeImmutable
     {
-        return $this->author;
+        return $this->createdAt;
     }
 
-    public function setAuthor(?string $author): static
+    public function setCreatedAt(DateTimeImmutable $createdAt): static
     {
-        $this->author = $author;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function isIsHidden(): ?bool
+    public function getId(): ?int
     {
-        return $this->isHidden;
-    }
-
-    public function setIsHidden(?bool $isHidden): static
-    {
-        $this->isHidden = $isHidden;
-
-        return $this;
+        return $this->id;
     }
 
     public function getImageUrl(): ?string
@@ -121,6 +99,30 @@ class UserReport
     public function setIpAddress(string $ipAddress): static
     {
         $this->ipAddress = $ipAddress;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function isIsHidden(): ?bool
+    {
+        return $this->isHidden;
+    }
+
+    public function setIsHidden(?bool $isHidden): static
+    {
+        $this->isHidden = $isHidden;
 
         return $this;
     }

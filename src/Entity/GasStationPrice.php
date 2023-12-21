@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\GasStationPriceRepository;
-use Doctrine\DBAL\Types\Types;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GasStationPriceRepository::class)]
@@ -19,24 +19,42 @@ class GasStationPrice
     #[ORM\JoinColumn(nullable: false)]
     private ?GasStation $station = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\Column]
+    private ?DateTimeImmutable $date = null;
+
+    #[ORM\Column(length: 10)]
+    private ?string $type = null;
 
     #[ORM\Column(nullable: true)]
-    private ?float $diesel = null;
+    private ?float $price = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $unleaded = null;
+    public function getDate(): ?DateTimeImmutable
+    {
+        return $this->date;
+    }
 
-    #[ORM\Column(nullable: true)]
-    private ?float $superUnleaded = null;
+    public function setDate(DateTimeImmutable $date): static
+    {
+        $this->date = $date;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $liquidGas = null;
+        return $this;
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): static
+    {
+        $this->price = $price;
+
+        return $this;
     }
 
     public function getStation(): ?GasStation
@@ -51,62 +69,14 @@ class GasStationPrice
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getType(): ?string
     {
-        return $this->date;
+        return $this->type;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setType(string $type): static
     {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getDiesel(): ?float
-    {
-        return $this->diesel;
-    }
-
-    public function setDiesel(?float $diesel): static
-    {
-        $this->diesel = $diesel;
-
-        return $this;
-    }
-
-    public function getUnleaded(): ?float
-    {
-        return $this->unleaded;
-    }
-
-    public function setUnleaded(?float $unleaded): static
-    {
-        $this->unleaded = $unleaded;
-
-        return $this;
-    }
-
-    public function getSuperUnleaded(): ?float
-    {
-        return $this->superUnleaded;
-    }
-
-    public function setSuperUnleaded(?float $superUnleaded): static
-    {
-        $this->superUnleaded = $superUnleaded;
-
-        return $this;
-    }
-
-    public function getLiquidGas(): ?float
-    {
-        return $this->liquidGas;
-    }
-
-    public function setLiquidGas(?float $liquidGas): static
-    {
-        $this->liquidGas = $liquidGas;
+        $this->type = $type;
 
         return $this;
     }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Enum\ArticleStatus;
 use App\Repository\ArticleRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -36,10 +37,10 @@ class Article
     private ?int $commentsNumber = 0;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updatedAt = null;
+    private ?DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(length: 300)]
     private ?string $excerpt = null;
@@ -84,6 +85,28 @@ class Article
         $this->comments = new ArrayCollection();
     }
 
+    public function addComment(ArticleComment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
     public function getCategory(): ?Category
     {
         return $this->category;
@@ -94,6 +117,14 @@ class Article
         $this->category = $category;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, ArticleComment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
     }
 
     public function getCommentsNumber(): ?int
@@ -120,169 +151,14 @@ class Article
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getExcerpt(): ?string
-    {
-        return $this->excerpt;
-    }
-
-    public function setExcerpt(string $excerpt): static
-    {
-        $this->excerpt = $excerpt;
-
-        return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getImageUrl(): ?string
-    {
-        return $this->imageUrl;
-    }
-
-    public function setImageUrl(?string $imageUrl): static
-    {
-        $this->imageUrl = $imageUrl;
-
-        return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getViewsNumber(): ?int
-    {
-        return $this->viewsNumber;
-    }
-
-    public function setViewsNumber(int $viewsNumber): static
-    {
-        $this->viewsNumber = $viewsNumber;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?User $author): static
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    public function getUpdateAuthor(): ?User
-    {
-        return $this->updateAuthor;
-    }
-
-    public function setUpdateAuthor(?User $updateAuthor): static
-    {
-        $this->updateAuthor = $updateAuthor;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ArticleComment>
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(ArticleComment $comment): static
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-            $comment->setArticle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(ArticleComment $comment): static
-    {
-        if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
-            if ($comment->getArticle() === $this) {
-                $comment->setArticle(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getStatus(): ArticleStatus
-    {
-        return ArticleStatus::from($this->status);
-    }
-
-    public function setStatus(ArticleStatus $status): static
-    {
-        $this->status = $status->value;
-
-        return $this;
-    }
-
-    public function isHasCommentsDisabled(): ?bool
-    {
-        return $this->hasCommentsDisabled;
-    }
-
-    public function setHasCommentsDisabled(bool $hasCommentsDisabled): static
-    {
-        $this->hasCommentsDisabled = $hasCommentsDisabled;
-
-        return $this;
-    }
-
-    public function isIsEvent(): ?bool
-    {
-        return $this->isEvent;
-    }
-
-    public function setIsEvent(bool $isEvent): static
-    {
-        $this->isEvent = $isEvent;
 
         return $this;
     }
@@ -311,6 +187,23 @@ class Article
         return $this;
     }
 
+    public function getExcerpt(): ?string
+    {
+        return $this->excerpt;
+    }
+
+    public function setExcerpt(string $excerpt): static
+    {
+        $this->excerpt = $excerpt;
+
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getImageCaption(): ?string
     {
         return $this->imageCaption;
@@ -319,6 +212,114 @@ class Article
     public function setImageCaption(?string $imageCaption): static
     {
         $this->imageCaption = $imageCaption;
+
+        return $this;
+    }
+
+    public function getImageUrl(): ?string
+    {
+        return $this->imageUrl;
+    }
+
+    public function setImageUrl(?string $imageUrl): static
+    {
+        $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getStatus(): ArticleStatus
+    {
+        return ArticleStatus::from($this->status);
+    }
+
+    public function setStatus(ArticleStatus $status): static
+    {
+        $this->status = $status->value;
+
+        return $this;
+    }
+
+    public function getUpdateAuthor(): ?User
+    {
+        return $this->updateAuthor;
+    }
+
+    public function setUpdateAuthor(?User $updateAuthor): static
+    {
+        $this->updateAuthor = $updateAuthor;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getViewsNumber(): ?int
+    {
+        return $this->viewsNumber;
+    }
+
+    public function setViewsNumber(int $viewsNumber): static
+    {
+        $this->viewsNumber = $viewsNumber;
+
+        return $this;
+    }
+
+    public function isHasCommentsDisabled(): ?bool
+    {
+        return $this->hasCommentsDisabled;
+    }
+
+    public function isIsEvent(): ?bool
+    {
+        return $this->isEvent;
+    }
+
+    public function removeComment(ArticleComment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getArticle() === $this) {
+                $comment->setArticle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setHasCommentsDisabled(bool $hasCommentsDisabled): static
+    {
+        $this->hasCommentsDisabled = $hasCommentsDisabled;
+
+        return $this;
+    }
+
+    public function setIsEvent(bool $isEvent): static
+    {
+        $this->isEvent = $isEvent;
 
         return $this;
     }

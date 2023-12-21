@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Panel;
 
 use App\Entity\GasStation;
+use App\Entity\GasStationPrice;
 use App\Form\GasStationType;
+use App\Repository\GasStationPriceRepository;
 use App\Repository\GasStationRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +20,7 @@ class GasPriceController extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private GasStationRepository $gasStationRepository,
+        private GasStationPriceRepository $gasStationPriceRepository,
     ) {
     }
 
@@ -112,12 +116,61 @@ class GasPriceController extends AbstractController
         ]);
     }
 
+    public function setPrices(Request $request): Response
+    {
+        $prices = $request->get('prices');
+
+        foreach ($prices as $stationId => $stationPrices) {
+            $station = $this->gasStationRepository->find($stationId);
+
+            if (!$station) {
+                throw $this->createNotFoundException('Gas station not found');
+            }
+
+            $types = ['diesel', 'unleaded', 'superUnleaded', 'liquidGas'];
+
+            foreach ($types as $type) {
+                if (isset($stationPrices[$type])) {
+                    $currentPrice = $this->gasStationPriceRepository->findTodayStationPrices($station, $type);
+
+                    if (!$currentPrice) {
+                        $currentPrice = new GasStationPrice();
+                        $currentPrice->setStation($station);
+                        $currentPrice->setDate(new DateTimeImmutable());
+                        $currentPrice->setType($type);
+                    }
+
+                    $currentPrice->setPrice($stationPrices[$type] > 0 ? (float)$stationPrices[$type] : null);
+
+                    $this->entityManager->persist($currentPrice);
+                }
+            }
+        }
+
+        $this->entityManager->flush();
+        $this->addFlash('success', 'Ceny zostały zaktualizowane');
+
+        return $this->redirectToRoute('panel_gas_station');
+    }
+
     public function stationList(): Response
     {
         $stations = $this->gasStationRepository->findBy([], ['positionOrder' => 'ASC']);
+        $stationPrices = [];
+
+        foreach ($stations as $station) {
+            $todayStationPrices = $this->gasStationPriceRepository->findLatestStationPrice($station);
+
+            if (!empty($todayStationPrices)) {
+                foreach ($todayStationPrices as $todayStationPrice) {
+                    $stationPrices[$station->getId()][$todayStationPrice->getType()] = $todayStationPrice->getPrice();
+                }
+            }
+        }
 
         return $this->render('panel/gas_price/station_list.html.twig', [
             'stations' => $stations,
+            'stationPrices' => $stationPrices,
         ]);
     }
 }

@@ -19,8 +19,7 @@ class GasStationType extends AbstractType
             ->add('hasUnleaded', null, ['label' => 'Posiada w ofercie benzynę bezołowiową'])
             ->add('hasSuperUnleaded', null, ['label' => 'Posiada w ofercie benzynę bezołowiową 98'])
             ->add('hasLiquidGas', null, ['label' => 'Posiada w ofercie gaz płynny'])
-            ->add('submit', SubmitType::class, ['label' => 'Dodaj stację'])
-        ;
+            ->add('submit', SubmitType::class, ['label' => 'Zapisz stację']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

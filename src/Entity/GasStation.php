@@ -44,19 +44,12 @@ class GasStation
         $this->gasStationPrices = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function addGasStationPrice(GasStationPrice $gasStationPrice): static
     {
-        return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
+        if (!$this->gasStationPrices->contains($gasStationPrice)) {
+            $this->gasStationPrices->add($gasStationPrice);
+            $gasStationPrice->setStation($this);
+        }
 
         return $this;
     }
@@ -81,24 +74,19 @@ class GasStation
         return $this->gasStationPrices;
     }
 
-    public function addGasStationPrice(GasStationPrice $gasStationPrice): static
+    public function getId(): ?int
     {
-        if (!$this->gasStationPrices->contains($gasStationPrice)) {
-            $this->gasStationPrices->add($gasStationPrice);
-            $gasStationPrice->setStation($this);
-        }
-
-        return $this;
+        return $this->id;
     }
 
-    public function removeGasStationPrice(GasStationPrice $gasStationPrice): static
+    public function getName(): ?string
     {
-        if ($this->gasStationPrices->removeElement($gasStationPrice)) {
-            // set the owning side to null (unless already changed)
-            if ($gasStationPrice->getStation() === $this) {
-                $gasStationPrice->setStation(null);
-            }
-        }
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }
@@ -115,9 +103,49 @@ class GasStation
         return $this;
     }
 
+    public function getTodayPrices(): ?GasStationPrice
+    {
+        $today = new \DateTime();
+
+        foreach ($this->gasStationPrices as $gasStationPrice) {
+            if ($gasStationPrice->getDate()->format('Y-m-d') === $today->format('Y-m-d')) {
+                return $gasStationPrice;
+            }
+        }
+
+        return null;
+    }
+
     public function isHasDiesel(): ?bool
     {
         return $this->hasDiesel;
+    }
+
+    public function isHasLiquidGas(): ?bool
+    {
+        return $this->hasLiquidGas;
+    }
+
+    public function isHasSuperUnleaded(): ?bool
+    {
+        return $this->hasSuperUnleaded;
+    }
+
+    public function isHasUnleaded(): ?bool
+    {
+        return $this->hasUnleaded;
+    }
+
+    public function removeGasStationPrice(GasStationPrice $gasStationPrice): static
+    {
+        if ($this->gasStationPrices->removeElement($gasStationPrice)) {
+            // set the owning side to null (unless already changed)
+            if ($gasStationPrice->getStation() === $this) {
+                $gasStationPrice->setStation(null);
+            }
+        }
+
+        return $this;
     }
 
     public function setHasDiesel(bool $hasDiesel): static
@@ -127,21 +155,11 @@ class GasStation
         return $this;
     }
 
-    public function isHasUnleaded(): ?bool
+    public function setHasLiquidGas(bool $hasLiquidGas): static
     {
-        return $this->hasUnleaded;
-    }
-
-    public function setHasUnleaded(bool $hasUnleaded): static
-    {
-        $this->hasUnleaded = $hasUnleaded;
+        $this->hasLiquidGas = $hasLiquidGas;
 
         return $this;
-    }
-
-    public function isHasSuperUnleaded(): ?bool
-    {
-        return $this->hasSuperUnleaded;
     }
 
     public function setHasSuperUnleaded(bool $hasSuperUnleaded): static
@@ -151,14 +169,9 @@ class GasStation
         return $this;
     }
 
-    public function isHasLiquidGas(): ?bool
+    public function setHasUnleaded(bool $hasUnleaded): static
     {
-        return $this->hasLiquidGas;
-    }
-
-    public function setHasLiquidGas(bool $hasLiquidGas): static
-    {
-        $this->hasLiquidGas = $hasLiquidGas;
+        $this->hasUnleaded = $hasUnleaded;
 
         return $this;
     }

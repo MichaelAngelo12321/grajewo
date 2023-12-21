@@ -97,13 +97,17 @@ panel_gas_station_create:
   path: /panel/gas-station/create
   controller: App\Controller\Panel\GasPriceController::createStation
 
+panel_gas_station_delete:
+  path: /panel/gas-station/{id}/delete
+  controller: App\Controller\Panel\GasPriceController::deleteStation
+
 panel_gas_station_edit:
   path: /panel/gas-station/{id}/edit
   controller: App\Controller\Panel\GasPriceController::editStation
 
-panel_gas_station_delete:
-  path: /panel/gas-station/{id}/delete
-  controller: App\Controller\Panel\GasPriceController::deleteStation
+panel_gas_station_set_prices:
+  path: /panel/gas-station/set-prices
+  controller: App\Controller\Panel\GasPriceController::setPrices
 
 # Temp
 # TODO: move to controllers with low priority for application_category

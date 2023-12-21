@@ -14,6 +14,13 @@
           </a>
         </div>
 
+        {% if stations is empty %}
+          <div class="card-body">
+            Żadna stacja nie została jeszcze dodana. <a href="{{ path('panel_gas_station_create') }}">Dodaj nową
+              stację</a>.
+          </div>
+        {% endif %}
+
         <div class="list-group list-group-flush js-sortable" data-url="{{ path('panel_gas_station_change_order') }}">
           {% for station in stations %}
             <div class="list-group-item" data-element-id="{{ station.id }}">
@@ -44,6 +51,45 @@
                   </a>
                 </div>
               </div>
+
+              <form
+                action="{{ path('panel_gas_station_set_prices') }}"
+                class="row align-items-center mt-3 p-3 pt-2 g-2 bg-body js-station-prices"
+              >
+                {% set fuels = {
+                  'unleaded': 'Cena 95 z dzisiaj',
+                  'superUnleaded': 'Cena 98 z dzisiaj',
+                  'diesel': 'Cena ON z dzisiaj',
+                  'liquidGas': 'Cena LPG z dzisiaj'
+                } %}
+
+                {% for key, label in fuels %}
+                  <div class="col-auto">
+                    <div class="input-group">
+                      <div class="form-floating">
+                        <input
+                          type="number"
+                          min="0"
+                          max="10"
+                          step="0.01"
+                          value="{{ stationPrices[station.id][key]|default('') }}"
+                          class="form-control"
+                          placeholder="{{ label }}"
+                          name="prices[{{ station.id }}][{{ key }}]"
+                          {% if not attribute(station, 'has' ~ key|capitalize) %}disabled{% endif %}
+                        >
+                        <label for="floatingInputGroup2">{{ label }}</label>
+                      </div>
+
+                      <span class="input-group-text">zł</span>
+                    </div>
+                  </div>
+                {% endfor %}
+
+                <div class="col-auto ms-auto">
+                  <button type="submit" class="btn btn-outline-success">Zapisz</button>
+                </div>
+              </form>
             </div>
           {% endfor %}
         </div>
