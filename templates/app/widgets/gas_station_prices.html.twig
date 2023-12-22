@@ -1,0 +1,72 @@
+<div class="widget">
+  <h3 class="section-title blue">Ceny paliw</h3>
+
+  {% set gasStations = get_gas_stations() %}
+
+  <table class="w-100">
+    <thead>
+    <tr>
+      <th></th>
+      <th class="text-center">
+        <span class="bg-green text-white rounded-1 p-1">95</span>
+      </th>
+      <th class="text-center">
+        <span class="bg-green-dark text-white rounded-1 p-1">98</span>
+      </th>
+      <th class="text-center">
+        <span class="bg-black text-white rounded-1 p-1">ON</span>
+      </th>
+      <th class="text-center">
+        <span class="bg-blue text-white rounded-1 p-1">LPG</span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in gasStations %}
+      <tr class="border-bottom">
+        <td class="py-2">
+          <div class="d-flex flex-column">
+            <strong>{{ row.station.name }}</strong>
+            <span class="fs-smaller">{{ row.station.address }}</span>
+          </div>
+        </td>
+
+        {% set fuels = ['unleaded', 'superUnleaded', 'diesel', 'liquidGas'] %}
+
+        {% for fuel in fuels %}
+          <td>
+            <div class="d-flex flex-column align-items-center me-1">
+              {% if row.prices[fuel].price|default('') %}
+                <strong>{{ row.prices[fuel].price|number_format(2, '.', ' ') }}</strong>
+                <span class="fs-smaller text-muted">
+                    {% if row.prices[fuel].date|date('Y-m-d') == 'now'|date('Y-m-d') %}
+                      dziś
+                    {% else %}
+                      wczoraj
+                    {% endif %}
+                </span>
+              {% elseif not attribute(row.station, 'has' ~ fuel|capitalize) %}
+                <strong
+                  data-bs-toggle="tooltip"
+                  data-bs-title="Brak paliwa w ofercie"
+                  class="text-muted"
+                >
+                  x
+                </strong>
+              {% else %}
+                <strong
+                  data-bs-toggle="tooltip"
+                  data-bs-title="Brak ceny z ostatnich 2 dni"
+                  class="text-muted"
+                >
+                  ?
+                </strong>
+              {% endif %}
+            </div>
+          </td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

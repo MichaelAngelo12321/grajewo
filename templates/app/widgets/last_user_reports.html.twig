@@ -1,0 +1,24 @@
+<div class="widget">
+  <h3 class="section-title primary"><a href="{{ path('user_report') }}">Czytelnicy RAPORTują</a></h3>
+
+  <ul class="post-list">
+    {% for report in get_latest_user_reports() %}
+      <li class="item">
+        {% if report.imageUrl %}
+          <img class="item-image" src="{{ report.imageUrl|imagine_filter('round_small_sidebar') }}" alt="">
+        {% endif %}
+
+        <div class="item-description">
+          <a class="name" href="{{ path('user_report', {'_fragment': 'report-'~report.id }) }}">
+            {% if report.name != '' %}
+              {{ report.name }}
+            {% else %}
+              {{ report.content|slice(0, 50) }}...
+            {% endif %}
+          </a>
+          <p class="date-place">{{ report.createdAt|relative_datetime }}</p>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+</div>

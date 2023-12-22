@@ -1,0 +1,16 @@
+{% set currency_rate = get_currency_rate(['USD', 'EUR', 'GBP', 'LTL', 'GBP', 'CHF']) %}
+
+{% if currency_rate != null %}
+  <div class="widget">
+    <h3 class="section-title primary">Kursy walut</h3>
+
+    <div class="row g-2">
+      {% for currency, rate in currency_rate %}
+        <div class="col-4 col-md-12 col-xl-6 d-flex align-items-center">
+          <div class="">1 {{ currency }} =</div>
+          <div class="fw-bold fs-5 ms-2">{{ rate }} zł</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
