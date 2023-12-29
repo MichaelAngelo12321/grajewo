@@ -30,6 +30,7 @@ class RequestListener
             '/panel',
             '/raport',
             '/kalendarz',
+            '/przeslij',
         ];
         $request = $event->getRequest();
         $pathInfo = $request->getPathInfo();

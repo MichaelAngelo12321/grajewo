@@ -1,5 +1,13 @@
 <div class="widget">
-  <h3 class="section-title primary"><a href="{{ path('user_report') }}">Czytelnicy RAPORTują</a></h3>
+  <div class="d-flex">
+    <h3 class="section-title primary"><a href="{{ path('user_report') }}">Czytelnicy RAPORTują</a></h3>
+
+    <div class="ms-auto">
+      <a href="{{ path('user_report_add') }}" class="btn btn-outline-primary btn-sm ms-auto">
+        Prześlij
+      </a>
+    </div>
+  </div>
 
   <ul class="post-list">
     {% for report in get_latest_user_reports() %}

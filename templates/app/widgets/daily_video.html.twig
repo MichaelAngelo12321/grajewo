@@ -1,0 +1,32 @@
+<div class="widget">
+  <div class="d-flex">
+    <h3 class="section-title info">Film dnia</h3>
+
+    <div class="ms-auto">
+      <a href="{{ path('user_content_add_video_form') }}" class="btn btn-outline-primary btn-sm ms-auto">
+        Prześlij
+      </a>
+    </div>
+  </div>
+
+  <div class="text-center">
+    {% set video = get_latest_daily_video() %}
+
+    {% if video != null %}
+      <div class="ratio ratio-16x9 mb-1">
+        <iframe
+          width="300"
+          height="163"
+          src="{{ video.videoUrl }}"
+          title="YouTube video player"
+          allowfullscreen
+          loading="lazy"></iframe>
+      </div>
+      </a>
+
+      <p>{{ video.caption }} {% if video.author %}({{ video.author }}){% endif %}</p>
+    {% else %}
+      <p>Brak filmu</p>
+    {% endif %}
+  </div>
+</div>

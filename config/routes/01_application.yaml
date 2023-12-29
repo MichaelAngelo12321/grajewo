@@ -41,6 +41,23 @@ article_events_list:
   path: /kalendarz-wydarzen
   controller: App\Controller\ArticleController::eventsList
 
+# User content
+user_content_add_image_form:
+  path: /przeslij/zdjecie
+  controller: App\Controller\UserContentController::addImage
+
+user_content_add_video_form:
+  path: /przeslij/film
+  controller: App\Controller\UserContentController::addVideo
+
+user_content_add_gas_station_prices_form:
+  path: /przeslij/ceny-paliw
+  controller: App\Controller\UserContentController::addGasStationPrices
+
+user_content_thank_you:
+  path: /przeslij/dziekujemy
+  controller: App\Controller\UserContentController::thankYouPage
+
 # At the end of the file
 article_category:
   path: /{__category}

@@ -21,7 +21,7 @@ class PharmacyDutyCachedRepository
     public function getTodayPharmacyDuty(): ?PharmacyDuty
     {
         return $this->cache->get(CacheKeyPrefix::PHARMACY_DUTY_TODAY, function (ItemInterface $item) {
-            $item->expiresAt(new DateTime('today 23:59:59'));
+            $item->expiresAt(new DateTime('tomorrow 00:00:00'));
 
             return $this->pharmacyDutyRepository->findOneBy(['day' => (int) date('N') - 1]);
         });

@@ -1,0 +1,54 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Repository\Cached;
+
+use App\Entity\DailyImage;
+use App\Entity\DailyVideo;
+use App\Repository\DailyImageRepository;
+use App\Repository\DailyVideoRepository;
+use DateTime;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
+
+class UserContentCachedRepository
+{
+    public function __construct(
+        private CacheInterface $cache,
+        private DailyImageRepository $dailyImageRepository,
+        private DailyVideoRepository $dailyVideoRepository,
+    ) {
+    }
+
+    public function findLatestDailyImage(): ?DailyImage
+    {
+        return $this->cache->get(CacheKeyPrefix::LATEST_DAILY_IMAGE, function (ItemInterface $item) {
+            $item->expiresAt(new DateTime('tomorrow 00:00:00'));
+
+            return $this->dailyImageRepository->findOneBy(['isPublished' => true], ['createdAt' => 'DESC']);
+        });
+    }
+
+    public function findLatestDailyVideo(): ?DailyVideo
+    {
+        return $this->cache->get(CacheKeyPrefix::LATEST_DAILY_VIDEO, function (ItemInterface $item) {
+            $item->expiresAt(new DateTime('tomorrow 00:00:00'));
+
+            $video = $this->dailyVideoRepository->findOneBy(['isPublished' => true], ['createdAt' => 'DESC']);
+
+            if ($video === null) {
+                return null;
+            }
+
+            $videoUrl = $video->getVideoUrl();
+
+            if (!str_contains($videoUrl, 'embed')) {
+                $videoUrl = str_replace('watch?v=', 'embed/', $videoUrl);
+                $video->setVideoUrl($videoUrl);
+            }
+
+            return $video;
+        });
+    }
+}

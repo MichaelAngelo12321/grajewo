@@ -22,7 +22,7 @@ class GasStationPrice
     #[ORM\Column]
     private ?DateTimeImmutable $date = null;
 
-    #[ORM\Column(length: 10)]
+    #[ORM\Column(length: 15)]
     private ?string $type = null;
 
     #[ORM\Column(nullable: true)]

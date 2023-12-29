@@ -22,7 +22,7 @@ class NameDayCachedRepository
         $cacheKey = CacheKeyPrefix::NAME_DAY_TODAY;
 
         return $this->cache->get($cacheKey, function (ItemInterface $item) {
-            $item->expiresAt(new DateTime('today 23:59:59'));
+            $item->expiresAt(new DateTime('tomorrow 00:00:00'));
 
             $nameDay = $this->nameDayRepository->findOneBy([
                 'day' => date('d'),

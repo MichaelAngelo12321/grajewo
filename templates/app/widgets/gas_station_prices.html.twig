@@ -1,5 +1,13 @@
 <div class="widget">
-  <h3 class="section-title blue">Ceny paliw</h3>
+  <div class="d-flex">
+    <h3 class="section-title blue">Ceny paliw</h3>
+
+    <div class="ms-auto">
+      <a href="{{ path('user_content_add_gas_station_prices_form') }}" class="btn btn-outline-primary btn-sm ms-auto">
+        Prześlij
+      </a>
+    </div>
+  </div>
 
   {% set gasStations = get_gas_stations() %}
 

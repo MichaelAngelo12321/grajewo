@@ -1,0 +1,34 @@
+<div class="widget">
+  <div class="d-flex">
+    <h3 class="section-title warning">Zdjęcie dnia</h3>
+
+    <div class="ms-auto">
+      <a href="{{ path('user_content_add_image_form') }}" class="btn btn-outline-primary btn-sm ms-auto">
+        Prześlij
+      </a>
+    </div>
+  </div>
+
+  <div class="text-center">
+    {% set image = get_latest_daily_image() %}
+
+    {% if image != null %}
+      <a
+        class="image-lightbox"
+        href="{{ image.imageUrl }}"
+        target="_blank"
+        title="{{ image.caption }} {% if image.author %}({{ image.author }}){% endif %}"
+      >
+        <img
+          class="rounded-1 img-fluid mb-1"
+          src="{{ image.imageUrl|imagine_filter('article_medium_image') }}"
+          alt="{{ image.caption }}"
+        />
+      </a>
+
+      <p>{{ image.caption }} {% if image.author %}({{ image.author }}){% endif %}</p>
+    {% else %}
+      <p>Brak zdjęcia</p>
+    {% endif %}
+  </div>
+</div>

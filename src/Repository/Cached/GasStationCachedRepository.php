@@ -20,7 +20,7 @@ class GasStationCachedRepository
     public function findStationsWithPrices(): array
     {
         return $this->cache->get(CacheKeyPrefix::GAS_STATION_PRICES, function (ItemInterface $item) {
-            $item->expiresAt(new DateTime('today 23:59:59'));
+            $item->expiresAt(new DateTime('tomorrow 00:00:00'));
 
             $stations = $this->gasStationRepository->findAll();
             $stationsWithPrices = [];

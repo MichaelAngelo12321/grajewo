@@ -9,6 +9,7 @@ use App\Repository\Cached\GasStationCachedRepository;
 use App\Repository\Cached\NameDayCachedRepository;
 use App\Repository\Cached\PharmacyDutyCachedRepository;
 use App\Repository\Cached\SettingCachedRepository;
+use App\Repository\Cached\UserContentCachedRepository;
 use App\Repository\Cached\UserReportCachedRepository;
 use App\Repository\External\AirPollutionRepository;
 use App\Repository\External\CurrencyRateRepository;
@@ -30,6 +31,7 @@ class AppExtension extends AbstractExtension
         private PharmacyDutyCachedRepository $pharmacyDutyCachedRepository,
         private PolishCalendar $polishCalendar,
         private SettingCachedRepository $settingCachedRepository,
+        private UserContentCachedRepository $userContentCachedRepository,
         private UserReportCachedRepository $userReportCachedRepository,
         private WeatherRepository $weatherRepository,
     ) {
@@ -74,6 +76,8 @@ class AppExtension extends AbstractExtension
             new TwigFunction('get_current_day_names', [$this->nameDayCachedRepository, 'findToday']),
             new TwigFunction('get_current_weather', [$this->weatherRepository, 'getWeather']),
             new TwigFunction('get_gas_stations', [$this->gasStationCachedRepository, 'findStationsWithPrices']),
+            new TwigFunction('get_latest_daily_image', [$this->userContentCachedRepository, 'findLatestDailyImage']),
+            new TwigFunction('get_latest_daily_video', [$this->userContentCachedRepository, 'findLatestDailyVideo']),
             new TwigFunction('get_latest_user_reports', [$this->userReportCachedRepository, 'findLatest']),
             new TwigFunction('get_setting', [$this->settingCachedRepository, 'get']),
             new TwigFunction('get_today_pharmacy_duty', [$this->pharmacyDutyCachedRepository, 'getTodayPharmacyDuty']),

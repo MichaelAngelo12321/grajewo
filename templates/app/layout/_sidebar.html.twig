@@ -6,34 +6,9 @@
 
 {% include 'app/widgets/pharmacy_duty.html.twig' %}
 
-<div class="widget">
-  <h3 class="section-title warning">Zdjęcie dnia</h3>
+{% include 'app/widgets/daily_image.html.twig' %}
 
-  <div class="text-center">
-    <p>
-      <img class="rounded-1 img-fluid" src="https://picsum.photos/300/168" alt="Opis użytkownika"/>
-    </p>
-    <p>Ale fajne foto! (Zbychu)</p>
-  </div>
-</div>
-
-<div class="widget">
-  <h3 class="section-title info">Film dnia</h3>
-
-  <div class="text-center">
-    <div class="ratio ratio-16x9">
-      <iframe
-        width="560"
-        height="315"
-        src="https://www.youtube.com/embed/zqLEO5tIuYs?si=9N5vxF1IjF7Qgmqr"
-        title="YouTube video player"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        loading="lazy"></iframe>
-    </div>
-    <p>Ulubiony kotek! (Andrzej W.)</p>
-  </div>
-</div>
+{% include 'app/widgets/daily_video.html.twig' %}
 
 {% include 'app/widgets/gas_station_prices.html.twig' %}
 

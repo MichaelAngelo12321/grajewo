@@ -21,13 +21,13 @@ liip_imagine:
           size: [ 900, 500 ]
 
     article_list_image:
-      quality: 70
+      quality: 75
       filters:
         thumbnail:
           mode: outbound
-          size: [ 150, 100 ]
+          size: [ 200, 120 ]
 
-    home_page_article_image:
+    article_medium_image:
       quality: 70
       filters:
         thumbnail:
