@@ -2,6 +2,22 @@ panel_dashboard:
   path: /panel
   controller: App\Controller\Panel\DashboardController::index
 
+panel_dashboard_publish_daily_image:
+  path: /panel/publish-daily-image/{imageId}
+  controller: App\Controller\Panel\DashboardController::publishDailyImage
+
+panel_dashboard_remove_daily_image:
+  path: /panel/remove-daily-image/{imageId}
+  controller: App\Controller\Panel\DashboardController::removeDailyImage
+
+panel_dashboard_publish_daily_video:
+  path: /panel/publish-daily-video/{videoId}
+  controller: App\Controller\Panel\DashboardController::publishDailyVideo
+
+panel_dashboard_remove_daily_video:
+  path: /panel/remove-daily-video/{videoId}
+  controller: App\Controller\Panel\DashboardController::removeDailyVideo
+
 panel_dashboard_publish_user_gas_station_price:
   path: /panel/publish-user-gas-price/{gasStationPriceId}
   controller: App\Controller\Panel\DashboardController::publishUserGasStationPrice

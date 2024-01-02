@@ -98,7 +98,10 @@
                       <h3 class="card-title">Moderacja treści użytkowników</h3>
                     </div>
 
-                    <div class="list-group list-group-flush list-group-hoverable overflow-auto" style="max-height: 240px">
+                    <div
+                      class="list-group list-group-flush list-group-hoverable overflow-auto"
+                      style="max-height: 240px"
+                    >
                       <div class="d-flex justify-content-center">
                         <div class="py-3">Brak treści do akceptacji</div>
                       </div>
@@ -112,10 +115,109 @@
                       <h3 class="card-title">Akceptacja treści użytkowników</h3>
                     </div>
 
-                    <div class="list-group list-group-flush list-group-hoverable overflow-auto" style="max-height: 240px">
-                      <div class="d-flex justify-content-center">
-                        <div class="py-3">Brak treści do akceptacji</div>
-                      </div>
+                    <div
+                      class="list-group list-group-flush list-group-hoverable overflow-auto"
+                      style="max-height: 240px"
+                    >
+                      {% if dailyImages is empty and dailyVideos is empty %}
+                        <div class="d-flex justify-content-center">
+                          <div class="py-3">Brak treści do akceptacji</div>
+                        </div>
+                      {% endif %}
+
+                      {% for image in dailyImages %}
+                        <div class="list-group-item">
+                          <div class="row align-items-center">
+                            <div class="col-auto">
+                              <a data-fslightbox="gallery" href="{{ image.imageUrl }}">
+                                <img
+                                  class="rounded"
+                                  src="{{ image.imageUrl|imagine_filter('round_small') }}"
+                                  width="48"
+                                />
+                              </a>
+                            </div>
+
+                            <div class="col-auto">
+                              <div>
+                                Autor: <strong>{{ image.author|default('---') }}</strong>
+                              </div>
+                              <div>
+                                Podpis: <strong>{{ image.caption|default('---') }}</strong>
+                              </div>
+                              <div>
+                                Data: <strong>{{ image.createdAt|format_datetime(pattern='d MMMM') }}</strong>
+                              </div>
+                            </div>
+
+                            <div class="col-auto ms-auto">
+                              <a
+                                href="{{ path('panel_dashboard_publish_daily_image', {imageId: image.id}) }}"
+                                class="btn btn-success btn-icon"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Opublikuj"
+                              >
+                                <i class="ti ti-circle-check-filled"></i>
+                              </a>
+                              <a
+                                href="{{ path('panel_dashboard_remove_daily_image', {imageId: image.id}) }}"
+                                class="btn btn-danger btn-icon js-confirm"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Usuń"
+                              >
+                                <i class="ti ti-trash"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+
+                      {% for video in dailyVideos %}
+                        <div class="list-group-item">
+                          <div class="row align-items-center">
+                            <div class="col-auto">
+                              <a
+                                data-fslightbox="gallery"
+                                class="btn btn-lg btn-icon btn-outline-danger"
+                                href="{{ video.videoUrl }}"
+                              >
+                                <i class="ti ti-brand-youtube"></i>
+                              </a>
+                            </div>
+
+                            <div class="col-auto">
+                              <div>
+                                Autor: <strong>{{ video.author|default('---') }}</strong>
+                              </div>
+                              <div>
+                                Podpis: <strong>{{ video.caption|default('---') }}</strong>
+                              </div>
+                              <div>
+                                Data: <strong>{{ video.createdAt|format_datetime(pattern='d MMMM') }}</strong>
+                              </div>
+                            </div>
+
+                            <div class="col-auto ms-auto">
+                              <a
+                                href="{{ path('panel_dashboard_publish_daily_video', {videoId: video.id}) }}"
+                                class="btn btn-success btn-icon"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Opublikuj"
+                              >
+                                <i class="ti ti-circle-check-filled"></i>
+                              </a>
+                              <a
+                                href="{{ path('panel_dashboard_remove_daily_video', {videoId: video.id}) }}"
+                                class="btn btn-danger btn-icon js-confirm"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Usuń"
+                              >
+                                <i class="ti ti-trash"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
                     </div>
                   </div>
                 </div>
@@ -126,7 +228,10 @@
                       <h3 class="card-title">Akceptacja cen paliw użytkowników</h3>
                     </div>
 
-                    <div class="list-group list-group-flush list-group-hoverable overflow-auto" style="max-height: 240px">
+                    <div
+                      class="list-group list-group-flush list-group-hoverable overflow-auto"
+                      style="max-height: 240px"
+                    >
                       {% if gasStationPrices is empty %}
                         <div class="d-flex justify-content-center">
                           <div class="py-3">Brak cen paliw do akceptacji</div>
@@ -142,11 +247,15 @@
                             </div>
 
                             <div class="col-auto text-center">
-                              <strong class="fw-bold fs-3">{{ gasPrice.price|number_format(2, ',', ' ') }}</strong> zł
+                              <strong class="fw-bold fs-3">
+                                {{ gasPrice.price|number_format(2, ',', ' ') }}
+                              </strong> zł
                             </div>
 
                             <div class="col-auto text-muted">
-                              <div class="badge badge-outline fw-bold">{{ get_gas_station_fuel_types()[gasPrice.type] }}</div>
+                              <div class="badge badge-outline fw-bold">
+                                {{ get_gas_station_fuel_types()[gasPrice.type] }}
+                              </div>
                             </div>
 
                             <div class="col-auto text-muted">

@@ -102,7 +102,7 @@ class UserContentController extends AbstractController
             $imageFile = $form->get('image')->getData();
 
             if ($imageFile !== null) {
-                $imageFileName = $this->fileUploader->upload($imageFile, UploadDirectory::USER_REPORT);
+                $imageFileName = $this->fileUploader->upload($imageFile, UploadDirectory::DAILY_IMAGE);
                 $this->imageResizer->resize($imageFileName);
 
                 $image->setImageUrl($imageFileName);
