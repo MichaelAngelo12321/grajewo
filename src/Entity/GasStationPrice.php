@@ -3,7 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GasStationPriceRepository;
-use DateTimeImmutable;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GasStationPriceRepository::class)]
@@ -19,8 +20,8 @@ class GasStationPrice
     #[ORM\JoinColumn(nullable: false)]
     private ?GasStation $station = null;
 
-    #[ORM\Column]
-    private ?DateTimeImmutable $date = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?DateTimeInterface $date = null;
 
     #[ORM\Column(length: 15)]
     private ?string $type = null;
@@ -28,12 +29,15 @@ class GasStationPrice
     #[ORM\Column(nullable: true)]
     private ?float $price = null;
 
-    public function getDate(): ?DateTimeImmutable
+    #[ORM\Column]
+    private ?bool $isPublished = null;
+
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(DateTimeImmutable $date): static
+    public function setDate(DateTimeInterface $date): static
     {
         $this->date = $date;
 
@@ -77,6 +81,18 @@ class GasStationPrice
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function isIsPublished(): ?bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished(bool $isPublished): static
+    {
+        $this->isPublished = $isPublished;
 
         return $this;
     }

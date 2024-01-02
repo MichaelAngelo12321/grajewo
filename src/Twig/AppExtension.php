@@ -76,11 +76,22 @@ class AppExtension extends AbstractExtension
             new TwigFunction('get_current_day_names', [$this->nameDayCachedRepository, 'findToday']),
             new TwigFunction('get_current_weather', [$this->weatherRepository, 'getWeather']),
             new TwigFunction('get_gas_stations', [$this->gasStationCachedRepository, 'findStationsWithPrices']),
+            new TwigFunction('get_gas_station_fuel_types', [$this, 'getGasStationFuelTypes']),
             new TwigFunction('get_latest_daily_image', [$this->userContentCachedRepository, 'findLatestDailyImage']),
             new TwigFunction('get_latest_daily_video', [$this->userContentCachedRepository, 'findLatestDailyVideo']),
             new TwigFunction('get_latest_user_reports', [$this->userReportCachedRepository, 'findLatest']),
             new TwigFunction('get_setting', [$this->settingCachedRepository, 'get']),
             new TwigFunction('get_today_pharmacy_duty', [$this->pharmacyDutyCachedRepository, 'getTodayPharmacyDuty']),
+        ];
+    }
+
+    public function getGasStationFuelTypes(): array
+    {
+        return [
+            'unleaded' => '95',
+            'superUnleaded' => '98',
+            'diesel' => 'ON',
+            'liquidGas' => 'LPG'
         ];
     }
 

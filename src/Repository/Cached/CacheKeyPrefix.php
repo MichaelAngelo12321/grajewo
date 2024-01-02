@@ -14,6 +14,7 @@ class CacheKeyPrefix
     public const CATEGORY_ALL = 'categories';
     public const CATEGORY_TOP = 'top_category';
     public const CURRENCY_RATE = 'currency_rate_';
+    public const GAS_STATIONS = 'gas_stations';
     public const GAS_STATION_PRICES = 'gas_station_prices';
     public const LATEST_DAILY_IMAGE = 'latest_daily_image';
     public const LATEST_DAILY_VIDEO = 'latest_daily_video';

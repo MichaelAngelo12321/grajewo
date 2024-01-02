@@ -2,6 +2,14 @@ panel_dashboard:
   path: /panel
   controller: App\Controller\Panel\DashboardController::index
 
+panel_dashboard_publish_user_gas_station_price:
+  path: /panel/publish-user-gas-price/{gasStationPriceId}
+  controller: App\Controller\Panel\DashboardController::publishUserGasStationPrice
+
+panel_dashboard_remove_user_gas_station_price:
+  path: /panel/remove-user-gas-price/{gasStationPriceId}
+  controller: App\Controller\Panel\DashboardController::removeUserGasStationPrice
+
 panel_dashboard_save_next_sunday_is_shopping:
   path: /panel/save-next-sunday-is-shopping
   methods: [ POST ]

@@ -12,6 +12,103 @@
 {% endblock %}
 
 {% block body %}
-<h1 class="fs-5 fw-bold mb-4">Prześlij nam dzisiejsze ceny paliw, które znasz</h1>
+  <h1 class="fs-5 fw-bold mb-4">Prześlij nam dzisiejsze ceny paliw, które znasz</h1>
 
+  {% for danger in app.flashes('danger') %}
+    <div class="alert alert-danger">
+      {{ danger }}
+    </div>
+  {% endfor %}
+
+  <form action="{{ path('user_content_add_gas_station_prices_form') }}" method="post" id="prices-form">
+    <div class="mb-4">
+      <label for="station-input" class="form-label">Stacja paliw</label>
+
+      <select name="station" class="form-select form-select-lg" id="station-input" required>
+        <option value="">-- wybierz</option>
+
+        {% for gasStation in gasStations %}
+          <option value="{{ gasStation.id }}">{{ gasStation.name }} ({{ gasStation.address }})</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-2">
+      Dzisiejsze ceny paliw na wybranej stacji
+    </div>
+
+    <div class="row gy-3 mb-4">
+      {% for key, label in get_gas_station_fuel_types() %}
+        <div class="col-md-6 col-lg-3">
+          <div class="input-group">
+            <div class="form-floating">
+              <input
+                type="number"
+                min="0"
+                max="10"
+                step="0.01"
+                placeholder=""
+                value="{{ app.request.get('prices')[key]|default('') }}"
+                id="price-{{ key }}-input"
+                class="form-control"
+                name="prices[{{ key }}]"
+              />
+              <label for="price-{{ key }}-input">Cena {{ label }}</label>
+            </div>
+
+            <span class="input-group-text">zł</span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('gas_station_prices_add') }}"/>
+    <button type="submit" class="btn btn-primary" id="form-send-button" disabled>Wyślij ceny</button>
+  </form>
+
+  <hr class="d-block d-md-none my-5"/>
+{% endblock %}
+
+{% block javascripts %}
+  <script type="application/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      const stationAvailability = {
+        {% for gasStation in gasStations %}
+        '{{ gasStation.id }}': {
+          {% for key, label in get_gas_station_fuel_types() %}
+          '{{ key }}': {{ attribute(gasStation, 'has' ~ key|capitalize) ? 'true' : 'false' }}{% if not loop.last %},{% endif %}
+          {% endfor %}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      }
+      const stationInput = document.getElementById('station-input')
+      const formSendButton = document.getElementById('form-send-button')
+
+      if (stationInput.value) {
+        for (const key in stationAvailability[stationInput.value]) {
+          const input = document.getElementById('price-' + key + '-input')
+
+          input.disabled = !stationAvailability[stationInput.value][key]
+        }
+
+        formSendButton.disabled = false
+      }
+
+      stationInput.addEventListener('change', function () {
+        const stationId = stationInput.value
+
+        if (stationId) {
+          for (const key in stationAvailability[stationId]) {
+            const input = document.getElementById('price-' + key + '-input')
+
+            input.disabled = !stationAvailability[stationId][key]
+          }
+
+          formSendButton.disabled = false
+        } else {
+          formSendButton.disabled = true
+        }
+      })
+    })
+  </script>
 {% endblock %}

@@ -4,6 +4,7 @@ namespace App\Repository\Cached;
 
 use App\Repository\GasStationPriceRepository;
 use App\Repository\GasStationRepository;
+use DateInterval;
 use DateTime;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -15,6 +16,15 @@ class GasStationCachedRepository
         private GasStationPriceRepository $gasStationPriceRepository,
         private CacheInterface $cache,
     ) {
+    }
+
+    public function findStations(): array
+    {
+        return $this->cache->get(CacheKeyPrefix::GAS_STATIONS, function (ItemInterface $item) {
+            $item->expiresAfter(new DateInterval('P1Y'));
+
+            return $this->gasStationRepository->findAll();
+        });
     }
 
     public function findStationsWithPrices(): array

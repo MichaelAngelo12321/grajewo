@@ -56,14 +56,7 @@
                 action="{{ path('panel_gas_station_set_prices') }}"
                 class="row align-items-center mt-3 p-3 pt-2 g-2 bg-body js-station-prices"
               >
-                {% set fuels = {
-                  'unleaded': 'Cena 95 z dzisiaj',
-                  'superUnleaded': 'Cena 98 z dzisiaj',
-                  'diesel': 'Cena ON z dzisiaj',
-                  'liquidGas': 'Cena LPG z dzisiaj'
-                } %}
-
-                {% for key, label in fuels %}
+                {% for key, label in get_gas_station_fuel_types() %}
                   <div class="col-auto">
                     <div class="input-group">
                       <div class="form-floating">
@@ -78,7 +71,7 @@
                           name="prices[{{ station.id }}][{{ key }}]"
                           {% if not attribute(station, 'has' ~ key|capitalize) %}disabled{% endif %}
                         >
-                        <label for="floatingInputGroup2">{{ label }}</label>
+                        <label>{{ label }}</label>
                       </div>
 
                       <span class="input-group-text">zł</span>

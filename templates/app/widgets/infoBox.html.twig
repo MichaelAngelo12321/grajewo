@@ -12,7 +12,7 @@
               <img
                 src="{{ asset('build/images/icons/weather-'~weather.today.icon~'.svg') }}"
                 width="44"
-                alt="Ikona ukazująca dzisiejszą pogodę"
+                alt="Ikona dzisiejszej pogody"
               />
               <div class="d-flex flex-column ms-1">
                 <strong class="text-body fs-5">{{ weather.today.temperature }}°C</strong>
@@ -28,7 +28,7 @@
               <img
                 src="{{ asset('build/images/icons/weather-'~weather.tomorrow.icon~'.svg') }}"
                 width="32"
-                alt="Ikona ukazująca jutrzejszą pogodę"
+                alt="Ikona jutrzejszej pogody"
               />
               <div class="d-flex flex-column ms-1">
                 <strong class="text-body">{{ weather.tomorrow.temperature }}°C</strong>
@@ -52,7 +52,7 @@
           <img
             src="{{ asset('build/images/icons/shopping-cart.svg') }}"
             width="20"
-            alt="Ikona koszyka"
+            alt="Koszyk"
           />
         </div>
       {% else %}
@@ -60,7 +60,7 @@
           <img
             src="{{ asset('build/images/icons/shopping-cart-off.svg') }}"
             width="20"
-            alt="Ikona przekreślonego koszyka"
+            alt="Przekreślony koszyk"
           />
         </div>
       {% endif %}

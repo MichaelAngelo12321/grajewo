@@ -39,9 +39,7 @@
           </div>
         </td>
 
-        {% set fuels = ['unleaded', 'superUnleaded', 'diesel', 'liquidGas'] %}
-
-        {% for fuel in fuels %}
+        {% for fuel, label in get_gas_station_fuel_types() %}
           <td>
             <div class="d-flex flex-column align-items-center me-1">
               {% if row.prices[fuel].price|default('') %}

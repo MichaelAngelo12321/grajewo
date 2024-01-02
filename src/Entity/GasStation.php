@@ -116,22 +116,22 @@ class GasStation
         return null;
     }
 
-    public function isHasDiesel(): ?bool
+    public function hasDiesel(): ?bool
     {
         return $this->hasDiesel;
     }
 
-    public function isHasLiquidGas(): ?bool
+    public function hasLiquidGas(): ?bool
     {
         return $this->hasLiquidGas;
     }
 
-    public function isHasSuperUnleaded(): ?bool
+    public function hasSuperUnleaded(): ?bool
     {
         return $this->hasSuperUnleaded;
     }
 
-    public function isHasUnleaded(): ?bool
+    public function hasUnleaded(): ?bool
     {
         return $this->hasUnleaded;
     }

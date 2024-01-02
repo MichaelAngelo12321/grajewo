@@ -6,9 +6,12 @@ namespace App\Controller;
 
 use App\Entity\DailyImage;
 use App\Entity\DailyVideo;
+use App\Entity\GasStationPrice;
 use App\Enum\UploadDirectory;
 use App\Form\DailyImageType;
 use App\Form\DailyVideoType;
+use App\Repository\Cached\GasStationCachedRepository;
+use App\Repository\GasStationRepository;
 use App\Service\FileUploader;
 use App\Service\ImageResizer;
 use DateTimeImmutable;
@@ -23,13 +26,65 @@ class UserContentController extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private FileUploader $fileUploader,
+        private GasStationRepository $gasStationRepository,
+        private GasStationCachedRepository $gasStationCachedRepository,
         private ImageResizer $imageResizer,
     ) {
     }
 
-    public function addGasStationPrices(): Response
+    public function addGasStationPrices(Request $request): Response
     {
-        return $this->render('app/user_content/add_gas_station_prices.html.twig');
+        $gasStations = $this->gasStationCachedRepository->findStations();
+
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $csrfToken = $request->request->get('_csrf_token');
+
+            if (!$this->isCsrfTokenValid('gas_station_prices_add', $csrfToken)) {
+                $this->addFlash('danger', 'Nieprawidłowy token CSRF');
+
+                return $this->redirectToRoute('user_content_add_gas_station_prices_form');
+            }
+
+            $prices = $request->get('prices');
+            $emptyPrices = array_filter($prices, fn ($price) => $price === '');
+
+            if (count($emptyPrices) === count($prices)) {
+                $this->addFlash('danger', 'Nie podano żadnej ceny');
+
+                return $this->redirectToRoute('user_content_add_gas_station_prices_form');
+            }
+
+            $station = $this->gasStationRepository->find($request->get('station'));
+
+            if ($station === null) {
+                $this->addFlash('danger', 'Nie znaleziono stacji');
+
+                return $this->redirectToRoute('user_content_add_gas_station_prices_form');
+            }
+
+            foreach ($prices as $type => $price) {
+                if ($price === '') {
+                    continue;
+                }
+
+                $gasStationPrice = new GasStationPrice();
+                $gasStationPrice->setStation($station);
+                $gasStationPrice->setType($type);
+                $gasStationPrice->setPrice((float) $price);
+                $gasStationPrice->setIsPublished(false);
+                $gasStationPrice->setDate(new DateTimeImmutable());
+
+                $this->entityManager->persist($gasStationPrice);
+            }
+
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('user_content_thank_you');
+        }
+
+        return $this->render('app/user_content/add_gas_station_prices.html.twig', [
+            'gasStations' => $gasStations,
+        ]);
     }
 
     public function addImage(Request $request): Response

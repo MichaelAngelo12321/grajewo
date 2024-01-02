@@ -22,6 +22,7 @@ class GasStationListener
 
     public function clearCache(): void
     {
+        $this->cache->clear(CacheKeyPrefix::GAS_STATIONS);
         $this->cache->clear(CacheKeyPrefix::GAS_STATION_PRICES);
     }
 }
