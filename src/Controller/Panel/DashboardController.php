@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DashboardController extends AbstractController
 {
+    private const NEXT_SUNDAY_IS_SHOPPING = 'nextSundayIsShopping';
+
     public function __construct(
         private DailyImageRepository $dailyImageRepository,
         private DailyVideoRepository $dailyVideoRepository,
@@ -44,7 +46,7 @@ class DashboardController extends AbstractController
         ];
         $nextSunday = new DateTime('next sunday');
         $nextSundayIsShopping = $this->settingRepository
-            ->findOneBy(['name' => 'nextSundayIsShopping'])
+            ->findOneBy(['name' => self::NEXT_SUNDAY_IS_SHOPPING])
             ?->getValue() === 'true' ?? false;
 
         // gas station prices
@@ -73,17 +75,7 @@ class DashboardController extends AbstractController
 
     public function publishDailyImage(int $imageId): Response
     {
-        $dailyImage = $this->dailyImageRepository->find($imageId);
-
-        if ($dailyImage === null) {
-            throw $this->createNotFoundException();
-        }
-
-        $dailyImage->setIsPublished(true);
-
-        $this->entityManager->persist($dailyImage);
-        $this->entityManager->flush();
-
+        $this->publishEntity($this->dailyImageRepository->find($imageId));
         $this->addFlash('success', 'Obrazek został opublikowany');
 
         return $this->redirectToRoute('panel_dashboard');
@@ -91,17 +83,7 @@ class DashboardController extends AbstractController
 
     public function publishDailyVideo(int $videoId): Response
     {
-        $dailyVideo = $this->dailyVideoRepository->find($videoId);
-
-        if ($dailyVideo === null) {
-            throw $this->createNotFoundException();
-        }
-
-        $dailyVideo->setIsPublished(true);
-
-        $this->entityManager->persist($dailyVideo);
-        $this->entityManager->flush();
-
+        $this->publishEntity($this->dailyVideoRepository->find($videoId));
         $this->addFlash('success', 'Wideo zostało opublikowane');
 
         return $this->redirectToRoute('panel_dashboard');
@@ -129,15 +111,7 @@ class DashboardController extends AbstractController
     {
         $dailyImage = $this->dailyImageRepository->find($imageId);
 
-        if ($dailyImage === null) {
-            throw $this->createNotFoundException();
-        }
-
-        $this->fileCleaner->removeFile($dailyImage->getImageUrl());
-
-        $this->entityManager->remove($dailyImage);
-        $this->entityManager->flush();
-
+        $this->removeEntity($dailyImage, $dailyImage->getImageUrl());
         $this->addFlash('success', 'Obrazek został usunięty');
 
         return $this->redirectToRoute('panel_dashboard');
@@ -147,13 +121,7 @@ class DashboardController extends AbstractController
     {
         $dailyVideo = $this->dailyVideoRepository->find($videoId);
 
-        if ($dailyVideo === null) {
-            throw $this->createNotFoundException();
-        }
-
-        $this->entityManager->remove($dailyVideo);
-        $this->entityManager->flush();
-
+        $this->removeEntity($dailyVideo);
         $this->addFlash('success', 'Wideo zostało usunięte');
 
         return $this->redirectToRoute('panel_dashboard');
@@ -177,10 +145,10 @@ class DashboardController extends AbstractController
 
     public function saveNextSundayIsShopping(Request $request): Response
     {
-        $nextSundayIsShopping = $request->get('nextSundayIsShopping', false);
+        $nextSundayIsShopping = $request->get(self::NEXT_SUNDAY_IS_SHOPPING, false);
         $nextSundayIsShopping = $nextSundayIsShopping === 'on' ? 'true' : 'false';
 
-        $this->settingRepository->set('nextSundayIsShopping', $nextSundayIsShopping);
+        $this->settingRepository->set(self::NEXT_SUNDAY_IS_SHOPPING, $nextSundayIsShopping);
         $this->addFlash('success', 'Ustawienia niedzieli handlowej zostały zapisane');
 
         return $this->redirectToRoute('panel_dashboard');
@@ -207,5 +175,31 @@ class DashboardController extends AbstractController
         }
 
         return $this->redirectToRoute('panel_dashboard');
+    }
+
+    private function publishEntity($entity): void
+    {
+        if ($entity === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $entity->setIsPublished(true);
+
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+    }
+
+    private function removeEntity($entity, ?string $fileUrl = null): void
+    {
+        if ($entity === null) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($fileUrl !== null) {
+            $this->fileCleaner->removeFile($fileUrl);
+        }
+
+        $this->entityManager->remove($entity);
+        $this->entityManager->flush();
     }
 }
