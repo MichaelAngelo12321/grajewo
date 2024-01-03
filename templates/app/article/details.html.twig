@@ -25,12 +25,12 @@
             target="_blank"
             title="{{ article.imageCaption|default('Zdjęcie artykułu') }}"
           >
-          <img
-            class="rounded-1 img-fluid {% if article.imageCaption == null %}mb-3{% endif %} w-100"
-            src="{{ article.imageUrl|imagine_filter('article_main_image') }}"
-            alt="Zdjęcie artykułu"
-            fetchpriority="high"
-          />
+            <img
+              class="rounded-1 img-fluid {% if article.imageCaption == null %}mb-3{% endif %} w-100"
+              src="{{ article.imageUrl|imagine_filter('article_main_image') }}"
+              alt="Zdjęcie artykułu"
+              fetchpriority="high"
+            />
           </a>
 
           {% if article.imageCaption %}
@@ -76,14 +76,16 @@
   <div class="row mb-5 gap-3">
     <div class="col-12 col-xl-auto">
       <div class="card d-flex px-4">
-        <div>
-          <img src="{{ article.author.imagePath }}"
-               width="64"
-               height="64"
-               class="rounded-5"
-               alt="Zdjęcie autora artykułu"
-          />
-        </div>
+        {% if article.author.imagePath %}
+          <div>
+            <img src="{{ article.author.imagePath }}"
+                 width="64"
+                 height="64"
+                 class="rounded-5"
+                 alt="Zdjęcie autora artykułu"
+            />
+          </div>
+        {% endif %}
 
         <div class="d-flex flex-column justify-content-center ms-3">
           <p class="m-0 fw-medium">{{ article.author.fullName }}</p>

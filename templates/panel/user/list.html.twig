@@ -1,0 +1,96 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Lista użytkowników{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">Użytkownicy</h1>
+
+          <a href="{{ path('panel_user_create') }}" class="col-auto btn btn-primary">
+            <i class="ti ti-plus me-1"></i> Dodaj użytkownika
+          </a>
+        </div>
+
+        <div class="card-body border-bottom py-3">
+          <form class="d-flex flex-column flex-md-row list-form" method="get">
+            <input type="hidden" name="page" value="{{ app.request.get('page')|default(1) }}"/>
+
+            <div class="text-secondary">
+              Pokaż
+              <div class="mx-2 d-inline-block">
+                <input type="number" name="number" class="form-control form-control-sm"
+                       value="{{ app.request.get('number')|default('15') }}" min="1" max="1000">
+              </div>
+              użytkowników
+            </div>
+          </form>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table card-table table-vcenter table-striped table-hover datatable">
+            <thead>
+            <tr>
+              <th class="w-1">ID</th>
+              <th>Zdjęcie</th>
+              <th>Pełna nazwa</th>
+              <th>Email</th>
+              <th>Stanowisko</th>
+              <th>Role</th>
+              <th>Data dodania</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+              <tr>
+                <td>{{ user.id }}</td>
+                <td class="text-center">
+                  {% if user.imagePath %}
+                    <img src="{{ user.imagePath }}" class="rounded-circle avatar"/>
+                  {% else %}
+                    <i class="ti ti-user avatar"></i>
+                  {% endif %}
+                </td>
+                <td>{{ user.fullName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.position }}</td>
+                <td>
+                  {% for role in user.roles %}
+                    <span class="badge badge-primary me-1">{{ role }}</span>
+                  {% endfor %}
+                </td>
+                <td>
+                  {{ user.createdAt|date('Y-m-d H:i') }}
+                </td>
+                <td>
+                  <div class="btn-list justify-content-end">
+                    <a href="{{ path('panel_user_edit', {'id': user.id}) }}" class="btn text-muted btn-icon">
+                      <i class="ti ti-edit-circle"></i>
+                    </a>
+
+                    <a href="{{ path('panel_user_delete', {'id': user.id}) }}"
+                       class="btn btn-danger btn-icon js-confirm">
+                      <i class="ti ti-trash"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer d-flex align-items-center">
+          <p class="m-0 text-secondary">Pokazane <span>{{ paginator.currentPageFirstItem }}</span> do
+            <span>{{ paginator.currentPageLastItem }}</span> z <span>{{ paginator.totalItems }}</span> użytkowników</p>
+
+          <div class="m-0 ms-auto">
+            {{ paginator.toHtml|raw }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

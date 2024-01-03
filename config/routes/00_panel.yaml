@@ -99,6 +99,23 @@ panel_categories_move_articles:
   path: /panel/categories/move-articles/{fromCategoryId}/{toCategoryId}
   controller: App\Controller\Panel\CategoryController::moveArticles
 
+# User management
+panel_user_create:
+  path: /panel/users/create
+  controller: App\Controller\Panel\UserController::create
+
+panel_user_delete:
+  path: /panel/users/{id}/delete
+  controller: App\Controller\Panel\UserController::delete
+
+panel_user_edit:
+    path: /panel/users/{id}/edit
+    controller: App\Controller\Panel\UserController::edit
+
+panel_user_list:
+  path: /panel/users
+  controller: App\Controller\Panel\UserController::list
+
 # User report
 panel_user_report_hide:
   path: /panel/user-report/{reportId}/hide
