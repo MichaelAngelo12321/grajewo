@@ -14,6 +14,7 @@ use App\Repository\Cached\GasStationCachedRepository;
 use App\Repository\GasStationRepository;
 use App\Service\FileUploader;
 use App\Service\ImageResizer;
+use App\Service\UserActivity;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,6 +30,7 @@ class UserContentController extends AbstractController
         private GasStationRepository $gasStationRepository,
         private GasStationCachedRepository $gasStationCachedRepository,
         private ImageResizer $imageResizer,
+        private UserActivity $userActivity,
     ) {
     }
 
@@ -41,6 +43,15 @@ class UserContentController extends AbstractController
 
             if (!$this->isCsrfTokenValid('gas_station_prices_add', $csrfToken)) {
                 $this->addFlash('danger', 'Nieprawidłowy token CSRF');
+
+                return $this->redirectToRoute('user_content_add_gas_station_prices_form');
+            }
+
+            if (!$this->userActivity->canUserPerformAction(
+                $request->getClientIp(),
+                $request->headers->get('User-Agent'),
+            )) {
+                $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
 
                 return $this->redirectToRoute('user_content_add_gas_station_prices_form');
             }
@@ -77,6 +88,8 @@ class UserContentController extends AbstractController
                 $this->entityManager->persist($gasStationPrice);
             }
 
+            $this->userActivity->recordUserActivity($request->getClientIp(), $request->headers->get('User-Agent'));
+
             $this->entityManager->flush();
 
             return $this->redirectToRoute('user_content_thank_you');
@@ -94,6 +107,15 @@ class UserContentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$this->userActivity->canUserPerformAction(
+                $request->getClientIp(),
+                $request->headers->get('User-Agent'),
+            )) {
+                $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
+
+                return $this->redirectToRoute('user_content_add_image_form');
+            }
+
             $image->setIpAddress($request->getClientIp());
             $image->setCreatedAt(new DateTimeImmutable());
             $image->setIsPublished(false);
@@ -107,6 +129,8 @@ class UserContentController extends AbstractController
 
                 $image->setImageUrl($imageFileName);
             }
+
+            $this->userActivity->recordUserActivity($request->getClientIp(), $request->headers->get('User-Agent'));
 
             $this->entityManager->persist($image);
             $this->entityManager->flush();
@@ -126,9 +150,20 @@ class UserContentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$this->userActivity->canUserPerformAction(
+                $request->getClientIp(),
+                $request->headers->get('User-Agent'),
+            )) {
+                $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
+
+                return $this->redirectToRoute('user_content_add_video_form');
+            }
+
             $video->setIpAddress($request->getClientIp());
             $video->setCreatedAt(new DateTimeImmutable());
             $video->setIsPublished(false);
+
+            $this->userActivity->recordUserActivity($request->getClientIp(), $request->headers->get('User-Agent'));
 
             $this->entityManager->persist($video);
             $this->entityManager->flush();

@@ -14,10 +14,12 @@
 {% block body %}
   <h1 class="fs-5 fw-bold mb-4">Prześlij nam dzisiejsze ceny paliw, które znasz</h1>
 
-  {% for danger in app.flashes('danger') %}
-    <div class="alert alert-danger">
-      {{ danger }}
-    </div>
+  {% for type, messages in app.flashes() %}
+    {% for message in messages %}
+      <div class="alert alert-{{ type }}">
+        {{ message }}
+      </div>
+    {% endfor %}
   {% endfor %}
 
   <form action="{{ path('user_content_add_gas_station_prices_form') }}" method="post" id="prices-form">

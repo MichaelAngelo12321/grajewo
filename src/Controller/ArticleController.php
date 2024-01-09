@@ -11,6 +11,7 @@ use App\Form\CommentType;
 use App\Helper\Paginator;
 use App\Repository\ArticleRepository;
 use App\Repository\Cached\ArticleCachedRepository;
+use App\Service\UserActivity;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +24,7 @@ class ArticleController extends AbstractController
         private ArticleRepository $articleRepository,
         private ArticleCachedRepository $articleCachedRepository,
         private EntityManagerInterface $entityManager,
+        private UserActivity $userActivity,
     ) {
     }
 
@@ -34,37 +36,54 @@ class ArticleController extends AbstractController
             throw $this->createNotFoundException('Article not found');
         }
 
-        $this->articleRepository->increaseViewsNumber($article);
+        $article->setViewsNumber($article->getViewsNumber() + 1);
 
-        $comment = new ArticleComment();
-        $commentForm = $this->createForm(CommentType::class, $comment);
-        $commentForm->handleRequest($request);
+        if (!$article->isHasCommentsDisabled()) {
+            $comment = new ArticleComment();
+            $commentForm = $this->createForm(CommentType::class, $comment);
+            $commentForm->handleRequest($request);
 
-        if ($commentForm->isSubmitted() && $commentForm->isValid() && !$article->isHasCommentsDisabled()) {
-            $comment->setArticle($article);
-            $comment->setIpAddress($request->getClientIp());
-            $comment->setCreatedAt(new DateTimeImmutable());
+            if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+                if (!$this->userActivity->canUserPerformAction(
+                    $request->getClientIp(),
+                    $request->headers->get('User-Agent'),
+                )) {
+                    $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
 
-            $article->setCommentsNumber($article->getCommentsNumber() + 1);
+                    return $this->redirectToRoute('article_details', [
+                        '__category' => $category->getSlug(),
+                        'id' => $id,
+                        'slug' => $slug,
+                    ]);
+                }
 
-            $this->entityManager->persist($article);
-            $this->entityManager->persist($comment);
-            $this->entityManager->flush();
+                $comment->setArticle($article);
+                $comment->setIpAddress($request->getClientIp());
+                $comment->setCreatedAt(new DateTimeImmutable());
 
-            $this->addFlash('success', 'Twój komentarz został dodany');
+                $article->setCommentsNumber($article->getCommentsNumber() + 1);
 
-            return $this->redirectToRoute('article_details', [
-                '_fragment' => 'comment-' . $comment->getId(),
-                '__category' => $category->getSlug(),
-                'id' => $id,
-                'slug' => $slug,
-            ]);
+                $this->entityManager->persist($article);
+                $this->entityManager->persist($comment);
+                $this->entityManager->flush();
+
+                $this->userActivity->recordUserActivity($request->getClientIp(), $request->headers->get('User-Agent'));
+
+                $this->addFlash('success', 'Twój komentarz został dodany');
+
+                return $this->redirectToRoute('article_details', [
+                    '_fragment' => 'comment-' . $comment->getId(),
+                    '__category' => $category->getSlug(),
+                    'id' => $id,
+                    'slug' => $slug,
+                ]);
+            }
         }
 
         return $this->render('app/article/details.html.twig', [
             'article' => $article,
             'category' => $category,
-            'commentForm' => $commentForm->createView(),
+            'commentForm' => isset($commentForm) ? $commentForm->createView() : null,
             'id' => $id,
             'slug' => $slug,
         ]);

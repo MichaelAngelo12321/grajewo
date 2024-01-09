@@ -10,6 +10,7 @@ use App\Form\UserReportType;
 use App\Repository\UserReportRepository;
 use App\Service\FileUploader;
 use App\Service\ImageResizer;
+use App\Service\UserActivity;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +24,7 @@ class UserReportController extends AbstractController
         private EntityManagerInterface $entityManager,
         private FileUploader $fileUploader,
         private ImageResizer $imageResizer,
+        private UserActivity $userActivity,
         private UserReportRepository $userReportRepository
     ) {
     }
@@ -34,6 +36,15 @@ class UserReportController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$this->userActivity->canUserPerformAction(
+                $request->getClientIp(),
+                $request->headers->get('User-Agent'),
+            )) {
+                $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
+
+                return $this->redirectToRoute('user_report_add');
+            }
+
             $report->setIpAddress($request->getClientIp());
             $report->setCreatedAt(new DateTimeImmutable());
 
@@ -46,6 +57,8 @@ class UserReportController extends AbstractController
 
                 $report->setImageUrl($imageFileName);
             }
+
+            $this->userActivity->recordUserActivity($request->getClientIp(), $request->headers->get('User-Agent'));
 
             $this->entityManager->persist($report);
             $this->entityManager->flush();

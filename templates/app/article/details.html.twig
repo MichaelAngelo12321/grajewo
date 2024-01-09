@@ -211,10 +211,12 @@
         {% endfor %}
       {% endif %}
 
-      {% for success in app.flashes('success') %}
-        <div class="alert alert-success">
-          {{ success }}
-        </div>
+      {% for type, messages in app.flashes() %}
+        {% for message in messages %}
+          <div class="alert alert-{{ type }}">
+            {{ message }}
+          </div>
+        {% endfor %}
       {% endfor %}
 
       <div class="form-group mb-3">
