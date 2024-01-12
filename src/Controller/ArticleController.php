@@ -80,6 +80,9 @@ class ArticleController extends AbstractController
             }
         }
 
+        $this->entityManager->persist($article);
+        $this->entityManager->flush();
+
         return $this->render('app/article/details.html.twig', [
             'article' => $article,
             'category' => $category,
