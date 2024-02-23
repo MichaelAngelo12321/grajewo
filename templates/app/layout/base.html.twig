@@ -23,6 +23,10 @@
 {% include 'app/layout/_header.html.twig' %}
 
 <div class="container container-main">
+  {% include 'app/widgets/promo_space.html.twig' with {
+    'content': '<img src="https://via.placeholder.com/1296x200" alt="Promo Space" class="img-fluid">'
+  } %}
+
   {% block topContent %}{% endblock %}
 
   <div class="row">

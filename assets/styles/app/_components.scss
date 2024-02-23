@@ -177,3 +177,21 @@ aside {
   }
 }
 // Widget end
+
+.promo-space {
+  &::before {
+    color: $text-muted;
+    content: "Materiał promocyjny";
+    font-size: 0.75rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+  position: relative;
+}

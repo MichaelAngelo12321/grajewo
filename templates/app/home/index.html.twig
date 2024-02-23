@@ -28,6 +28,10 @@
 
       {% if loop.index == 4 %}
         </div>
+
+        {% include 'app/widgets/promo_space.html.twig' with {
+          'content': '<img src="https://via.placeholder.com/996x200" alt="Promo Space" class="img-fluid">'
+        } %}
       {% endif %}
 
       {% if loop.index > 4 %}
