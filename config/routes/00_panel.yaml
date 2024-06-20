@@ -1,3 +1,21 @@
+# Advertisements
+panel_ad_list:
+  path: /panel/ads
+  controller: App\Controller\Panel\PromoItemController::list
+
+panel_ad_create:
+  path: /panel/ads/create
+  controller: App\Controller\Panel\PromoItemController::create
+
+panel_ad_edit:
+  path: /panel/ads/{id}/edit
+  controller: App\Controller\Panel\PromoItemController::edit
+
+panel_ad_delete:
+    path: /panel/ads/{id}/delete
+    controller: App\Controller\Panel\PromoItemController::delete
+
+# Dashboard
 panel_dashboard:
   path: /panel
   controller: App\Controller\Panel\DashboardController::index
