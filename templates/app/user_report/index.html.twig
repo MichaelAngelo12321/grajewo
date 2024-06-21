@@ -52,6 +52,18 @@
   {% endfor %}
 
   {% for report in reports %}
+    {% if loop.index == 4 %}
+      {% include 'app/widgets/promo_space.html.twig' with {
+        'slot': 'SRODEK_1'
+      } %}
+    {% endif %}
+
+    {% if loop.index == 8 %}
+      {% include 'app/widgets/promo_space.html.twig' with {
+        'slot': 'SRODEK_2'
+      } %}
+    {% endif %}
+
     {% if report.isHidden == false or (is_granted('ROLE_ADMIN') and report.isHidden) %}
       <div class="card mb-4" id="report-{{ report.id }}">
         <div class="fs-5 fw-bold">{{ report.name }}</div>

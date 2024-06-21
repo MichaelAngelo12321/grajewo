@@ -96,6 +96,11 @@ class PromoItem
         return $this;
     }
 
+    public function getEncodedTargetUrl(): ?string
+    {
+        return base64_encode($this->targetUrl);
+    }
+
     public function getTargetUrl(): ?string
     {
         return $this->targetUrl;

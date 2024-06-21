@@ -173,7 +173,7 @@ main {
 
 aside {
   .widget {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 }
 // Widget end
@@ -182,16 +182,17 @@ aside {
   &::before {
     color: $text-muted;
     content: "Materiał promocyjny";
-    font-size: 0.75rem;
+    font-size: 0.25rem;
+    text-transform: uppercase;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
     z-index: -1;
   }
 
   display: flex;
   justify-content: center;
-  padding: 1rem 0;
+  margin: 1rem 0 1.5rem 0;
   position: relative;
+  padding-top: 1.25rem;
 }

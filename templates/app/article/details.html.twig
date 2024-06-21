@@ -147,7 +147,7 @@
   </div>
 
   {% include 'app/widgets/promo_space.html.twig' with {
-    'content': '<img src="https://via.placeholder.com/996x200" alt="Promo Space" class="img-fluid">'
+    'slot': 'SRODEK_1'
   } %}
 
   <h3 class="fs-4 mt-2">
@@ -202,6 +202,10 @@
         {% endif %}
       {% endfor %}
     {% endif %}
+
+    {% include 'app/widgets/promo_space.html.twig' with {
+      'slot': 'SRODEK_2'
+    } %}
 
     <h4 class="fs-6 fw-bold mt-4 mb-3">Dodaj swój komentarz</h4>
 
