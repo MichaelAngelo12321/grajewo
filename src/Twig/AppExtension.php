@@ -86,6 +86,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('get_promo_item', [$this, 'getPromoItem']),
             new TwigFunction('get_setting', [$this->settingCachedRepository, 'get']),
             new TwigFunction('get_today_pharmacy_duty', [$this->pharmacyDutyCachedRepository, 'getTodayPharmacyDuty']),
+            new TwigFunction('update_promo_item_view_counters', [$this, 'updatePromoItemViewCounters']),
         ];
     }
 
@@ -121,5 +122,10 @@ class AppExtension extends AbstractExtension
     public function pregReplace($string, $regex = '', $replace = ''): string
     {
         return preg_replace($regex, $replace, $string);
+    }
+
+    public function updatePromoItemViewCounters(): void
+    {
+        $this->promoItemService->updateViewsCounters();
     }
 }

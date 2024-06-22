@@ -10,18 +10,38 @@ use App\Repository\PromoItemRepository;
 class PromoItemService
 {
     public function __construct(
-        private readonly PromoItemRepository $promoItemRepository
+        private readonly PromoItemRepository $promoItemRepository,
+        private array $availablePromoItems = [],
+        private array $displayedPromoItems = [],
     ) {
+    }
+
+    public function updateViewsCounters(): void
+    {
+        if (!empty($this->displayedPromoItems)) {
+            $this->promoItemRepository->increaseBatchViews($this->displayedPromoItems);
+        }
     }
 
     public function findBySlot(string $slot): ?PromoItem
     {
-        $promoItem = $this->promoItemRepository->findBySlot($slot);
+        if (empty($this->availablePromoItems)) {
+            $promoItems = $this->promoItemRepository->findAllActive();
 
-        if ($promoItem !== null) {
-            $this->promoItemRepository->incrementViews($promoItem);
+            /** @var PromoItem $item */
+            foreach ($promoItems as $item) {
+                if (!isset($this->availablePromoItems[$item->getPosition()])) {
+                    $this->availablePromoItems[$item->getPosition()] = $item;
+                }
+            }
         }
 
-        return $promoItem;
+        if (isset($this->availablePromoItems[$slot])) {
+            $this->displayedPromoItems[] = $this->availablePromoItems[$slot];
+
+            return $this->availablePromoItems[$slot];
+        }
+
+        return null;
     }
 }
