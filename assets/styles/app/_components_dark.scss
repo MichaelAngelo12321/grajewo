@@ -19,4 +19,12 @@
       }
     }
   }
+
+  .quick-links {
+    & .quick-link {
+      & .quick-link-icon {
+        background: $gray-800;
+      }
+    }
+  }
 }

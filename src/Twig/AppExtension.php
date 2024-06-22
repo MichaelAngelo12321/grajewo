@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use App\Entity\PromoItem;
 use App\Enum\ArticleStatus;
 use App\Repository\Cached\GasStationCachedRepository;
 use App\Repository\Cached\NameDayCachedRepository;
@@ -15,6 +16,7 @@ use App\Repository\External\AirPollutionRepository;
 use App\Repository\External\CurrencyRateRepository;
 use App\Repository\External\WeatherRepository;
 use App\Service\PolishCalendar;
+use App\Service\PromoItemService;
 use DateTime;
 use DateTimeImmutable;
 use Twig\Extension\AbstractExtension;
@@ -30,6 +32,7 @@ class AppExtension extends AbstractExtension
         private NameDayCachedRepository $nameDayCachedRepository,
         private PharmacyDutyCachedRepository $pharmacyDutyCachedRepository,
         private PolishCalendar $polishCalendar,
+        private PromoItemService $promoItemService,
         private SettingCachedRepository $settingCachedRepository,
         private UserContentCachedRepository $userContentCachedRepository,
         private UserReportCachedRepository $userReportCachedRepository,
@@ -80,8 +83,10 @@ class AppExtension extends AbstractExtension
             new TwigFunction('get_latest_daily_image', [$this->userContentCachedRepository, 'findLatestDailyImage']),
             new TwigFunction('get_latest_daily_video', [$this->userContentCachedRepository, 'findLatestDailyVideo']),
             new TwigFunction('get_latest_user_reports', [$this->userReportCachedRepository, 'findLatest']),
+            new TwigFunction('get_promo_item', [$this, 'getPromoItem']),
             new TwigFunction('get_setting', [$this->settingCachedRepository, 'get']),
             new TwigFunction('get_today_pharmacy_duty', [$this->pharmacyDutyCachedRepository, 'getTodayPharmacyDuty']),
+            new TwigFunction('update_promo_item_view_counters', [$this, 'updatePromoItemViewCounters']),
         ];
     }
 
@@ -93,6 +98,11 @@ class AppExtension extends AbstractExtension
             'diesel' => 'ON',
             'liquidGas' => 'LPG'
         ];
+    }
+
+    public function getPromoItem(string $slot): ?PromoItem
+    {
+        return $this->promoItemService->findBySlot($slot);
     }
 
     public function getRelativeDateTime(DateTimeImmutable $dateTime): string
@@ -112,5 +122,10 @@ class AppExtension extends AbstractExtension
     public function pregReplace($string, $regex = '', $replace = ''): string
     {
         return preg_replace($regex, $replace, $string);
+    }
+
+    public function updatePromoItemViewCounters(): void
+    {
+        $this->promoItemService->updateViewsCounters();
     }
 }

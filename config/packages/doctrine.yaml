@@ -11,6 +11,8 @@ doctrine:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         dql:
+            numeric_functions:
+                RAND: DoctrineExtensions\Query\Mysql\Rand
             string_functions:
                 DATE: DoctrineExtensions\Query\Mysql\Date
                 MATCH: App\Doctrine\Functions\MatchAgainst

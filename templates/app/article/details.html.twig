@@ -73,7 +73,7 @@
     </div>
   </div>
 
-  <div class="row mb-5 gap-3">
+  <div class="row mb-3 gap-3">
     <div class="col-12 col-xl-auto">
       <div class="card d-flex px-4">
         {% if article.author.imagePath %}
@@ -146,7 +146,11 @@
     </div>
   </div>
 
-  <h3 class="fs-4">
+  {% include 'app/widgets/promo_space.html.twig' with {
+    'slot': 'SRODEK_1'
+  } %}
+
+  <h3 class="fs-4 mt-2">
     Komentarze
   </h3>
 
@@ -198,6 +202,10 @@
         {% endif %}
       {% endfor %}
     {% endif %}
+
+    {% include 'app/widgets/promo_space.html.twig' with {
+      'slot': 'SRODEK_2'
+    } %}
 
     <h4 class="fs-6 fw-bold mt-4 mb-3">Dodaj swój komentarz</h4>
 

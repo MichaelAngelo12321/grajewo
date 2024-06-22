@@ -7,6 +7,10 @@
 
   {% include 'app/home/partials/top-category-articles.html.twig' %}
 
+  {% include 'app/widgets/promo_space.html.twig' with {
+    'slot': 'GLOWNA_1'
+  } %}
+
   {{ articlesList.horizontal('Najczęściej czytane', mostPopularArticles, 'info') }}
 
   {% for category in categories %}
@@ -28,6 +32,12 @@
 
       {% if loop.index == 4 %}
         </div>
+      {% endif %}
+
+      {% if loop.index == 6 %}
+        {% include 'app/widgets/promo_space.html.twig' with {
+          'slot': 'GLOWNA_2'
+        } %}
       {% endif %}
 
       {% if loop.index > 4 %}

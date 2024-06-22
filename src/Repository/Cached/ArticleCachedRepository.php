@@ -87,7 +87,7 @@ class ArticleCachedRepository
                 ->addSelect('c')
                 ->join('a.category', 'c')
                 ->orderBy('a.viewsNumber', 'DESC')
-                ->where("a.createdAt > DATE_SUB(CURRENT_DATE(), 5, 'DAY')")
+                ->where("(a.createdAt > DATE_SUB(CURRENT_DATE(), 7, 'DAY') OR a.updatedAt > DATE_SUB(CURRENT_DATE(), 7, 'DAY'))")
                 ->andWhere('a.status = :status')
                 ->setParameter('status', ArticleStatus::PUBLISHED)
                 ->setMaxResults($limit)

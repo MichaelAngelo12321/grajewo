@@ -41,6 +41,14 @@ article_events_list:
   path: /kalendarz-wydarzen
   controller: App\Controller\ArticleController::eventsList
 
+# Promo item redirect
+promo_item_redirect:
+  path: /promo/redirect/{id}/{redirectUrl}
+  controller: App\Controller\PromoItemController::targetUrlRedirect
+  requirements:
+    id: \d+
+    redirectUrl: .*
+
 # User content
 user_content_add_image_form:
   path: /przeslij/zdjecie

@@ -11,6 +11,7 @@ parameters:
     upload_directory: 'media/upload'
     max_image_width: 1200
     max_image_height: 1200
+    promo_item_positions: '%env(APP_PROMO_ITEM_POSITIONS)%'
     weather_api_key: '%env(APP_WEATHER_API_KEY)%'
     weather_api_lat: '%env(APP_WEATHER_API_LAT)%'
     weather_api_lon: '%env(APP_WEATHER_API_LON)%'

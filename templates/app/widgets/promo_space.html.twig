@@ -1,0 +1,13 @@
+{% set promoItem = get_promo_item(slot) %}
+
+{% if promoItem %}
+    <div class="promo-space">
+      {% if promoItem.targetUrl %}
+        <a href="{{ url('promo_item_redirect', { id: promoItem.id, redirectUrl: promoItem.getEncodedTargetUrl }) }}">
+          <img class="img-fluid" src="{{ promoItem.imageUrl }}" />
+        </a>
+      {% else %}
+        <img class="img-fluid" src="{{ promoItem.imageUrl }}" />
+      {% endif %}
+    </div>
+{% endif %}

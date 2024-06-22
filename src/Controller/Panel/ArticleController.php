@@ -90,28 +90,6 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    public function delete(int $id, Request $request): Response
-    {
-        $article = $this->articleRepository->find($id);
-
-        if ($article === null) {
-            throw $this->createNotFoundException();
-        }
-
-        if ($article->getImageUrl()) {
-            $this->fileCleaner->removeFile($article->getImageUrl());
-        }
-
-        $this->entityManager->remove($article);
-        $this->entityManager->flush();
-
-        $this->addFlash('success', 'Artykuł został usunięty');
-
-        return $request->headers->has('referer')
-            ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('panel_article_list');
-    }
-
     public function edit(int $id, Request $request): Response
     {
         $article = $this->articleRepository->find($id);
@@ -159,6 +137,28 @@ class ArticleController extends AbstractController
             'categories' => $categories,
             'form' => $articleForm->createView(),
         ]);
+    }
+
+    public function delete(int $id, Request $request): Response
+    {
+        $article = $this->articleRepository->find($id);
+
+        if ($article === null) {
+            throw $this->createNotFoundException();
+        }
+
+        if ($article->getImageUrl()) {
+            $this->fileCleaner->removeFile($article->getImageUrl());
+        }
+
+        $this->entityManager->remove($article);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Artykuł został usunięty');
+
+        return $request->headers->has('referer')
+            ? $this->redirect($request->headers->get('referer'))
+            : $this->redirectToRoute('panel_article_list');
     }
 
     public function list(Request $request): Response

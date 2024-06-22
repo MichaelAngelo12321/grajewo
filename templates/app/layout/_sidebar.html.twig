@@ -1,6 +1,14 @@
 {% include 'app/widgets/infoBox.html.twig' %}
 
+{% include 'app/widgets/promo_space.html.twig' with {
+  'slot': 'PRAWA_1'
+} %}
+
 {% include 'app/widgets/last_user_reports.html.twig' %}
+
+{% include 'app/widgets/promo_space.html.twig' with {
+  'slot': 'PRAWA_2'
+} %}
 
 {% include 'app/widgets/events_calendar.html.twig' %}
 
@@ -10,6 +18,14 @@
 
 {% include 'app/widgets/daily_video.html.twig' %}
 
+{% include 'app/widgets/promo_space.html.twig' with {
+  'slot': 'PRAWA_3'
+} %}
+
 {% include 'app/widgets/gas_station_prices.html.twig' %}
 
 {% include 'app/widgets/currency_rates.html.twig' %}
+
+{% include 'app/widgets/promo_space.html.twig' with {
+  'slot': 'PRAWA_4'
+} %}
