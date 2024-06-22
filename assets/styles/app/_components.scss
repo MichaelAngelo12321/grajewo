@@ -178,6 +178,48 @@ aside {
 }
 // Widget end
 
+// Quick links
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+
+  & .quick-link {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    font-size: 0.85rem;
+    gap: 0.5rem;
+
+    &:hover {
+      & .quick-link-icon {
+        background-color: $primary;
+
+        & svg path {
+          stroke: $white;
+        }
+      }
+    }
+
+    & .quick-link-icon {
+      align-items: center;
+      background: $light;
+      border-radius: 50%;
+      color: $primary;
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem;
+      transition: background-color 0.2s ease-in-out;
+
+      & svg path {
+        stroke: $primary;
+        transition: 0.2s all ease;
+      }
+    }
+  }
+}
+
 .promo-space {
   &::before {
     color: $text-muted;
