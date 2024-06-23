@@ -7,6 +7,7 @@ namespace App\Controller\Panel;
 use App\Entity\PromoItem;
 use App\Enum\UploadDirectory;
 use App\Form\PromoItemType;
+use App\Helper\Paginator;
 use App\Repository\PromoItemRepository;
 use App\Service\FileCleaner;
 use App\Service\FileUploader;
@@ -127,10 +128,19 @@ class PromoItemController extends AbstractController
 
     public function list(Request $request): Response
     {
-        $promoItems = $this->promoItemRepository->findAll();
+        $itemsPerPage = (int)$request->get('number', 15);
+        $page = (int)$request->get('page', 1);
+        $criteria = [];
+        $promoItems = $this->promoItemRepository->findBy($criteria, ['createdAt' => 'DESC'], $itemsPerPage, ($page - 1) * $itemsPerPage);
 
         return $this->render('panel/promo/item/list.html.twig', [
             'promoItems' => $promoItems,
+            'paginator' => new Paginator(
+                $this->promoItemRepository->count($criteria),
+                $itemsPerPage,
+                $page,
+                $request->getUri(),
+            ),
         ]);
     }
 }

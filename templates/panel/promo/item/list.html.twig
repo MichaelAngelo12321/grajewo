@@ -14,6 +14,20 @@
           </a>
         </div>
 
+        <div class="card-body border-bottom py-3">
+          <form class="d-flex flex-column flex-md-row list-form" method="get">
+            <input type="hidden" name="page" value="{{ app.request.get('page')|default(1) }}" />
+
+            <div class="text-secondary">
+              Pokaż
+              <div class="mx-2 d-inline-block">
+                <input type="number" name="number" class="form-control form-control-sm" value="{{ app.request.get('number')|default('15') }}"  min="1" max="1000">
+              </div>
+              reklam
+            </div>
+          </form>
+        </div>
+
         <div class="table-responsive">
           <table class="table card-table table-vcenter table-striped table-hover datatable">
             <thead>
@@ -83,11 +97,20 @@
                     <a href="{{ path('panel_ad_delete', {'id': promo.id}) }}" class="btn btn-danger btn-icon js-confirm">
                       <i class="ti ti-trash"></i>
                     </a>
+                  </div>
                 </td>
               </tr>
             {% endfor %}
             </tbody>
           </table>
+        </div>
+
+        <div class="card-footer d-flex align-items-center">
+          <p class="m-0 text-secondary">Pokazane <span>{{ paginator.currentPageFirstItem }}</span> do <span>{{ paginator.currentPageLastItem }}</span> z <span>{{ paginator.totalItems }}</span> reklam</p>
+
+          <div class="m-0 ms-auto">
+            {{ paginator.toHtml|raw }}
+          </div>
         </div>
       </div>
     </div>
