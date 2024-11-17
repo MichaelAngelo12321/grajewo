@@ -1,20 +1,3 @@
-# Advertisements
-panel_ad_list:
-  path: /panel/ads
-  controller: App\Controller\Panel\PromoItemController::list
-
-panel_ad_create:
-  path: /panel/ads/create
-  controller: App\Controller\Panel\PromoItemController::create
-
-panel_ad_edit:
-  path: /panel/ads/{id}/edit
-  controller: App\Controller\Panel\PromoItemController::edit
-
-panel_ad_delete:
-    path: /panel/ads/{id}/delete
-    controller: App\Controller\Panel\PromoItemController::delete
-
 # Dashboard
 panel_dashboard:
   path: /panel
@@ -53,6 +36,23 @@ panel_dashboard_save_pharmacy_duty:
   path: /panel/save-pharmacy-duty
   methods: [ POST ]
   controller: App\Controller\Panel\DashboardController::savePharmacyDuty
+
+# Advertisements
+panel_ad_list:
+  path: /panel/ads
+  controller: App\Controller\Panel\PromoItemController::list
+
+panel_ad_create:
+  path: /panel/ads/create
+  controller: App\Controller\Panel\PromoItemController::create
+
+panel_ad_edit:
+  path: /panel/ads/{id}/edit
+  controller: App\Controller\Panel\PromoItemController::edit
+
+panel_ad_delete:
+  path: /panel/ads/{id}/delete
+  controller: App\Controller\Panel\PromoItemController::delete
 
 # Auth
 panel_login:
@@ -116,6 +116,23 @@ panel_categories_delete:
 panel_categories_move_articles:
   path: /panel/categories/move-articles/{fromCategoryId}/{toCategoryId}
   controller: App\Controller\Panel\CategoryController::moveArticles
+
+# Galleries
+panel_gallery_create:
+  path: /panel/galleries/create
+  controller: App\Controller\Panel\GalleryController::create
+
+panel_gallery_delete:
+  path: /panel/galleries/{id}/delete
+  controller: App\Controller\Panel\GalleryController::delete
+
+panel_gallery_edit:
+  path: /panel/galleries/{id}/edit
+  controller: App\Controller\Panel\GalleryController::edit
+
+panel_gallery_list:
+  path: /panel/galleries
+  controller: App\Controller\Panel\GalleryController::list
 
 # User management
 panel_user_create:

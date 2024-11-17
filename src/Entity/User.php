@@ -47,9 +47,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $isActive = null;
 
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Gallery::class)]
+    private Collection $galleries;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
+        $this->galleries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -213,6 +217,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Gallery>
+     */
+    public function getGalleries(): Collection
+    {
+        return $this->galleries;
+    }
+
+    public function addGallery(Gallery $gallery): static
+    {
+        if (!$this->galleries->contains($gallery)) {
+            $this->galleries->add($gallery);
+            $gallery->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGallery(Gallery $gallery): static
+    {
+        if ($this->galleries->removeElement($gallery)) {
+            // set the owning side to null (unless already changed)
+            if ($gallery->getAuthor() === $this) {
+                $gallery->setAuthor(null);
+            }
+        }
 
         return $this;
     }

@@ -103,7 +103,6 @@ class ArticleEditType extends AbstractType
                 $article = $event->getData();
                 $form = $event->getForm();
 
-                $article->setAuthor($this->security->getUser());
                 $article->setUpdateAuthor($this->security->getUser());
 
                 if (

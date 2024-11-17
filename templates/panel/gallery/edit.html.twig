@@ -1,0 +1,252 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Edycja galerii zdjęć{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">Edycja galerii zdjęć</h1>
+
+          <a href="{{ path('panel_gallery_list') }}" class="col-auto btn btn-outline-secondary">
+            <i class="ti ti-arrow-back me-1"></i> Powrót do listy
+          </a>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="card-body py-3">
+          <div class="row">
+            {{ form_row(form.name, {attr: { class: 'form-control  form-control-lg'}}) }}
+
+            <div class="mb-3">
+              {{ form_label(form.images) }}
+              <div class="custom-file-upload">
+                {{ form_widget(form.images, {attr: { class: 'd-none' }}) }}
+                <button type="button" class="btn btn-primary" id="customFileUpload">
+                  <i class="ti ti-upload me-1"></i> Wybierz zdjęcia
+                </button>
+                <small class="form-text text-muted d-block mt-2">
+                  Maksymalna liczba zdjęć: {{ form.images.vars.attr['data-max-files'] }}
+                </small>
+              </div>
+              {{ form_errors(form.images) }}
+            </div>
+
+            <div id="imageGrid" class="row mt-3">
+              {% for image in gallery.galleryImages %}
+                <div class="image-wrapper existing-image" data-image-id="{{ image.id }}" draggable="true">
+                  <img src="{{ asset(image.imageUrl) }}" class="img-thumbnail" alt="Gallery image">
+                  <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 remove-existing">
+                    <i class="ti ti-x"></i>
+                  </button>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer text-end">
+          <div class="d-flex">
+            <button type="submit" class="btn btn-primary ms-auto">
+              <i class="ti ti-check me-1"></i> Zapisz galerię
+            </button>
+          </div>
+        </div>
+
+        {{ form_row(form.imageOrder, { attr: { class: 'd-none', id: 'imageOrder' } }) }}
+        {{ form_row(form.removedImages, { attr: { class: 'd-none', id: 'removedImages' } }) }}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('gallery_edit') }}"/>
+        {{ form_end(form) }}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #imageGrid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .image-wrapper {
+      width: 150px;
+      height: 150px;
+      position: relative;
+      cursor: move;
+      user-select: none;
+      transition: all 0.2s ease;
+      overflow: hidden;
+    }
+
+    .image-wrapper:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .image-wrapper.dragging {
+      opacity: 0.7;
+      transform: scale(1.05);
+      z-index: 1000;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .image-wrapper.drag-over {
+      border: 2px dashed #206bc4;
+      transform: scale(1.02);
+    }
+
+    .img-thumbnail {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s ease;
+    }
+
+    .image-wrapper:hover .img-thumbnail {
+      transform: scale(1.15);
+    }
+  </style>
+{% endblock %}
+
+{% block javascripts %}
+  <script type="application/javascript">
+    addEventListener('DOMContentLoaded', () => {
+      const imagesInput = document.getElementById('gallery_images')
+      const imageOrderInput = document.getElementById('gallery_imageOrder')
+      const maxFiles = parseInt(imagesInput.dataset.maxFiles)
+
+      imagesInput.value = ''
+      imagesInput.addEventListener('change', function (event) {
+        const files = event.target.files
+
+        if (files.length > maxFiles) {
+          alert(`Maksymalna liczba plików to ${maxFiles}`)
+          imagesInput.value = ''
+          return
+        }
+
+        const imageGrid = document.getElementById('imageGrid')
+        imageGrid.innerHTML = ''
+
+        Array.from(files).forEach((file, index) => {
+          const reader = new FileReader()
+          reader.onload = function (e) {
+            const wrapper = document.createElement('div')
+            wrapper.classList.add('image-wrapper')
+            wrapper.draggable = true
+            wrapper.dataset.index = index
+
+            const img = document.createElement('img')
+            img.src = e.target.result
+            img.classList.add('img-thumbnail')
+
+            const removeBtn = document.createElement('button')
+            removeBtn.type = 'button'
+            removeBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute', 'top-0', 'end-0', 'm-1')
+            removeBtn.innerHTML = '<i class="ti ti-x"></i>'
+            removeBtn.onclick = () => {
+              wrapper.remove()
+              updateImageOrder()
+            }
+
+            wrapper.appendChild(img)
+            wrapper.appendChild(removeBtn)
+            addDnDHandlers(wrapper)
+            imageGrid.appendChild(wrapper)
+            updateImageOrder()
+          }
+
+          reader.readAsDataURL(file)
+        })
+      })
+
+      const removedImagesInput = document.getElementById('gallery_removedImages')
+      const removedImages = new Set()
+
+      document.querySelectorAll('.remove-existing').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const wrapper = btn.closest('.image-wrapper')
+          const imageId = wrapper.dataset.imageId
+          removedImages.add(imageId)
+          removedImagesInput.value = Array.from(removedImages).join(',')
+          wrapper.remove()
+          updateImageOrder()
+        })
+      })
+
+      function updateImageOrder() {
+        const wrappers = document.querySelectorAll('.image-wrapper')
+        const order = Array.from(wrappers).map(wrapper => {
+          return wrapper.classList.contains('existing-image')
+            ? 'e' + wrapper.dataset.imageId
+            : 'n' + wrapper.dataset.index
+        })
+        imageOrderInput.value = order.join(',')
+        console.log(imageOrderInput.value)
+      }
+
+      let dragged
+
+      function handleDragStart(event) {
+        dragged = event.target
+        event.target.classList.add('dragging')
+        event.dataTransfer.effectAllowed = 'move'
+        event.dataTransfer.setData('text/plain', '')
+      }
+
+      function handleDragOver(event) {
+        event.preventDefault()
+        event.dataTransfer.dropEffect = 'move'
+
+        const target = event.target.closest('.image-wrapper')
+        if (target && target !== dragged) {
+          document.querySelectorAll('.image-wrapper').forEach(wrapper => {
+            wrapper.classList.remove('drag-over')
+          })
+          target.classList.add('drag-over')
+        }
+      }
+
+      function handleDrop(event) {
+        event.preventDefault()
+        const target = event.target.closest('.image-wrapper')
+        const draggedElem = dragged.closest('.image-wrapper')
+
+        if (target && target !== draggedElem) {
+          const parent = target.parentNode
+          const draggedIndex = Array.from(parent.children).indexOf(draggedElem)
+          const targetIndex = Array.from(parent.children).indexOf(target)
+
+          if (draggedIndex < targetIndex) {
+            target.parentNode.insertBefore(draggedElem, target.nextSibling)
+          } else {
+            target.parentNode.insertBefore(draggedElem, target)
+          }
+
+          updateImageOrder()
+        }
+      }
+
+      function handleDragEnd(event) {
+        event.target.classList.remove('dragging')
+        document.querySelectorAll('.image-wrapper').forEach(wrapper => {
+          wrapper.classList.remove('drag-over')
+        })
+      }
+
+      function addDnDHandlers(elem) {
+        elem.addEventListener('dragstart', handleDragStart)
+        elem.addEventListener('dragover', handleDragOver)
+        elem.addEventListener('drop', handleDrop)
+        elem.addEventListener('dragend', handleDragEnd)
+      }
+
+      const customFileUpload = document.getElementById('customFileUpload')
+      customFileUpload.addEventListener('click', () => {
+        imagesInput.click()
+      })
+    })
+  </script>
+{% endblock %}
