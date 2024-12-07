@@ -122,13 +122,8 @@
               </fieldset>
 
               <fieldset class="form-fieldset">
-                <div class="form-label">
-                  Galeria artykułu
-
-                  <div class="text-muted mt-1">
-                    > To se będzie kiedyś działać 😝
-                  </div>
-                </div>
+                {{ form_row(form.gallery, {attr: {class: 'form-select'}}) }}
+                {{ form_errors(form.gallery) }}
               </fieldset>
             </div>
           </div>

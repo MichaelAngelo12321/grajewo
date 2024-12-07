@@ -61,3 +61,9 @@ Chocolat(document.querySelectorAll('.image-lightbox'), {
   linkImages: false,
   pagination: () => '',
 })
+
+// Lightbox with gallery
+Chocolat(document.querySelectorAll('.gallery-lightbox'), {
+  className: 'gallery-is-open',
+  loop: true,
+})

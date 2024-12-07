@@ -80,6 +80,9 @@ class Article
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageCaption = null;
 
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    private ?Gallery $gallery = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -320,6 +323,18 @@ class Article
     public function setIsEvent(bool $isEvent): static
     {
         $this->isEvent = $isEvent;
+
+        return $this;
+    }
+
+    public function getGallery(): ?Gallery
+    {
+        return $this->gallery;
+    }
+
+    public function setGallery(?Gallery $gallery): static
+    {
+        $this->gallery = $gallery;
 
         return $this;
     }

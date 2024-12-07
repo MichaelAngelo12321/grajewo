@@ -132,16 +132,16 @@ class UserController extends AbstractController
 
     public function list(Request $request): Response
     {
-        $usersNumber = (int)$request->get('number', 15);
+        $itemsPerPage = (int)$request->get('number', 15);
         $page = (int)$request->get('page', 1);
         $criteria = [];
-        $users = $this->userRepository->findAll();
+        $users = $this->userRepository->findBy($criteria, ['createdAt' => 'DESC'], $itemsPerPage, ($page - 1) * $itemsPerPage);
 
         return $this->render('panel/user/list.html.twig', [
             'users' => $users,
             'paginator' => new Paginator(
                 $this->userRepository->count($criteria),
-                $usersNumber,
+                $itemsPerPage,
                 $page,
                 $request->getUri(),
             ),
