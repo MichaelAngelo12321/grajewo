@@ -69,6 +69,35 @@
         <div class="content">
           {{ article.content|raw }}
         </div>
+
+        {% if article.gallery %}
+          <div class="gallery-section my-5 py-4">
+            <h3 class="fs-4 mt-2">
+              Galeria zdjęć
+            </h3>
+
+            <div class="row g-3">
+              {% for image in article.gallery.galleryImages %}
+                <div class="col-6 col-lg-3">
+                  <div class="gallery-item h-100">
+                    <a
+                      href="{{ image.imageUrl }}"
+                      class="gallery-lightbox"
+                      target="_blank"
+                      title="{{ image.description|default('') }}"
+                    >
+                      <img
+                        src="{{ image.imageUrl|imagine_filter('article_gallery_image') }}"
+                        alt="{{ image.description|default('') }}"
+                        class="img-fluid rounded w-100 shadow-sm"
+                      />
+                    </a>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>

@@ -27,13 +27,27 @@ class GalleryRepository extends ServiceEntityRepository
         ?int $limit = null,
         ?int $offset = null
     ): array {
+        // Najpierw pobieramy ID galerii z limitem
+        $galleryIds = $this->createQueryBuilder('g')
+            ->select('g.id')
+            ->orderBy('g.' . key($orderBy), current($orderBy))
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
+        if (empty($galleryIds)) {
+            return [];
+        }
+
+        // Następnie pobieramy pełne dane dla wybranych galerii
         return $this->createQueryBuilder('g')
             ->leftJoin('g.galleryImages', 'gi')
             ->addSelect('gi')
+            ->where('g.id IN (:ids)')
+            ->setParameter('ids', array_column($galleryIds, 'id'))
             ->orderBy('g.' . key($orderBy), current($orderBy))
             ->addOrderBy('gi.positionOrder', 'ASC')
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }

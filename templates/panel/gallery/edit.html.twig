@@ -40,6 +40,9 @@
                   <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 remove-existing">
                     <i class="ti ti-x"></i>
                   </button>
+                  <input type="text" class="form-control image-description mt-2" value="{{ image.description }}"
+                         placeholder="Opis zdjęcia" data-image-id="{{ image.id }}"
+                  />
                 </div>
               {% endfor %}
             </div>
@@ -71,13 +74,13 @@
     }
 
     .image-wrapper {
-      width: 150px;
-      height: 150px;
+      width: 200px;
+      height: auto;
       position: relative;
       cursor: move;
       user-select: none;
       transition: all 0.2s ease;
-      overflow: hidden;
+      padding-bottom: 10px;
     }
 
     .image-wrapper:hover {
@@ -106,6 +109,21 @@
 
     .image-wrapper:hover .img-thumbnail {
       transform: scale(1.15);
+    }
+
+    .image-description {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      font-size: 0.9rem;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      z-index: 2;
+    }
+
+    .image-wrapper:hover .image-description {
+      transform: translateX(-50%) scale(0.95);
     }
   </style>
 {% endblock %}
@@ -151,8 +169,16 @@
               updateImageOrder()
             }
 
+            const descInput = document.createElement('input')
+            descInput.type = 'text'
+            descInput.classList.add('form-control', 'image-description', 'mt-2')
+            descInput.placeholder = 'Opis zdjęcia'
+            descInput.name = `new_image_descriptions[${index}]`
+
             wrapper.appendChild(img)
             wrapper.appendChild(removeBtn)
+            wrapper.appendChild(descInput)
+
             addDnDHandlers(wrapper)
             imageGrid.appendChild(wrapper)
             updateImageOrder()
@@ -184,68 +210,140 @@
             : 'n' + wrapper.dataset.index
         })
         imageOrderInput.value = order.join(',')
-        console.log(imageOrderInput.value)
       }
 
       let dragged
 
       function handleDragStart(event) {
-        dragged = event.target
-        event.target.classList.add('dragging')
+        if (!event.target.classList.contains('img-thumbnail')) {
+          event.preventDefault()
+          return
+        }
+
+        dragged = event.target.closest('.image-wrapper')
+        dragged.classList.add('dragging')
         event.dataTransfer.effectAllowed = 'move'
         event.dataTransfer.setData('text/plain', '')
       }
 
       function handleDragOver(event) {
         event.preventDefault()
-        event.dataTransfer.dropEffect = 'move'
+        const wrapper = event.target.closest('.image-wrapper')
 
-        const target = event.target.closest('.image-wrapper')
-        if (target && target !== dragged) {
-          document.querySelectorAll('.image-wrapper').forEach(wrapper => {
-            wrapper.classList.remove('drag-over')
-          })
-          target.classList.add('drag-over')
+        if (!wrapper || wrapper === dragged) {
+          return
         }
+
+        document.querySelectorAll('.image-wrapper').forEach(w => {
+          w.classList.remove('drag-over')
+        })
+
+        wrapper.classList.add('drag-over')
       }
 
       function handleDrop(event) {
         event.preventDefault()
-        const target = event.target.closest('.image-wrapper')
-        const draggedElem = dragged.closest('.image-wrapper')
+        const wrapper = event.target.closest('.image-wrapper')
 
-        if (target && target !== draggedElem) {
-          const parent = target.parentNode
-          const draggedIndex = Array.from(parent.children).indexOf(draggedElem)
-          const targetIndex = Array.from(parent.children).indexOf(target)
-
-          if (draggedIndex < targetIndex) {
-            target.parentNode.insertBefore(draggedElem, target.nextSibling)
-          } else {
-            target.parentNode.insertBefore(draggedElem, target)
-          }
-
-          updateImageOrder()
+        if (!wrapper || wrapper === dragged) {
+          return
         }
+
+        const imageGrid = document.getElementById('imageGrid')
+        const wrappers = Array.from(imageGrid.children)
+        const draggedIndex = wrappers.indexOf(dragged)
+        const dropIndex = wrappers.indexOf(wrapper)
+
+        if (draggedIndex < dropIndex) {
+          wrapper.parentNode.insertBefore(dragged, wrapper.nextSibling)
+        } else {
+          wrapper.parentNode.insertBefore(dragged, wrapper)
+        }
+
+        updateImageOrder()
       }
 
       function handleDragEnd(event) {
-        event.target.classList.remove('dragging')
+        dragged.classList.remove('dragging')
         document.querySelectorAll('.image-wrapper').forEach(wrapper => {
           wrapper.classList.remove('drag-over')
         })
       }
 
       function addDnDHandlers(elem) {
-        elem.addEventListener('dragstart', handleDragStart)
-        elem.addEventListener('dragover', handleDragOver)
-        elem.addEventListener('drop', handleDrop)
-        elem.addEventListener('dragend', handleDragEnd)
+        const img = elem.querySelector('.img-thumbnail')
+        img.draggable = true
+
+        img.addEventListener('dragstart', handleDragStart, false)
+        elem.addEventListener('dragover', handleDragOver, false)
+        elem.addEventListener('drop', handleDrop, false)
+        elem.addEventListener('dragend', handleDragEnd, false)
+
+        const descInput = elem.querySelector('.image-description')
+        if (descInput) {
+          descInput.draggable = false
+          descInput.addEventListener('mousedown', e => e.stopPropagation())
+          descInput.addEventListener('click', e => e.stopPropagation())
+        }
       }
+
+      document.querySelectorAll('.image-wrapper').forEach(wrapper => {
+        wrapper.draggable = false
+        const img = wrapper.querySelector('.img-thumbnail')
+        img.draggable = true
+        addDnDHandlers(wrapper)
+      })
 
       const customFileUpload = document.getElementById('customFileUpload')
       customFileUpload.addEventListener('click', () => {
         imagesInput.click()
+      })
+
+      // Add description handling for new images
+      function createImageWrapper(src, index) {
+        const wrapper = document.createElement('div')
+        wrapper.classList.add('image-wrapper')
+        wrapper.dataset.index = index
+
+        const img = document.createElement('img')
+        img.src = src
+        img.classList.add('img-thumbnail')
+        img.draggable = true
+
+        const removeBtn = document.createElement('button')
+        removeBtn.type = 'button'
+        removeBtn.classList.add('btn', 'btn-danger', 'btn-sm', 'position-absolute', 'top-0', 'end-0', 'm-1')
+        removeBtn.innerHTML = '<i class="ti ti-x"></i>'
+        removeBtn.onclick = () => {
+          wrapper.remove()
+          updateImageOrder()
+        }
+
+        const descInput = document.createElement('input')
+        descInput.type = 'text'
+        descInput.classList.add('form-control', 'image-description', 'mt-2')
+        descInput.placeholder = 'Opis zdjęcia'
+        descInput.name = `new_image_descriptions[${index}]`
+
+        wrapper.appendChild(img)
+        wrapper.appendChild(removeBtn)
+        wrapper.appendChild(descInput)
+
+        return wrapper
+      }
+
+      // Update the form submission to include descriptions
+      const form = document.querySelector('form')
+      form.addEventListener('submit', () => {
+        document.querySelectorAll('.image-description').forEach(input => {
+          if (input.dataset.imageId) {
+            const hiddenInput = document.createElement('input')
+            hiddenInput.type = 'hidden'
+            hiddenInput.name = `image_descriptions[${input.dataset.imageId}]`
+            hiddenInput.value = input.value
+            form.appendChild(hiddenInput)
+          }
+        })
       })
     })
   </script>

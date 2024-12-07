@@ -61,13 +61,13 @@
     }
 
     .image-wrapper {
-      width: 150px;
-      height: 150px;
+      width: 200px;
+      height: auto;
       position: relative;
       cursor: move;
       user-select: none;
       transition: all 0.2s ease;
-      overflow: hidden;
+      padding-bottom: 10px;
     }
 
     .image-wrapper:hover {
@@ -94,8 +94,19 @@
       transition: transform 0.2s ease;
     }
 
-    .image-wrapper:hover .img-thumbnail {
-      transform: scale(1.15);
+    .image-description {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      font-size: 0.9rem;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      z-index: 2;
+    }
+
+    .image-wrapper:hover .image-description {
+      transform: translateX(-50%) scale(0.95);
     }
   </style>
 {% endblock %}
@@ -125,12 +136,12 @@
           reader.onload = function(e) {
             const wrapper = document.createElement('div');
             wrapper.classList.add('image-wrapper');
-            wrapper.draggable = true;
             wrapper.dataset.index = index;
 
             const img = document.createElement('img');
             img.src = e.target.result;
             img.classList.add('img-thumbnail');
+            img.draggable = true;
 
             const removeBtn = document.createElement('button');
             removeBtn.type = 'button';
@@ -141,8 +152,16 @@
               updateImageOrder();
             };
 
+            const descInput = document.createElement('input');
+            descInput.type = 'text';
+            descInput.classList.add('form-control', 'image-description', 'mt-2');
+            descInput.placeholder = 'Opis zdjęcia';
+            descInput.name = `image_descriptions[${index}]`;
+
             wrapper.appendChild(img);
             wrapper.appendChild(removeBtn);
+            wrapper.appendChild(descInput);
+            
             addDnDHandlers(wrapper);
             imageGrid.appendChild(wrapper);
             updateImageOrder();
@@ -156,17 +175,20 @@
         const wrappers = document.querySelectorAll('.image-wrapper');
         const order = Array.from(wrappers).map(wrapper => wrapper.dataset.index);
         imageOrderInput.value = order.join(',');
-
-        console.log(imageOrderInput.value);
       }
 
       let dragged
 
       function handleDragStart(event) {
-        dragged = event.target;
-        event.target.classList.add('dragging');
-        event.dataTransfer.effectAllowed = 'move';
-        event.dataTransfer.setData('text/plain', '');
+        if (!event.target.classList.contains('img-thumbnail')) {
+          event.preventDefault();
+          return;
+        }
+        
+        dragged = event.target.closest('.image-wrapper')
+        dragged.classList.add('dragging')
+        event.dataTransfer.effectAllowed = 'move'
+        event.dataTransfer.setData('text/plain', '')
       }
 
       function handleDragOver(event) {
@@ -210,10 +232,20 @@
       }
 
       function addDnDHandlers(elem) {
-        elem.addEventListener('dragstart', handleDragStart);
-        elem.addEventListener('dragover', handleDragOver);
-        elem.addEventListener('drop', handleDrop);
-        elem.addEventListener('dragend', handleDragEnd);
+        const img = elem.querySelector('.img-thumbnail');
+        img.draggable = true;
+        
+        img.addEventListener('dragstart', handleDragStart, false);
+        elem.addEventListener('dragover', handleDragOver, false);
+        elem.addEventListener('drop', handleDrop, false);
+        elem.addEventListener('dragend', handleDragEnd, false);
+
+        const descInput = elem.querySelector('.image-description')
+        if (descInput) {
+          descInput.draggable = false;
+          descInput.addEventListener('mousedown', e => e.stopPropagation())
+          descInput.addEventListener('click', e => e.stopPropagation())
+        }
       }
 
       const customFileUpload = document.getElementById('customFileUpload');

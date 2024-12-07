@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Gallery;
 use App\Enum\ArticleStatus;
 use DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -87,6 +88,13 @@ class ArticleEditType extends AbstractType
             ->add('eventPlace', TextType::class, [
                 'label' => 'Lokalizacja',
                 'required' => false,
+            ])
+            ->add('gallery', EntityType::class, [
+                'class' => Gallery::class,
+                'choice_label' => 'name',
+                'required' => false,
+                'label' => 'Galeria artykułu',
+                'placeholder' => 'Wybierz galerię',
             ])
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 /** @var Article $article */

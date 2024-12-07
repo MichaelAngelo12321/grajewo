@@ -8,8 +8,15 @@ liip_imagine:
   filter_sets:
     cache: ~
 
+    article_gallery_image:
+      quality: 75
+      filters:
+        thumbnail:
+          mode: outbound
+          size: [ 260, 200 ]
+
     article_main_image:
-      quality: 70
+      quality: 80
       filters:
         thumbnail:
           allow_upscale: true

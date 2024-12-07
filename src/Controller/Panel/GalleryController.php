@@ -44,24 +44,18 @@ class GalleryController extends AbstractController
             $gallery->setAuthor($this->getUser());
             $gallery->setUpdateAuthor($this->getUser());
 
-            $imageOrder = array_filter(
-                explode(',', $galleryForm->get('imageOrder')->getData() ?? ''),
-            );
             $files = $galleryForm->get('images')->getData();
+            $descriptions = $request->request->all('image_descriptions') ?? [];
 
             if (!empty($files)) {
-                foreach ($imageOrder as $index) {
-                    if (!isset($files[(int)$index])) {
-                        continue;
-                    }
-
-                    $file = $files[(int)$index];
+                foreach ($files as $index => $file) {
                     $imageFileName = $this->fileUploader->upload($file, UploadDirectory::GALLERY);
                     $this->imageResizer->resize($imageFileName);
 
                     $galleryImage = new GalleryImage();
                     $galleryImage->setImageUrl($imageFileName);
-                    $galleryImage->setPositionOrder((int)$index);
+                    $galleryImage->setPositionOrder($index);
+                    $galleryImage->setDescription($descriptions[$index] ?? null);
 
                     $galleryImage->setGallery($gallery);
                     $this->entityManager->persist($galleryImage);
@@ -162,6 +156,15 @@ class GalleryController extends AbstractController
 
                     $this->entityManager->persist($galleryImage);
                     $position++;
+                }
+            }
+
+            $descriptions = $request->request->all('image_descriptions') ?? [];
+            foreach ($descriptions as $imageId => $description) {
+                $image = $this->galleryImageRepository->find($imageId);
+                if ($image && $image->getGallery() === $gallery) {
+                    $image->setDescription($description);
+                    $this->entityManager->persist($image);
                 }
             }
 

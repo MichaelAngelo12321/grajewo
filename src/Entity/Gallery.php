@@ -33,9 +33,13 @@ class Gallery
     #[ORM\OneToMany(mappedBy: 'gallery', targetEntity: GalleryImage::class, orphanRemoval: true)]
     private Collection $galleryImages;
 
+    #[ORM\OneToMany(mappedBy: 'gallery', targetEntity: Article::class)]
+    private Collection $articles;
+
     public function __construct()
     {
         $this->galleryImages = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +131,36 @@ class Gallery
             // set the owning side to null (unless already changed)
             if ($galleryImage->getGallery() === $this) {
                 $galleryImage->setGallery(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): static
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->setGallery($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): static
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getGallery() === $this) {
+                $article->setGallery(null);
             }
         }
 
