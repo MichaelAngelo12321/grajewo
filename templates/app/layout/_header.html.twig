@@ -1,7 +1,7 @@
 <header class="header fixed-top bg-body autohide">
   <nav class="navbar navbar-expand-xl">
     <div class="container">
-      <a href="/" class="navbar-brand">
+      <a href="{{ path('homepage') }}" class="navbar-brand">
         <img src="{{ asset('build/images/logo-dark.svg') }}" id="logo-top" alt="Logo serwisu" class="my-2"
              height="42"/>
       </a>
@@ -53,7 +53,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link fw-medium quick-link">
+            <a href="{{ path('advertisement_list') }}" class="nav-link fw-medium quick-link">
               <div class="quick-link-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" fill="none">
                   <path d="M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />

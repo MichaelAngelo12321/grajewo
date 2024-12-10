@@ -77,7 +77,7 @@ class UserReportController extends AbstractController
     {
         $userReports = $this->userReportRepository->findBy([], ['createdAt' => 'DESC'], 30);
 
-        return $this->render('app/user_report/index.html.twig', [
+        return $this->render('app/user_report/list.html.twig', [
             'reports' => $userReports
         ]);
     }

@@ -38,6 +38,11 @@ panel_dashboard_save_pharmacy_duty:
   controller: App\Controller\Panel\DashboardController::savePharmacyDuty
 
 # Advertisements
+panel_advertisement_remove:
+  path: /panel/advertisement/{advertisementId}/remove
+  controller: App\Controller\Panel\AdvertisementController::remove
+
+# Promo items
 panel_ad_list:
   path: /panel/ads
   controller: App\Controller\Panel\PromoItemController::list

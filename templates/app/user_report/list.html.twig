@@ -6,17 +6,17 @@
 {% block topContent %}
   <nav class="mb-3">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
+      <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Strona główna</a></li>
       <li class="breadcrumb-item active">Raport Czytelników</li>
     </ol>
   </nav>
 {% endblock %}
 
 {% block body %}
-  <div class="card mb-5">
+  <div class="card mb-3">
     <div class="row">
       <div class="col-12 col-lg-8">
-        <p class="fs-6 fw-bold">
+        <p class="fs-5 fw-bold">
           <svg xmlns="http://www.w3.org/2000/svg" class="me-1" width="24" height="24" viewBox="0 0 24 24"
                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -45,10 +45,12 @@
     </div>
   </div>
 
-  {% for success in app.flashes('success') %}
-    <div class="alert alert-success">
-      {{ success }}
-    </div>
+  {% for type, messages in app.flashes() %}
+    {% for message in messages %}
+      <div class="alert alert-{{ type }}">
+        {{ message }}
+      </div>
+    {% endfor %}
   {% endfor %}
 
   {% for report in reports %}

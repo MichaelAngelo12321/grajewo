@@ -11,6 +11,19 @@ user_report_add:
   path: /raport/dodaj
   controller: App\Controller\UserReportController::add
 
+# Advertisement
+advertisement_add:
+  path: /ogloszenia/dodaj
+  controller: App\Controller\AdvertisementController::add
+
+advertisement_list:
+  path: /ogloszenia/{category}
+  controller: App\Controller\AdvertisementController::list
+  defaults:
+    category: null
+  requirements:
+    category: '[a-z0-9-]*'
+
 # Article category
 article_category_old_redirect:
   path: /dzial-{__category}
