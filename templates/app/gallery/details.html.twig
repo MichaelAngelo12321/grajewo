@@ -1,0 +1,61 @@
+{% extends 'app/layout/base.html.twig' %}
+
+{% block title %}{{ gallery.name }} - {{ app_name }}{% endblock %}
+
+{% block topContent %}
+  <nav class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Strona główna</a></li>
+      <li class="breadcrumb-item"><a href="{{ path('gallery_list') }}">Galerie zdjęć</a></li>
+      <li class="breadcrumb-item active">{{ gallery.name }}</li>
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block body %}
+  <div class="row mb-4">
+    <div class="col-12">
+      <h1 class="fs-5 fw-bold">Galeria: {{ gallery.name }}</h1>
+
+      <div class="meta d-flex gap-3 text-muted mb-4">
+        <div class="d-flex align-items-center">
+          <img src="{{ asset('build/images/icons/photo.svg') }}" alt="Ikona zdjęcia" width="16" height="16"
+               class="me-1"/>
+          {{ gallery.galleryImages|length }} zdjęć
+        </div>
+        <div class="d-flex align-items-center">
+          <img src="{{ asset('build/images/icons/calendar.svg') }}" alt="Ikona kalendarza" width="16" height="16"
+               class="me-1"/>
+          {{ gallery.createdAt|date|format_datetime(pattern=app_datetime_format) }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-5">
+    {% for image in gallery.galleryImages %}
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="gallery-item h-100">
+          <a
+            href="{{ image.imageUrl }}"
+            class="gallery-lightbox"
+            target="_blank"
+            title="{{ image.description|default('') }}"
+          >
+            <img
+              src="{{ image.imageUrl|imagine_filter('article_gallery_image') }}"
+              alt="{{ image.description|default('') }}"
+              class="img-fluid rounded w-100 shadow-sm"
+              style="aspect-ratio: 16/9; object-fit: cover;"
+            />
+          </a>
+          {% if image.description %}
+            <div class="mt-2 text-muted small">
+              {{ image.description }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

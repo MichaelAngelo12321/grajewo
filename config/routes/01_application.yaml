@@ -54,6 +54,15 @@ article_events_list:
   path: /kalendarz-wydarzen
   controller: App\Controller\ArticleController::eventsList
 
+# Galleries
+gallery_details:
+  path: /galeria/{id}
+  controller: App\Controller\GalleryController::details
+
+gallery_list:
+  path: /galerie
+  controller: App\Controller\GalleryController::list
+
 # Promo item redirect
 promo_item_redirect:
   path: /promo/redirect/{id}/{redirectUrl}

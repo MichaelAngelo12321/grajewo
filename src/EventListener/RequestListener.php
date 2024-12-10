@@ -33,6 +33,7 @@ class RequestListener
             '/przeslij',
             '/promo',
             '/ogloszenia',
+            '/galeria',
             '/galerie',
         ];
         $request = $event->getRequest();
