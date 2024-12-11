@@ -30,3 +30,9 @@
 .top-nav-item {
   font-size: 0.9rem;
 }
+
+@media (max-width: 576px) {
+  .row {
+    --bs-gutter-x: 1rem;
+  }
+}

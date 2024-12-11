@@ -29,9 +29,7 @@ class NameDayCachedRepository
                 'month' => date('m'),
             ]);
 
-            return $nameDay
-                ? implode(', ', explode(' ', $nameDay->getNames()))
-                : null;
+            return $nameDay->getNames();
         });
     }
 }

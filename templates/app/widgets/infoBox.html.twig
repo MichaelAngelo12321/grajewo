@@ -41,7 +41,7 @@
     {% endif %}
 
     <div class="border-bottom pb-2 text-center">
-      <p class="m-0 fw-bold fs-6">{{ date('')|format_datetime(pattern='eeee, d MMMM y')|capitalize }}</p>
+      <p class="m-0 fw-bold fs-6 text-primary">{{ date('')|format_datetime(pattern='eeee, d MMMM y')|capitalize }}</p>
       <p class="m-0 fs-smaller"><small>Imieniny</small> <strong>{{ get_current_day_names() }}</strong></p>
     </div>
 
