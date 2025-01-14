@@ -1,0 +1,15 @@
+{% extends 'app/layout/base.html.twig' %}
+
+{% block title %}{{ staticPage.title }} - {{ app_name }}{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <h1 class="mb-2 fs-2">{{ staticPage.title }}</h1>
+
+      <div class="py-3">
+        {{ staticPage.content|raw }}
+      </div>
+    </div>
+  </div>
+{% endblock %}

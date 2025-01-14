@@ -88,6 +88,11 @@ user_content_thank_you:
   path: /przeslij/dziekujemy
   controller: App\Controller\UserContentController::thankYouPage
 
+# Static pages
+static_page_show:
+  path: /info/{slug}
+  controller: App\Controller\StaticPageController::show
+
 # At the end of the file
 article_category:
   path: /{__category}

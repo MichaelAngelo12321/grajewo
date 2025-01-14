@@ -35,6 +35,7 @@ class RequestListener
             '/ogloszenia',
             '/galeria',
             '/galerie',
+            '/info',
         ];
         $request = $event->getRequest();
         $pathInfo = $request->getPathInfo();

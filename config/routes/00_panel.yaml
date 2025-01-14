@@ -190,6 +190,23 @@ panel_gas_station_set_prices:
   path: /panel/gas-station/set-prices
   controller: App\Controller\Panel\GasPriceController::setPrices
 
+# Static pages
+panel_static_page_list:
+  path: /panel/static-pages
+  controller: App\Controller\Panel\StaticPageController::list
+
+panel_static_page_create:
+  path: /panel/static-pages/create
+  controller: App\Controller\Panel\StaticPageController::create
+
+panel_static_page_edit:
+  path: /panel/static-pages/{id}/edit
+  controller: App\Controller\Panel\StaticPageController::edit
+
+panel_static_page_delete:
+  path: /panel/static-pages/{id}/delete
+  controller: App\Controller\Panel\StaticPageController::delete
+
 # Temp
 # TODO: move to controllers with low priority for application_category
 panel_temporary_development_status:
