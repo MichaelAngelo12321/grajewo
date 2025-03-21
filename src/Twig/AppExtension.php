@@ -115,7 +115,7 @@ class AppExtension extends AbstractExtension
         } elseif ($diff->d === 1) {
             return 'wczoraj, ' . $dateTime->format('H:i');
         } else {
-            return $dateTime->format('Y-m-d');
+            return $dateTime->format('d.m.Y H:i');
         }
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Repository\AdvertisementRepository;
 use App\Repository\Cached\ArticleCachedRepository;
 use App\Repository\Cached\CategoryCachedRepository;
 use App\Service\PolishCalendarEvent;
@@ -13,9 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
 class HomeController extends AbstractController
 {
     public function __construct(
-        private ArticleCachedRepository $articleRepository,
-        private CategoryCachedRepository $categoryRepository,
-        private PolishCalendarEvent $polishCalendarEvent,
+        private readonly AdvertisementRepository $advertisementRepository,
+        private readonly ArticleCachedRepository $articleRepository,
+        private readonly CategoryCachedRepository $categoryRepository,
+        private readonly PolishCalendarEvent $polishCalendarEvent,
     ) {
     }
 
@@ -26,6 +28,7 @@ class HomeController extends AbstractController
         $topCategory = $this->categoryRepository->findTopCategory();
         $topCategoryArticles = $this->articleRepository->findLatestArticlesFromCategory($topCategory, 7);
         $mostPopularArticles = $this->articleRepository->findMostPopularArticles(4);
+        $latestAdvertisements = $this->advertisementRepository->findLatestAdvertisements(4);
 
         $categories = $this->categoryRepository->findAll();
         $articles = [];
@@ -39,6 +42,7 @@ class HomeController extends AbstractController
             [
                 'articles' => $articles,
                 'categories' => $categories,
+                'latestAdvertisements' => $latestAdvertisements,
                 'mostPopularArticles' => $mostPopularArticles,
                 'topCategory' => $topCategory,
                 'topCategoryArticles' => $topCategoryArticles,

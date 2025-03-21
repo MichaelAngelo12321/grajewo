@@ -35,4 +35,14 @@ class AdvertisementRepository extends ServiceEntityRepository
             ->getRepository(AdvertisementCategory::class)
             ->findOneBy(['slug' => $slug]);
     }
+
+    public function findLatestAdvertisements(int $limit): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.isActive = true')
+            ->orderBy('a.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -13,6 +13,29 @@
 
   {{ articlesList.horizontal('Najczęściej czytane', mostPopularArticles, 'info') }}
 
+  <div class="card widget mb-5">
+    <div class="card-header d-flex">
+      <h5 class="section-title info"><a href="{{ path('advertisement_list') }}">Najnowsze ogłoszenia</a></h5>
+      <div class="ms-auto">
+        <a href="{{ path('advertisement_add') }}" class="btn btn-sm btn-primary">Dodaj ogłoszenie</a>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        {% for advertisement in latestAdvertisements %}
+          <div class="col-12 col-md-6 mb-3">
+            <div class="fw-bold">{{ advertisement.title }}</div>
+            <p class="mb-0">{{ advertisement.content }}</p>
+
+            <div class="text-muted">
+              <small>Dodane: {{ advertisement.createdAt|date|format_datetime(pattern=app_datetime_short_format) }}</small>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
   {% for category in categories %}
     {% if category.isRoot or category.positionOrder == 0 %}
     {% else %}
