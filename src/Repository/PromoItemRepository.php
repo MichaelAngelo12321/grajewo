@@ -34,18 +34,16 @@ class PromoItemRepository extends ServiceEntityRepository
                 ->andWhere('pi.isActive = true');
 
             $qb->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->andX(
-                        $qb->expr()->isNotNull('pi.startDate'),
-                        $qb->expr()->isNotNull('pi.endDate'),
+                $qb->expr()->andX(
+                    $qb->expr()->orX(
                         $qb->expr()->lte('pi.startDate', ':today'),
+                        $qb->expr()->isNull('pi.startDate')
+                    ),
+                    $qb->expr()->orX(
                         $qb->expr()->gte('pi.endDate', ':today'),
-                    ),
-                    $qb->expr()->andX(
-                        $qb->expr()->isNull('pi.startDate'),
-                        $qb->expr()->isNull('pi.endDate'),
-                    ),
-                ),
+                        $qb->expr()->isNull('pi.endDate')
+                    )
+                )
             )->setParameter('today', $today->format('Y-m-d'));
 
             return $qb->orderBy('RAND()')
@@ -66,18 +64,16 @@ class PromoItemRepository extends ServiceEntityRepository
                 ->setParameter('slot', $slot);
 
             $qb->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->andX(
-                        $qb->expr()->isNotNull('pi.startDate'),
-                        $qb->expr()->isNotNull('pi.endDate'),
+                $qb->expr()->andX(
+                    $qb->expr()->orX(
                         $qb->expr()->lte('pi.startDate', ':today'),
+                        $qb->expr()->isNull('pi.startDate')
+                    ),
+                    $qb->expr()->orX(
                         $qb->expr()->gte('pi.endDate', ':today'),
-                    ),
-                    $qb->expr()->andX(
-                        $qb->expr()->isNull('pi.startDate'),
-                        $qb->expr()->isNull('pi.endDate'),
-                    ),
-                ),
+                        $qb->expr()->isNull('pi.endDate')
+                    )
+                )
             )->setParameter('today', $today->format('Y-m-d'));
 
             $results = $qb->getQuery()->getResult();
