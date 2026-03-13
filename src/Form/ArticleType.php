@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -68,10 +69,15 @@ class ArticleType extends AbstractType
                 'label' => 'Podpis pod zdjęciem',
                 'required' => false,
             ])
+            ->add('videoUrl', UrlType::class, [
+                'label' => 'Link do wideo (YouTube)',
+                'required' => false,
+            ])
             ->add('publishArticle', CheckboxType::class, [
                 'label' => 'Opublikuj artykuł po zapisaniu',
                 'mapped' => false,
                 'required' => false,
+                'data' => true,
             ])
             ->add('hasCommentsDisabled', CheckboxType::class, [
                 'label' => 'Wyłącz komentarze',
@@ -99,6 +105,17 @@ class ArticleType extends AbstractType
                 'required' => false,
                 'label' => 'Galeria artykułu',
                 'placeholder' => 'Wybierz galerię',
+            ])
+            ->add('poll', EntityType::class, [
+                'class' => \App\Entity\Poll::class,
+                'choice_label' => 'question',
+                'required' => false,
+                'label' => 'Ankieta',
+                'placeholder' => 'Wybierz ankietę (opcjonalnie)',
+                'query_builder' => function (\App\Repository\PollRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.createdAt', 'DESC');
+                },
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 /** @var Article $article */

@@ -14,6 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommentType extends AbstractType
 {
+    public function __construct(
+        private bool $recaptchaEnabled,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -23,12 +28,16 @@ class CommentType extends AbstractType
             ])
             ->add('content', null, [
                 'label' => 'Treść komentarza',
-            ])
-            ->add('captcha', Recaptcha3Type::class, [
+            ]);
+
+        if ($this->recaptchaEnabled) {
+            $builder->add('captcha', Recaptcha3Type::class, [
                 'constraints' => new Recaptcha3(),
                 'action_name' => 'article_comment',
-            ])
-            ->add('submit', SubmitType::class, [
+            ]);
+        }
+
+        $builder->add('submit', SubmitType::class, [
                 'label' => 'Dodaj komentarz',
             ])
         ;

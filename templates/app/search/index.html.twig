@@ -1,0 +1,78 @@
+{% extends 'app/layout/base.html.twig' %}
+
+{% block title %}Wyniki wyszukiwania dla: {{ query }} - {{ app_name }}{% endblock %}
+
+{% block body %}
+    <nav class="mb-2 border-left border-danger-subtle border-2">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Strona główna</a></li>
+            <li class="breadcrumb-item active">Wyniki wyszukiwania</li>
+        </ol>
+    </nav>
+
+    <div class="widget mt-1">
+        <h1 class="section-title primary">Wyniki wyszukiwania dla: "{{ query }}"</h1>
+
+        {% if articles is empty %}
+            <div class="alert alert-info">
+                Brak wyników wyszukiwania dla podanej frazy.
+            </div>
+        {% else %}
+            {% for article in articles %}
+                <div class="list-news d-flex flex-column flex-sm-row gap-3 mb-4">
+                    <div class="flex-shrink-0">
+                        <a href="{{ path('article_details', {
+                            '__category': article.category.slug,
+                            'id': article.id,
+                            'slug': article.name|lower|slug
+                        }) }}">
+                            <img class="rounded-1"
+                                 style="width: 200px; height: 133px; object-fit: cover;"
+                                 alt="{{ article.name }}"
+                                 src="{{ article.imageUrl|default('/build/images/empty-photo.png')|imagine_filter('article_list_image') }}"
+                                 loading="lazy"
+                            />
+                        </a>
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <h2 class="fs-5 mb-1">
+                            <a href="{{ path('article_details', {
+                                '__category': article.category.slug,
+                                'id': article.id,
+                                'slug': article.name|lower|slug
+                            }) }}" class="text-decoration-none text-dark hover-primary">
+                                {{ article.name }}
+                            </a>
+                        </h2>
+
+                        <div class="meta d-flex flex-wrap gap-3 text-muted small mb-2">
+                            <div class="date">
+                                <i class="ti ti-calendar me-1"></i>
+                                {{ article.createdAt|date('d.m.Y H:i') }}
+                            </div>
+
+                            <div class="views">
+                                <i class="ti ti-eye me-1"></i>
+                                {{ article.viewsNumber }}
+                            </div>
+
+                            <div class="comments">
+                                <i class="ti ti-message me-1"></i>
+                                {{ article.commentsNumber }}
+                            </div>
+                        </div>
+
+                        <p class="text-muted mb-0">
+                            {{ article.excerpt|striptags|slice(0, 200) }}...
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <nav class="mt-4">
+                {{ paginator.toHtml|raw }}
+            </nav>
+        {% endif %}
+    </div>
+{% endblock %}

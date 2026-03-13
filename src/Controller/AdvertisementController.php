@@ -41,14 +41,15 @@ class AdvertisementController extends AbstractController
             }
 
             $advertisement->setCreatedAt(new DateTimeImmutable());
-            $advertisement->setIsActive(true);
+            $advertisement->setIsActive(false);
+            $advertisement->setIpAddress($request->getClientIp());
 
             $this->userActivity->recordUserActivity($request->getClientIp(), $request->headers->get('User-Agent'));
 
             $this->entityManager->persist($advertisement);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Dziękujemy za dodanie ogłoszenia. Jest ono już widoczne w serwisie.');
+            $this->addFlash('success', 'Dziękujemy za dodanie ogłoszenia. Będzie ono widoczne po zatwierdzeniu przez moderatora.');
 
             return $this->redirectToRoute('advertisement_list');
         }
@@ -63,24 +64,38 @@ class AdvertisementController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $itemsPerPage = 20;
 
-        $criteria = ['isActive' => true];
+        $baseCriteria = ['isActive' => true];
         if ($category) {
-            $criteria['category'] = $this->advertisementRepository->findCategoryBySlug($category);
+            $baseCriteria['category'] = $this->advertisementRepository->findCategoryBySlug($category);
         }
 
+        $promotedCriteria = $baseCriteria;
+        $promotedCriteria['isPromoted'] = true;
+        $promotedAdvertisements = $this->advertisementRepository->findBy(
+            $promotedCriteria,
+            ['createdAt' => 'DESC'],
+            5
+        );
+
+        $standardCriteria = $baseCriteria;
+        $standardCriteria['isPromoted'] = false;
+
         $advertisements = $this->advertisementRepository->findBy(
-            $criteria,
+            $standardCriteria,
             ['createdAt' => 'DESC'],
             $itemsPerPage,
             ($page - 1) * $itemsPerPage,
         );
 
+        $this->advertisementRepository->increaseBatchViews(array_merge($promotedAdvertisements, $advertisements));
+
         return $this->render('app/advertisement/list.html.twig', [
             'advertisements' => $advertisements,
+            'promotedAdvertisements' => $promotedAdvertisements,
             'categories' => $this->advertisementRepository->findAllCategories(),
             'currentCategory' => $category,
             'paginator' => new Paginator(
-                $this->advertisementRepository->count($criteria),
+                $this->advertisementRepository->count($standardCriteria),
                 $itemsPerPage,
                 $page,
                 $request->getPathInfo(),

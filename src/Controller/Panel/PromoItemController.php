@@ -132,9 +132,11 @@ class PromoItemController extends AbstractController
         $page = (int)$request->get('page', 1);
         $criteria = [];
         $promoItems = $this->promoItemRepository->findBy($criteria, ['createdAt' => 'DESC'], $itemsPerPage, ($page - 1) * $itemsPerPage);
+        $slotCounts = $this->promoItemRepository->countActivePerSlot();
 
         return $this->render('panel/promo/item/list.html.twig', [
             'promoItems' => $promoItems,
+            'slotCounts' => $slotCounts,
             'paginator' => new Paginator(
                 $this->promoItemRepository->count($criteria),
                 $itemsPerPage,

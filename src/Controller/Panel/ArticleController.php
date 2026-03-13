@@ -54,6 +54,26 @@ class ArticleController extends AbstractController
             : $this->redirectToRoute('panel_article_list');
     }
 
+    public function bump(int $id, Request $request): Response
+    {
+        $article = $this->articleRepository->find($id);
+
+        if ($article === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $article->setBumpedAt(new DateTimeImmutable());
+
+        $this->entityManager->persist($article);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Artykuł został podbity');
+
+        return $request->headers->has('referer')
+            ? $this->redirect($request->headers->get('referer'))
+            : $this->redirectToRoute('panel_article_list');
+    }
+
     public function create(Request $request): Response
     {
         $categories = $this->categoryCachedRepository->findAll();
@@ -75,6 +95,13 @@ class ArticleController extends AbstractController
 
             $article->setCreatedAt(new DateTimeImmutable());
             $article->setUpdatedAt(new DateTimeImmutable());
+            $article->setBumpedAt(new DateTimeImmutable());
+
+            if ($articleForm->get('publishArticle')->getData()) {
+                $article->setStatus(ArticleStatus::PUBLISHED);
+            } else {
+                $article->setStatus(ArticleStatus::DRAFT);
+            }
 
             $this->entityManager->persist($article);
             $this->entityManager->flush();

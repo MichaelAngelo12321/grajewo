@@ -1,0 +1,22 @@
+framework:
+    html_sanitizer:
+        sanitizers:
+            default:
+                # Allow safe elements and attributes
+                allow_safe_elements: true
+                allow_static_elements: true
+
+                # Allow "class" attribute for styling (e.g. Bootstrap)
+                allow_attributes:
+                    'class': '*'
+                    'style': '*'
+
+                # Allow links with specific protocols
+                allowed_link_schemes: ['http', 'https', 'mailto']
+                allowed_media_schemes: ['http', 'https']
+
+                # Force target="_blank" and rel="noopener noreferrer" on external links
+                force_attributes:
+                    'a':
+                        'rel': 'noopener noreferrer'
+                        'target': '_blank'

@@ -80,13 +80,43 @@ class PromoItemRepository extends ServiceEntityRepository
                 ),
             )->setParameter('today', $today->format('Y-m-d'));
 
-            return $qb->orderBy('RAND()')
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getSingleResult();
+            $results = $qb->getQuery()->getResult();
+
+            if (empty($results)) {
+                return null;
+            }
+
+            return $results[array_rand($results)];
         } catch (NoResultException|NonUniqueResultException) {
             return null;
         }
+    }
+
+    public function countActivePerSlot(): array
+    {
+        $today = new DateTimeImmutable();
+        $qb = $this->createQueryBuilder('pi')
+            ->select('pi.position as slot, COUNT(pi.id) as count')
+            ->andWhere('pi.isActive = true');
+
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->andX(
+                    $qb->expr()->isNotNull('pi.startDate'),
+                    $qb->expr()->isNotNull('pi.endDate'),
+                    $qb->expr()->lte('pi.startDate', ':today'),
+                    $qb->expr()->gte('pi.endDate', ':today'),
+                ),
+                $qb->expr()->andX(
+                    $qb->expr()->isNull('pi.startDate'),
+                    $qb->expr()->isNull('pi.endDate'),
+                ),
+            ),
+        )->setParameter('today', $today->format('Y-m-d'));
+
+        return $qb->groupBy('pi.position')
+            ->getQuery()
+            ->getResult();
     }
 
     public function increaseBatchViews(array $items): void

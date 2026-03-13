@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Enum\UploadDirectory;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -17,8 +18,14 @@ class FileUploader
     ) {
     }
 
-    public function upload(UploadedFile $file, UploadDirectory $uploadDirectory): string
+    public function upload(UploadedFile $file, UploadDirectory $uploadDirectory, array $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']): string
     {
+        $mimeType = $file->getMimeType();
+
+        if (!in_array($mimeType, $allowedMimeTypes, true)) {
+            throw new FileException(sprintf('Niedozwolony typ pliku: %s. Dozwolone typy: %s', $mimeType, implode(', ', $allowedMimeTypes)));
+        }
+
         $fileName = $this->getTargetFilename($file);
         $file->move($this->getTargetDirectory($uploadDirectory), $fileName);
 

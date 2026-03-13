@@ -22,8 +22,8 @@ class CategoryListener
 
     public function clearCache(): void
     {
-        $this->cache->clear(CacheKeyPrefix::CATEGORY_ALL);
-        $this->cache->clear(CacheKeyPrefix::CATEGORY_TOP);
-        $this->cache->clear(CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY);
+        $this->cache->delete(CacheKeyPrefix::CATEGORY_ALL);
+        $this->cache->delete(CacheKeyPrefix::CATEGORY_TOP);
+        $this->cache->delete(CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY);
     }
 }

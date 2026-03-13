@@ -70,8 +70,22 @@
         </div>
 
         <div class="content">
-          {{ article.content|raw }}
-        </div>
+      {{ article.content|inject_ads|sanitize_html }}
+    </div>
+
+        {% if article.youtubeId %}
+          <div class="video-section my-4">
+            <div class="ratio ratio-16x9">
+              <iframe
+                src="https://www.youtube.com/embed/{{ article.youtubeId }}"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+        {% endif %}
 
         {% if article.gallery %}
           <div class="gallery-section my-5 py-4">
@@ -182,6 +196,52 @@
     'slot': 'SRODEK_1'
   } %}
 
+  {% if article.poll and article.poll.isActive %}
+    <div class="card my-4 border-primary">
+      <div class="card-header bg-primary text-white">
+        <h5 class="card-title mb-0">Ankieta: {{ article.poll.question }}</h5>
+      </div>
+      <div class="card-body">
+        {% set user_voted = app.request.cookies.has('poll_voted_' ~ article.poll.id) %}
+
+        {% if user_voted %}
+          <div class="poll-results">
+            {% set total_votes = article.poll.totalVotes %}
+            {% for option in article.poll.options %}
+              {% set percent = total_votes > 0 ? (option.votesCount / total_votes * 100)|round(1) : 0 %}
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                  <span>{{ option.title }}</span>
+                  <span class="fw-bold">{{ percent }}% ({{ option.votesCount }})</span>
+                </div>
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar" role="progressbar" style="width: {{ percent }}%" aria-valuenow="{{ percent }}"
+                       aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            {% endfor %}
+            <div class="text-muted small mt-3">
+              Łącznie głosów: {{ total_votes }}
+            </div>
+          </div>
+        {% else %}
+          <form action="{{ path('poll_vote', {'id': article.poll.id}) }}" method="post">
+            {% for option in article.poll.options %}
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="option" id="option_{{ option.id }}"
+                       value="{{ option.id }}">
+                <label class="form-check-label" for="option_{{ option.id }}">
+                  {{ option.title }}
+                </label>
+              </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary mt-3">Głosuj</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
   <h3 class="fs-4 mt-2">
     Komentarze
   </h3>
@@ -211,8 +271,8 @@
 
             <p class="m-0">{{ comment.content|preg_replace('/[\r\n]+/', '\n\n')|nl2br }}</p>
 
-            {% if is_granted('ROLE_ADMIN') %}
-              <div class="d-flex justify-content-end align-items-center mt-2 pt-3 border-top">
+            <div class="d-flex justify-content-end align-items-center mt-2 pt-3 border-top">
+              {% if is_granted('ROLE_ADMIN') %}
                 <div class="me-auto text-muted fs-smaller">
                   Adres IP czytelnika: <strong>{{ comment.ipAddress }}</strong>
                 </div>
@@ -228,8 +288,8 @@
                     Ukryj komentarz
                   </a>
                 {% endif %}
-              </div>
-            {% endif %}
+              {% endif %}
+            </div>
           </div>
         {% endif %}
       {% endfor %}

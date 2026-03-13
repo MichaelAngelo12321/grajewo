@@ -21,6 +21,10 @@ security:
                 path: panel_logout
                 target: homepage
 
+            login_throttling:
+                max_attempts: 5
+                interval: '15 minutes'
+
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800

@@ -22,6 +22,7 @@ class DashboardController extends AbstractController
     private const NEXT_SUNDAY_IS_SHOPPING = 'nextSundayIsShopping';
 
     public function __construct(
+        private readonly \App\Repository\AdvertisementRepository $advertisementRepository,
         private DailyImageRepository $dailyImageRepository,
         private DailyVideoRepository $dailyVideoRepository,
         private EntityManagerInterface $entityManager,
@@ -62,7 +63,11 @@ class DashboardController extends AbstractController
         $dailyImages = $this->dailyImageRepository->findBy(['isPublished' => false], ['id' => 'DESC']);
         $dailyVideos = $this->dailyVideoRepository->findBy(['isPublished' => false], ['id' => 'DESC']);
 
+        // advertisements
+        $advertisements = $this->advertisementRepository->findBy(['isActive' => false], ['createdAt' => 'DESC']);
+
         return $this->render('panel/dashboard/index.html.twig', [
+            'advertisements' => $advertisements,
             'dailyImages' => $dailyImages,
             'dailyVideos' => $dailyVideos,
             'daysOfWeek' => $daysOfWeek,
@@ -71,6 +76,22 @@ class DashboardController extends AbstractController
             'nextSundayIsShopping' => $nextSundayIsShopping,
             'pharmacyDuties' => $this->pharmacyDutyRepository->findAll(),
         ]);
+    }
+
+    public function publishAdvertisement(int $advertisementId): Response
+    {
+        $advertisement = $this->advertisementRepository->find($advertisementId);
+
+        if ($advertisement === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $advertisement->setIsActive(true);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Ogłoszenie zostało opublikowane');
+
+        return $this->redirectToRoute('panel_dashboard');
     }
 
     public function publishDailyImage(int $imageId): Response

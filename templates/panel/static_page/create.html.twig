@@ -14,7 +14,8 @@
           </a>
         </div>
 
-        {{ form_start(form) }}
+        {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+        {{ form_errors(form) }}
         <div class="card-body py-3">
           <div class="row">
             <div class="col-12">
@@ -37,7 +38,6 @@
           </div>
         </div>
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('static_page_add') }}"/>
         {{ form_end(form) }}
       </div>
     </div>

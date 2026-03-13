@@ -17,6 +17,11 @@ use Symfony\Component\Validator\Constraints\Url;
 
 class DailyVideoType extends AbstractType
 {
+    public function __construct(
+        private bool $recaptchaEnabled,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -36,12 +41,16 @@ class DailyVideoType extends AbstractType
             ->add('caption', null, [
                 'label' => 'Opis filmu (opcjonalnie)',
                 'required' => false,
-            ])
-            ->add('captcha', Recaptcha3Type::class, [
+            ]);
+
+        if ($this->recaptchaEnabled) {
+            $builder->add('captcha', Recaptcha3Type::class, [
                 'constraints' => new Recaptcha3(),
                 'action_name' => 'daily_video',
-            ])
-            ->add('submit', SubmitType::class, [
+            ]);
+        }
+
+        $builder->add('submit', SubmitType::class, [
                 'label' => 'Prześlij film',
             ]);
     }

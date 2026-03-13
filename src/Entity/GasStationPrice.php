@@ -34,6 +34,9 @@ class GasStationPrice
     #[ORM\Column]
     private ?bool $isPublished = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ipAddress = null;
+
     public function getDate(): ?DateTimeInterface
     {
         return $this->date;
@@ -95,6 +98,18 @@ class GasStationPrice
     public function setIsPublished(bool $isPublished): static
     {
         $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    public function getIpAddress(): ?string
+    {
+        return $this->ipAddress;
+    }
+
+    public function setIpAddress(?string $ipAddress): static
+    {
+        $this->ipAddress = $ipAddress;
 
         return $this;
     }

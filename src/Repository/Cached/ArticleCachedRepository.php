@@ -68,7 +68,7 @@ class ArticleCachedRepository
                 ->setParameter('category', $category)
                 ->andWhere('a.status = :status')
                 ->setParameter('status', ArticleStatus::PUBLISHED)
-                ->orderBy('a.updatedAt', 'DESC')
+                ->orderBy('a.bumpedAt', 'DESC')
                 ->setMaxResults($limit)
                 ->getQuery()
                 ->getResult();

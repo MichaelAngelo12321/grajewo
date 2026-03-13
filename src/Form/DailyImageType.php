@@ -16,6 +16,11 @@ use Symfony\Component\Validator\Constraints\File;
 
 class DailyImageType extends AbstractType
 {
+    public function __construct(
+        private bool $recaptchaEnabled,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -41,12 +46,16 @@ class DailyImageType extends AbstractType
             ->add('caption', null, [
                 'label' => 'Opis zdjęcia (opcjonalnie)',
                 'required' => false,
-            ])
-            ->add('captcha', Recaptcha3Type::class, [
+            ]);
+
+        if ($this->recaptchaEnabled) {
+            $builder->add('captcha', Recaptcha3Type::class, [
                 'constraints' => new Recaptcha3(),
                 'action_name' => 'daily_image',
-            ])
-            ->add('submit', SubmitType::class, [
+            ]);
+        }
+
+        $builder->add('submit', SubmitType::class, [
                 'label' => 'Prześlij zdjęcie',
             ]);
     }

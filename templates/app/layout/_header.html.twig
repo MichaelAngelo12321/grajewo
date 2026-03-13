@@ -12,15 +12,13 @@
       </button>
 
       <div class="collapse navbar-collapse d-xl-flex justify-content-xl-between gap-3" id="navbarTogglerContent">
-        {# Ukryte do czasu implementacji wyszukiwarki w rozwijanym submenu
-        <form class="d-flex align-items-center gap-2 ms-auto me-auto mb-2 mb-lg-0" role="search">
-          <input type="search" class="form-control" placeholder="Szukaj w Grajewie..." name="search_query"/>
+        <form class="d-flex align-items-center gap-2 ms-auto me-auto mb-2 mb-lg-0" role="search" action="{{ path('search') }}" method="get">
+          <input type="search" class="form-control" placeholder="Szukaj w Grajewie..." name="search_query" value="{{ app.request.query.get('search_query') }}"/>
 
           <button type="submit" class="btn btn-primary">
             <img src="{{ asset('build/images/icons/search.svg') }}" alt="Lupa"/>
           </button>
         </form>
-        #}
 
         <ul class="navbar-nav gap-3 ms-auto quick-links">
           <li class="nav-item">
@@ -66,11 +64,11 @@
             </a>
           </li>
 
-          {# Ukryte do czasu implementacji
           <li class="nav-item">
-            <a href="#" class="nav-link fw-medium quick-link">
+            <a href="{{ path('company_list') }}" class="nav-link fw-medium quick-link">
               <div class="quick-link-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" fill="none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M0 0h24v24H0z" stroke="none"/>
                   <path d="M3 21l18 0" />
                   <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />
                   <path d="M5 21l0 -10.15" />
@@ -78,10 +76,9 @@
                   <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
                 </svg>
               </div>
-              Firmy
+              Katalog Firm
             </a>
           </li>
-          #}
         </ul>
 
         <div class="form-check form-switch py-3 py-xl-0 pt-xl-1 ms-xl-2">

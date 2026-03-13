@@ -38,9 +38,6 @@
         {% set class = class ~ ' bg-danger text-white' %}
       {% endif %}
 
-      {% if day.hasEvents %}
-        {% set class = class ~ ' text-bg-success text-white' %}
-      {% endif %}
 
       {% if today == day.day %}
         {% set class = class ~ ' text-bg-primary fw-medium' %}
@@ -59,16 +56,19 @@
       <td class="py-1">
         <div class="{% if dow == 5 %}text-muted{% endif %} {% if dow == 6 %}text-danger{% endif %}">
           {% if day.hasEvents %}
-          <a href="{{ path('article_events_list_date', {date: day.date}) }}">
+          <a href="{{ path('article_events_list_date', {date: day.date}) }}" class="text-decoration-none text-reset">
             {% endif %}
 
             <span
-              class="px-2 py-1 {{ class }}"
+              class="px-2 py-1 {{ class }} position-relative d-inline-block"
             {% if day.title != '' %}
               data-bs-toggle="tooltip" data-bs-title="{{ day.title }}"
             {% endif %}
           >
             {{ day.day }}
+            {% if day.hasEvents %}
+              <span class="position-absolute start-50 translate-middle-x bg-success rounded-circle" style="bottom: 2px; width: 4px; height: 4px;"></span>
+            {% endif %}
           </span>
 
             {% if day.hasEvents %}

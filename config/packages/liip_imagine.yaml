@@ -71,3 +71,15 @@ liip_imagine:
           color: '#f1f1f1'
           position: center
           size: [ 800, 400 ]
+
+    company_logo_home:
+      quality: 85
+      filters:
+        thumbnail:
+          allow_upscale: true
+          mode: inset
+          size: [ 150, 100 ]
+        background:
+          color: '#ffffff'
+          position: center
+          size: [ 150, 100 ]

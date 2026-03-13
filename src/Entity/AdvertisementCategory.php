@@ -21,7 +21,7 @@ class AdvertisementCategory
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'advertisementCategory', targetEntity: Advertisement::class)]
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Advertisement::class)]
     private Collection $advertisements;
 
     #[ORM\Column(length: 255)]

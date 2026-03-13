@@ -1,0 +1,36 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}{{ title|default('Kategoria firmy') }}{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">{{ title|default('Kategoria firmy') }}</h1>
+
+          <a href="{{ path('panel_company_category_list') }}" class="col-auto btn btn-outline-secondary">
+            <i class="ti ti-arrow-back me-1"></i> Powrót do listy
+          </a>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="card-body py-3">
+          <div class="row">
+            <div class="col-lg-6">
+                {{ form_row(form.name) }}
+            </div>
+            <div class="col-lg-6">
+                {{ form_row(form.slug) }}
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-footer text-end">
+            <button type="submit" class="btn btn-primary">Zapisz</button>
+        </div>
+        {{ form_end(form) }}
+      </div>
+    </div>
+  </div>
+{% endblock %}

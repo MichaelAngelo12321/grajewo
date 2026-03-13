@@ -12,4 +12,5 @@ enum UploadDirectory: string
     case PROMO_ITEM = 'promo_item';
     case USER = 'user';
     case USER_REPORT = 'user_report';
+    case COMPANY = 'company';
 }

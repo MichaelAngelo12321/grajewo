@@ -1,0 +1,58 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Ustawienia serwisu{% endblock %}
+
+{% block body %}
+    <div class="page-body">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">Ustawienia serwisu</h3>
+                    <a href="{{ path('panel_setting_new') }}" class="btn btn-primary">
+                        <i class="ti ti-plus me-1"></i>
+                        Dodaj ustawienie
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap datatable">
+                        <thead>
+                        <tr>
+                            <th>Nazwa (Klucz)</th>
+                            <th>Wartość</th>
+                            <th class="w-1">Akcje</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for setting in settings %}
+                            <tr>
+                                <td>{{ setting.name }}</td>
+                                <td class="text-truncate" style="max-width: 300px;">
+                                    {{ setting.value }}
+                                </td>
+                                <td>
+                                    <div class="btn-list flex-nowrap">
+                                        <a href="{{ path('panel_setting_edit', {'name': setting.name}) }}"
+                                           class="btn btn-white btn-sm">
+                                            Edytuj
+                                        </a>
+                                        <form method="post" action="{{ path('panel_setting_delete', {'name': setting.name}) }}"
+                                              onsubmit="return confirm('Czy na pewno chcesz usunąć to ustawienie?');"
+                                              class="d-inline-block">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ setting.name) }}">
+                                            <button class="btn btn-danger btn-sm">Usuń</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center">Brak ustawień.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

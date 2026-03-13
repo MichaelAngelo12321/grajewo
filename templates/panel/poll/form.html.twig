@@ -1,0 +1,88 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="page-body">
+        <div class="container-fluid">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ title }}</h3>
+                        </div>
+                        <div class="card-body">
+                            {{ form_start(form) }}
+                            {{ form_row(form.question) }}
+                            {{ form_row(form.isActive) }}
+
+                            <div class="mb-3">
+                                <label class="form-label required">Opcje odpowiedzi</label>
+                                <div class="poll-options"
+                                     data-index="{{ form.options|length > 0 ? form.options|last.vars.name + 1 : 0 }}"
+                                     data-prototype="{{ form_widget(form.options.vars.prototype)|e('html_attr') }}">
+                                    {% for option in form.options %}
+                                        <div class="input-group mb-2 poll-option-item">
+                                            {{ form_widget(option.title, {'attr': {'class': 'form-control'}}) }}
+                                            <button type="button" class="btn btn-danger btn-remove-option">Usuń</button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <button type="button" class="btn btn-secondary btn-add-option mt-2">Dodaj opcję</button>
+                            </div>
+
+                            <div class="form-footer text-end mt-3">
+                                <a href="{{ path('panel_poll_list') }}" class="btn btn-link">Anuluj</a>
+                                <button type="submit" class="btn btn-primary ms-auto">Zapisz</button>
+                            </div>
+                            
+                            {# Render hidden fields to avoid errors if any #}
+                            {% do form.options.setRendered %}
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const wrapper = document.querySelector('.poll-options');
+            const addButton = document.querySelector('.btn-add-option');
+
+            addButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                const prototype = wrapper.dataset.prototype;
+                const index = parseInt(wrapper.dataset.index);
+                const newForm = prototype.replace(/__name__/g, index);
+                wrapper.dataset.index = index + 1;
+
+                const div = document.createElement('div');
+                div.classList.add('input-group', 'mb-2', 'poll-option-item');
+                div.innerHTML = newForm + '<button type="button" class="btn btn-danger btn-remove-option">Usuń</button>';
+                
+                // Fix for Symfony form theme rendering label inside widget or around it
+                // We just want the input and the remove button
+                // The prototype usually contains the full widget.
+                // Let's clean it up if it's too messy, but for now append.
+                
+                // Better approach: extract input from prototype if it's wrapped
+                // But simplified: just append and fix with CSS/JS if needed.
+                // Actually, the prototype for PollOptionType just renders the widget because we used entry_type
+                
+                wrapper.appendChild(div);
+                
+                // Ensure the input has form-control class
+                const input = div.querySelector('input');
+                if (input) input.classList.add('form-control');
+            });
+
+            wrapper.addEventListener('click', function (e) {
+                if (e.target.classList.contains('btn-remove-option')) {
+                    e.target.closest('.poll-option-item').remove();
+                }
+            });
+        });
+    </script>
+{% endblock %}

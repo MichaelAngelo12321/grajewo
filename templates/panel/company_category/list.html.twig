@@ -1,0 +1,71 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Kategorie firm{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">Kategorie firm</h1>
+          <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+              <a href="{{ path('panel_company_category_create') }}" class="btn btn-primary d-none d-sm-inline-block">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                Dodaj kategorię
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table card-table table-vcenter table-striped table-hover datatable">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nazwa</th>
+              <th>Slug</th>
+              <th>Liczba firm</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+              <tr>
+                <td>{{ category.id }}</td>
+                <td>
+                    <div class="fw-bold">{{ category.name }}</div>
+                </td>
+                <td>{{ category.slug }}</td>
+                <td>{{ category.companies|length }}</td>
+                <td class="text-end">
+                  <div class="btn-list justify-content-end">
+                    <a href="{{ path('panel_company_category_edit', {'id': category.id}) }}" class="btn btn-primary btn-icon" title="Edytuj">
+                      <i class="ti ti-edit"></i>
+                    </a>
+                    <a href="{{ path('panel_company_category_delete', {'id': category.id}) }}" class="btn btn-danger btn-icon js-confirm" title="Usuń">
+                      <i class="ti ti-trash"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center py-4">Brak kategorii firm.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-footer d-flex align-items-center">
+          <p class="m-0 text-secondary">Pokazane <span>{{ paginator.currentPageFirstItem|default(0) }}</span> do <span>{{ paginator.currentPageLastItem|default(0) }}</span> z <span>{{ paginator.totalItems|default(0) }}</span> kategorii</p>
+
+          <div class="m-0 ms-auto">
+            {{ paginator.toHtml|raw }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

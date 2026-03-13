@@ -1,0 +1,76 @@
+{% extends 'app/layout/base.html.twig' %}
+
+{% block title %}
+  {{ company.name }} - Katalog Firm - {{ app_name }}
+{% endblock %}
+
+{% block topContent %}
+  <nav class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Strona główna</a></li>
+      <li class="breadcrumb-item"><a href="{{ path('company_list') }}">Katalog Firm</a></li>
+      <li class="breadcrumb-item active">{{ company.name }}</li>
+    </ol>
+  </nav>
+{% endblock %}
+
+{% block body %}
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-md-4 mb-4 mb-md-0">
+          {% if company.logo %}
+            <img src="{{ asset(company.logo) }}" alt="{{ company.name }}" class="img-fluid rounded mb-3">
+          {% else %}
+             <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted p-5 mb-3">
+                Brak logo
+            </div>
+          {% endif %}
+          
+          <h4 class="mt-4 mb-3">Dane kontaktowe</h4>
+          <ul class="list-unstyled">
+            {% if company.address %}
+                <li class="mb-2">
+                    <i class="ti ti-map-pin me-2 text-primary"></i> {{ company.address }}, {{ company.postalCode }} {{ company.city }}
+                </li>
+            {% endif %}
+            
+            {% if company.phone %}
+                <li class="mb-2">
+                    <i class="ti ti-phone me-2 text-primary"></i> <a href="tel:{{ company.phone }}" class="text-decoration-none">{{ company.phone }}</a>
+                </li>
+            {% endif %}
+            
+            {% if company.email %}
+                <li class="mb-2">
+                    <i class="ti ti-mail me-2 text-primary"></i> <a href="mailto:{{ company.email }}" class="text-decoration-none">{{ company.email }}</a>
+                </li>
+            {% endif %}
+            
+            {% if company.website %}
+                <li class="mb-2">
+                    <i class="ti ti-world me-2 text-primary"></i> <a href="{{ company.website }}" target="_blank" rel="nofollow" class="text-decoration-none">{{ company.website }}</a>
+                </li>
+            {% endif %}
+          </ul>
+        </div>
+        
+        <div class="col-12 col-md-8">
+            <h1 class="fw-bold mb-3">{{ company.name }}</h1>
+            {% if company.category %}
+                <span class="badge bg-secondary mb-4">{{ company.category.name }}</span>
+            {% endif %}
+            
+            <div class="company-description mt-3">
+                {{ company.description|sanitize_html }}
+            </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card-footer text-muted d-flex justify-content-between align-items-center">
+        <small>Dodano: {{ company.createdAt|date('d.m.Y') }}</small>
+        <small>Wyświetleń: {{ company.views }}</small>
+    </div>
+  </div>
+{% endblock %}

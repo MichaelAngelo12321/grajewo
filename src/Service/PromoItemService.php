@@ -37,9 +37,10 @@ class PromoItemService
         }
 
         if (isset($this->availablePromoItems[$slot])) {
-            $this->displayedPromoItems[] = $this->availablePromoItems[$slot];
+            $item = $this->availablePromoItems[$slot];
+            $this->displayedPromoItems[$item->getId()] = $item;
 
-            return $this->availablePromoItems[$slot];
+            return $item;
         }
 
         return null;

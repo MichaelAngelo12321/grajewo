@@ -1,9 +1,15 @@
-import {Collapse, Tooltip} from 'bootstrap'
+import * as bootstrap from 'bootstrap'
+window.bootstrap = bootstrap
+
 import Chocolat from 'chocolat'
 
 import 'chocolat/dist/css/chocolat.css'
 import './styles/app/index.scss'
+import './ad-rotation.js'
 import './theme-switcher.js'
+
+const { Collapse, Tooltip } = bootstrap
+
 
 
 // Collapse elements init
@@ -42,6 +48,23 @@ if (header) {
 // Share button
 const shareButtonClipboard = document.getElementById('share-button-clipboard')
 const shareButtonClipboardLabel = document.getElementById('share-button-clipboard-label')
+
+// Promo popup
+document.addEventListener('DOMContentLoaded', function () {
+  const promoPopupEl = document.getElementById('promoPopup')
+  if (!promoPopupEl) return
+
+  const myModal = new bootstrap.Modal(promoPopupEl)
+
+  // Check if popup was shown in this session
+  const sessionShown = sessionStorage.getItem('promoPopupShown')
+  const forcePopup = new URLSearchParams(window.location.search).has('test_popup')
+
+  if (!sessionShown || forcePopup) {
+    myModal.show()
+    sessionStorage.setItem('promoPopupShown', 'true')
+  }
+})
 
 if (shareButtonClipboard) {
   shareButtonClipboard.addEventListener('click', () => {

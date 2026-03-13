@@ -28,6 +28,17 @@
           </form>
         </div>
 
+        {% if slotCounts is defined and slotCounts|length > 0 %}
+        <div class="card-body border-bottom py-3 bg-light">
+          <div class="d-flex flex-wrap gap-2">
+            <div class="fw-bold me-2">Aktywne reklamy w modułach:</div>
+            {% for sc in slotCounts %}
+              <span class="badge bg-blue-lt">{{ sc.slot }}: {{ sc.count }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
         <div class="table-responsive">
           <table class="table card-table table-vcenter table-striped table-hover datatable">
             <thead>
@@ -48,7 +59,8 @@
             </thead>
             <tbody>
             {% for promo in promoItems %}
-              <tr>
+              {% set isExpired = promo.endDate and promo.endDate|date('Y-m-d') < "now"|date('Y-m-d') %}
+              <tr class="{{ isExpired ? 'text-danger' : '' }}">
                 <td>{{ promo.id }}</td>
                 <td class="text-center">
                   <img
@@ -57,7 +69,7 @@
                     width="40"
                   />
                 </td>
-                <td class="fw-medium">{{ promo.title }}</td>
+                <td class="fw-medium {{ isExpired ? 'text-danger' : '' }}">{{ promo.title }}</td>
                 <td title="{{ promo.description }}">{{ promo.description|slice(0, 20) }}</td>
                 <td>
                   {% if promo.startDate %}
@@ -79,10 +91,12 @@
                   </span>
                 </td>
                 <td>
-                  {% if promo.isActive == 'active' %}
+                  {% if promo.isActive and not isExpired %}
                     <span class="badge bg-green me-1"></span> Aktywna
+                  {% elseif promo.isActive and isExpired %}
+                    <span class="badge bg-red me-1"></span> Wygasła
                   {% else %}
-                    <span class="badge bg-red me-1"></span> Nieaktywna
+                    <span class="badge bg-secondary me-1"></span> Nieaktywna
                   {% endif %}
                 </td>
                 <td>{{ promo.viewsCount }}</td>

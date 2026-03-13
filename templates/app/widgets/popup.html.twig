@@ -1,0 +1,22 @@
+{% set promoItem = get_promo_item('POPUP') %}
+
+{% if promoItem %}
+<div class="modal fade" id="promoPopup" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-0">
+        {% if promoItem.targetUrl %}
+    <a href="{{ path('promo_redirect', { id: promoItem.id, redirectUrl: promoItem.encodedTargetUrl }) }}">
+      <img class="img-fluid w-100 rounded" src="{{ promoItem.imageUrl }}" alt="{{ promoItem.title }}" />
+    </a>
+{% else %}
+    <img class="img-fluid w-100 rounded" src="{{ promoItem.imageUrl }}" alt="{{ promoItem.title }}" />
+{% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

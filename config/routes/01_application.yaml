@@ -24,7 +24,32 @@ advertisement_list:
   requirements:
     category: '[a-z0-9-]*'
 
-# Article category
+# Search
+search:
+  path: /szukaj
+  controller: App\Controller\SearchController::index
+
+# Company Catalog
+company_add:
+  path: /katalog-firm/dodaj
+  controller: App\Controller\CompanyController::add
+
+company_details:
+  path: /katalog-firm/szczegoly/{slug}
+  controller: App\Controller\CompanyController::details
+
+company_list:
+  path: /katalog-firm/{categorySlug}
+  controller: App\Controller\CompanyController::list
+  defaults:
+    categorySlug: null
+
+# Polls
+poll_vote:
+  path: /ankieta/glosuj/{id}
+  controller: App\Controller\PollController::vote
+
+# Article category redirects
 article_category_old_redirect:
   path: /dzial-{__category}
   controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::redirectAction
@@ -45,6 +70,8 @@ article_details_old_redirect:
 article_details:
   path: /{__category}/{id}/{slug}
   controller: App\Controller\ArticleController::details
+  requirements:
+    id: \d+
 
 article_events_list_date:
   path: /kalendarz-wydarzen/{date}
@@ -64,12 +91,16 @@ gallery_list:
   controller: App\Controller\GalleryController::list
 
 # Promo item redirect
-promo_item_redirect:
+promo_redirect:
   path: /promo/redirect/{id}/{redirectUrl}
   controller: App\Controller\PromoItemController::targetUrlRedirect
   requirements:
     id: \d+
     redirectUrl: .*
+
+promo_item_render_slot:
+  path: /promo/render/{slot}
+  controller: App\Controller\PromoItemController::renderSlot
 
 # User content
 user_content_add_image_form:
@@ -93,7 +124,7 @@ static_page_show:
   path: /info/{slug}
   controller: App\Controller\StaticPageController::show
 
-# At the end of the file
+# Catch-all Article category (MUST BE LAST)
 article_category:
   path: /{__category}
   controller: App\Controller\ArticleController::list

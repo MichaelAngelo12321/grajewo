@@ -1,0 +1,111 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Katalog Firm{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">Katalog Firm</h1>
+          <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+              <a href="{{ path('panel_company_create') }}" class="btn btn-primary d-none d-sm-inline-block">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                Dodaj firmę
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table card-table table-vcenter table-striped table-hover datatable">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Logo</th>
+              <th>Nazwa</th>
+              <th>Kategoria</th>
+              <th>Kontakt</th>
+              <th>Wyświetleń</th>
+              <th>Status</th>
+              <th>Promowana</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for company in companies %}
+              <tr>
+                <td>{{ company.id }}</td>
+                <td>
+                  {% if company.logo %}
+                    <img src="{{ asset(company.logo) }}" alt="{{ company.name }}" class="avatar avatar-sm rounded">
+                  {% else %}
+                    <span class="avatar avatar-sm rounded bg-secondary-lt">Brak</span>
+                  {% endif %}
+                </td>
+                <td>
+                    <div class="fw-bold">{{ company.name }}</div>
+                    <div class="text-muted small">{{ company.description|striptags|slice(0, 50) }}...</div>
+                </td>
+                <td>
+                    {% if company.category %}
+                        <span class="badge bg-blue-lt">{{ company.category.name }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary-lt">Brak</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if company.email %}
+                        <div><i class="ti ti-mail me-1"></i> {{ company.email }}</div>
+                    {% endif %}
+                    {% if company.phone %}
+                        <div><i class="ti ti-phone me-1"></i> {{ company.phone }}</div>
+                    {% endif %}
+                </td>
+                <td>{{ company.views }}</td>
+                <td>
+                  {% if company.isActive %}
+                    <span class="badge bg-success me-1"></span> Aktywna
+                  {% else %}
+                    <span class="badge bg-danger me-1"></span> Nieaktywna
+                  {% endif %}
+                </td>
+                <td>
+                  {% if company.isPromoted %}
+                    <span class="badge bg-warning me-1"></span> Tak
+                  {% else %}
+                    <span class="badge bg-secondary me-1"></span> Nie
+                  {% endif %}
+                </td>
+                <td class="text-end">
+                  <div class="btn-list justify-content-end">
+                    <a href="{{ path('panel_company_edit', {'id': company.id}) }}" class="btn btn-primary btn-icon" title="Edytuj">
+                      <i class="ti ti-edit"></i>
+                    </a>
+                    <a href="{{ path('panel_company_delete', {'id': company.id}) }}" class="btn btn-danger btn-icon js-confirm" title="Usuń">
+                      <i class="ti ti-trash"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9" class="text-center py-4">Brak firm w katalogu.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-footer d-flex align-items-center">
+          <p class="m-0 text-secondary">Pokazane <span>{{ paginator.currentPageFirstItem|default(0) }}</span> do <span>{{ paginator.currentPageLastItem|default(0) }}</span> z <span>{{ paginator.totalItems|default(0) }}</span> firm</p>
+
+          <div class="m-0 ms-auto">
+            {{ paginator.toHtml|raw }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

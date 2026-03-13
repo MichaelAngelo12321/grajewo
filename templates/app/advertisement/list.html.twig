@@ -75,6 +75,70 @@
     </div>
 
     <div class="col-12 col-lg-8 col-xl-9">
+      {% for advertisement in promotedAdvertisements %}
+        <div class="card mb-3 border-warning shadow-sm" style="border-width: 1px;">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <h3 class="fs-6 fw-bold mb-0">{{ advertisement.title }}</h3>
+                <span class="badge bg-warning text-dark">Promowane</span>
+            </div>
+            <p class="mb-3">{{ advertisement.content }}</p>
+
+            <div class="row g-2 text-muted">
+              <div class="col-12">
+                <div class="d-flex flex-wrap gap-3">
+                  {% if advertisement.phone %}
+                    <div>
+                      <small class="d-block">Telefon:</small>
+                      <strong class="text-secondary">{{ advertisement.phone }}</strong>
+                    </div>
+                  {% endif %}
+                  {% if advertisement.email %}
+                    <div>
+                      <small class="d-block">Email:</small>
+                      <strong class="text-secondary">{{ advertisement.email }}</strong>
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="d-flex flex-wrap gap-3 mt-2">
+                  <div>
+                    <small class="d-block">Autor:</small>
+                    <strong class="text-secondary">{{ advertisement.author }}</strong>
+                  </div>
+                  {% if currentCategory == null %}
+                  <div>
+                    <small class="d-block">Kategoria:</small>
+                    <strong class="text-secondary">{{ advertisement.category.name }}</strong>
+                  </div>
+                  {% endif %}
+                  <div class="ms-auto text-sm-end">
+                    <small class="d-block">Data dodania:</small>
+                    <strong class="text-secondary">{{ advertisement.createdAt|date|format_datetime(pattern=app_datetime_short_format) }}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% if is_granted('ROLE_ADMIN') %}
+              <div class="d-flex justify-content-end align-items-center mt-4 pt-3 border-top">
+                <div class="me-auto text-muted fs-smaller">
+                  Adres IP czytelnika: <strong>{{ advertisement.ipAddress }}</strong>
+                </div>
+
+                <a href="{{ path('panel_advertisement_toggle_promoted', {'advertisementId': advertisement.id}) }}" class="btn btn-sm btn-outline-warning me-2">
+                    Wyłącz promowanie
+                </a>
+
+                <a href="{{ path('panel_advertisement_remove', {'advertisementId': advertisement.id}) }}"
+                   class="btn btn-sm btn-danger text-white">
+                  Usuń ogłoszenie
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+
       {% for advertisement in advertisements %}
         <div class="card mb-3">
           <div class="card-body">

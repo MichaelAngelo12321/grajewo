@@ -25,6 +25,9 @@
             {% endif %}
           </a>
           <p class="date-place">{{ report.createdAt|relative_datetime }}</p>
+          {% if is_granted('ROLE_ADMIN') %}
+            <p class="date-place mb-0">IP: {{ report.ipAddress }}</p>
+          {% endif %}
         </div>
       </li>
     {% endfor %}

@@ -28,8 +28,12 @@ class ArticleController extends AbstractController
     ) {
     }
 
-    public function details(string $slug, int $id, Category $category, Request $request): Response
+    public function details(string $slug, int $id, Request $request, ?Category $category = null): Response
     {
+        if (!$category) {
+            throw $this->createNotFoundException('Category not found');
+        }
+
         $article = $this->articleRepository->find($id);
 
         if (!$article || $article->getStatus() !== ArticleStatus::PUBLISHED) {
@@ -111,8 +115,12 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    public function list(Category $category, Request $request): Response
+    public function list(Request $request, ?Category $category = null): Response
     {
+        if (!$category) {
+            throw $this->createNotFoundException('Category not found');
+        }
+
         $currentPage = $request->query->getInt('page', 1);
         $itemsPerPage = 10;
         $articles = $this->articleRepository->findLatestByCategory(

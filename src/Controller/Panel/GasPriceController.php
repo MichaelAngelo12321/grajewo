@@ -138,6 +138,7 @@ class GasPriceController extends AbstractController
                         $currentPrice->setStation($station);
                         $currentPrice->setDate(new DateTimeImmutable());
                         $currentPrice->setType($type);
+                        $currentPrice->setIsPublished(true);
                     }
 
                     $currentPrice->setPrice($stationPrices[$type] > 0 ? (float)$stationPrices[$type] : null);

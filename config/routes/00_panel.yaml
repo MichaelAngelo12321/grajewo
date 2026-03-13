@@ -27,6 +27,10 @@ panel_dashboard_remove_user_gas_station_price:
   path: /panel/remove-user-gas-price/{gasStationPriceId}
   controller: App\Controller\Panel\DashboardController::removeUserGasStationPrice
 
+panel_dashboard_publish_advertisement:
+  path: /panel/publish-advertisement/{advertisementId}
+  controller: App\Controller\Panel\DashboardController::publishAdvertisement
+
 panel_dashboard_save_next_sunday_is_shopping:
   path: /panel/save-next-sunday-is-shopping
   methods: [ POST ]
@@ -38,9 +42,25 @@ panel_dashboard_save_pharmacy_duty:
   controller: App\Controller\Panel\DashboardController::savePharmacyDuty
 
 # Advertisements
+panel_advertisement_list:
+  path: /panel/advertisements
+  controller: App\Controller\Panel\AdvertisementController::list
+
 panel_advertisement_remove:
   path: /panel/advertisement/{advertisementId}/remove
   controller: App\Controller\Panel\AdvertisementController::remove
+
+panel_advertisement_toggle_promoted:
+  path: /panel/advertisements/{advertisementId}/toggle-promoted
+  controller: App\Controller\Panel\AdvertisementController::togglePromoted
+
+panel_advertisement_toggle_active:
+  path: /panel/advertisements/{advertisementId}/toggle-active
+  controller: App\Controller\Panel\AdvertisementController::toggleActive
+
+panel_advertisement_edit:
+  path: /panel/advertisements/{advertisementId}/edit
+  controller: App\Controller\Panel\AdvertisementController::edit
 
 # Promo items
 panel_ad_list:
@@ -72,6 +92,10 @@ panel_logout:
 panel_article_change_status:
   path: /panel/articles/{id}/change-status/{status}
   controller: App\Controller\Panel\ArticleController::changeStatus
+
+panel_article_bump:
+  path: /panel/articles/{id}/bump
+  controller: App\Controller\Panel\ArticleController::bump
 
 panel_article_delete:
   path: /panel/articles/{id}/delete
@@ -212,3 +236,37 @@ panel_static_page_delete:
 panel_temporary_development_status:
   path: /panel/development-status
   controller: App\Controller\Panel\DevelopmentStatusController::index
+
+# Company Catalog
+panel_company_list:
+  path: /panel/companies
+  controller: App\Controller\Panel\CompanyController::list
+
+panel_company_create:
+  path: /panel/companies/create
+  controller: App\Controller\Panel\CompanyController::create
+
+panel_company_edit:
+  path: /panel/companies/{id}/edit
+  controller: App\Controller\Panel\CompanyController::edit
+
+panel_company_delete:
+  path: /panel/companies/{id}/delete
+  controller: App\Controller\Panel\CompanyController::delete
+
+# Company Categories
+panel_company_category_list:
+  path: /panel/company-categories
+  controller: App\Controller\Panel\CompanyCategoryController::list
+
+panel_company_category_create:
+  path: /panel/company-categories/create
+  controller: App\Controller\Panel\CompanyCategoryController::create
+
+panel_company_category_edit:
+  path: /panel/company-categories/{id}/edit
+  controller: App\Controller\Panel\CompanyCategoryController::edit
+
+panel_company_category_delete:
+  path: /panel/company-categories/{id}/delete
+  controller: App\Controller\Panel\CompanyCategoryController::delete

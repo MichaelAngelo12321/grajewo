@@ -1,0 +1,23 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Edycja ogłoszenia{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">Edycja ogłoszenia</h1>
+        </div>
+        <div class="card-body">
+          {{ form_start(form) }}
+            {{ form_widget(form) }}
+            
+            <button type="submit" class="btn btn-primary mt-3">Zapisz zmiany</button>
+            <a href="{{ path('panel_advertisement_list') }}" class="btn btn-link mt-3">Anuluj</a>
+          {{ form_end(form) }}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

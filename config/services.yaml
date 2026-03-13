@@ -40,6 +40,26 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
+    App\Form\UserReportType:
+        arguments:
+            $recaptchaEnabled: '%env(bool:RECAPTCHA3_ENABLED)%'
+
+    App\Form\AdvertisementType:
+        arguments:
+            $recaptchaEnabled: '%env(bool:RECAPTCHA3_ENABLED)%'
+
+    App\Form\CommentType:
+        arguments:
+            $recaptchaEnabled: '%env(bool:RECAPTCHA3_ENABLED)%'
+
+    App\Form\DailyImageType:
+        arguments:
+            $recaptchaEnabled: '%env(bool:RECAPTCHA3_ENABLED)%'
+
+    App\Form\DailyVideoType:
+        arguments:
+            $recaptchaEnabled: '%env(bool:RECAPTCHA3_ENABLED)%'
+
     App\Repository\External\AirPollutionRepository:
         arguments:
             $dataUrl: '%air_pollution_data_url%'

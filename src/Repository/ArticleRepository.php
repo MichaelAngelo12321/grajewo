@@ -64,7 +64,7 @@ class ArticleRepository extends ServiceEntityRepository
     public function findBy(array $criteria, array|null $orderBy = null, $limit = null, $offset = null): array
     {
         $query = $this->createQueryBuilder('a')
-            ->orderBy('a.updatedAt', 'DESC')
+            ->orderBy('a.bumpedAt', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 
@@ -107,7 +107,7 @@ class ArticleRepository extends ServiceEntityRepository
                 ->setParameter('status', ArticleStatus::PUBLISHED);
         }
 
-        $query->orderBy('a.updatedAt', 'DESC')
+        $query->orderBy('a.bumpedAt', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 

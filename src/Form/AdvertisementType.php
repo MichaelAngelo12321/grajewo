@@ -14,9 +14,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\AdvertisementCategory;
+use Karser\Recaptcha3Bundle\Form\Recaptcha3Type;
+use Karser\Recaptcha3Bundle\Validator\Constraints\Recaptcha3;
 
 class AdvertisementType extends AbstractType
 {
+    public function __construct(private bool $recaptchaEnabled)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -49,6 +55,13 @@ class AdvertisementType extends AbstractType
                 'label' => 'Email (opcjonalnie jeśli podasz telefon)',
                 'required' => false,
             ]);
+
+        if ($this->recaptchaEnabled) {
+            $builder->add('captcha', Recaptcha3Type::class, [
+                'constraints' => new Recaptcha3(),
+                'action_name' => 'advertisement',
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

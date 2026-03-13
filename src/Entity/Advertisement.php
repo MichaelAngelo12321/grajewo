@@ -53,8 +53,17 @@ class Advertisement
     #[ORM\Column(length: 255)]
     private ?string $ipAddress = null;
 
+    #[ORM\Column(options: ['default' => false])]
+    private ?bool $isPromoted = false;
+
+    #[ORM\Column(options: ['default' => 0])]
+    private ?int $views = 0;
+
+    #[ORM\Column(options: ['default' => 0])]
+    private ?int $clicks = 0;
+
     #[ORM\Column]
-    private ?bool $isActive = null;
+    private ?bool $isActive = false;
 
     #[ORM\ManyToOne(inversedBy: 'advertisements')]
     private ?AdvertisementCategory $category = null;
@@ -169,6 +178,42 @@ class Advertisement
     public function setIpAddress(string $ipAddress): static
     {
         $this->ipAddress = $ipAddress;
+
+        return $this;
+    }
+
+    public function isPromoted(): ?bool
+    {
+        return $this->isPromoted;
+    }
+
+    public function setIsPromoted(bool $isPromoted): static
+    {
+        $this->isPromoted = $isPromoted;
+
+        return $this;
+    }
+
+    public function getViews(): ?int
+    {
+        return $this->views;
+    }
+
+    public function setViews(int $views): static
+    {
+        $this->views = $views;
+
+        return $this;
+    }
+
+    public function getClicks(): ?int
+    {
+        return $this->clicks;
+    }
+
+    public function setClicks(int $clicks): static
+    {
+        $this->clicks = $clicks;
 
         return $this;
     }

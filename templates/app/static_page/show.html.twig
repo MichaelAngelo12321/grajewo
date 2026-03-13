@@ -8,7 +8,7 @@
       <h1 class="mb-2 fs-2">{{ staticPage.title }}</h1>
 
       <div class="py-3">
-        {{ staticPage.content|raw }}
+        {{ staticPage.content|sanitize_html }}
       </div>
     </div>
   </div>

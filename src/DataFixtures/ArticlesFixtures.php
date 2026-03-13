@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\User;
 use App\Enum\ArticleStatus;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -63,7 +64,7 @@ class ArticlesFixtures extends Fixture
 
                 $imgNumber = rand(1, 65);
                 $article = new Article();
-                $article->setAuthor($this->getReference(AppFixtures::ADMIN_USER_REFERENCE));
+                $article->setAuthor($this->getReference(AppFixtures::ADMIN_USER_REFERENCE, User::class));
                 $article->setCategory($category);
                 $article->setCommentsNumber(0);
                 $article->setContent($this->replaceWithParagraphTags($faker->paragraphs(rand(3, 15), true)));
@@ -73,7 +74,7 @@ class ArticlesFixtures extends Fixture
                 $article->setName(rtrim($faker->sentence(), '.'));
                 $article->setStatus(ArticleStatus::PUBLISHED);
                 $article->setUpdatedAt($date);
-                $article->setUpdateAuthor($this->getReference(AppFixtures::ADMIN_USER_REFERENCE));
+                $article->setUpdateAuthor($this->getReference(AppFixtures::ADMIN_USER_REFERENCE, User::class));
 
                 $manager->persist($article);
                 $articleCounter++;

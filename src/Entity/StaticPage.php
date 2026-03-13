@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\StaticPageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StaticPageRepository::class)]
 class StaticPage
@@ -15,12 +16,14 @@ class StaticPage
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Tytuł nie może być pusty')]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'Treść strony nie może być pusta')]
     private ?string $content = null;
 
     public function getContent(): ?string

@@ -45,4 +45,29 @@ class AdvertisementRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findPromotedAdvertisements(int $limit = 5): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.isActive = true')
+            ->andWhere('a.isPromoted = true')
+            ->orderBy('a.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function increaseBatchViews(array $advertisements): void
+    {
+        if (empty($advertisements)) {
+            return;
+        }
+
+        foreach ($advertisements as $advertisement) {
+            $advertisement->setViews($advertisement->getViews() + 1);
+            $this->getEntityManager()->persist($advertisement);
+        }
+
+        $this->getEntityManager()->flush();
+    }
 }

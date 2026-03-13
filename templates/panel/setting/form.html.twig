@@ -1,0 +1,29 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <div class="page-body">
+        <div class="container-fluid">
+            <div class="row row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ title }}</h3>
+                        </div>
+                        <div class="card-body">
+                            {{ form_start(form) }}
+                            {{ form_widget(form) }}
+
+                            <div class="form-footer text-end mt-3">
+                                <a href="{{ path('panel_setting_list') }}" class="btn btn-link">Anuluj</a>
+                                <button type="submit" class="btn btn-primary ms-auto">Zapisz</button>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

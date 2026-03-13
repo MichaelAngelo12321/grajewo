@@ -112,6 +112,58 @@
                 <div class="col-12">
                   <div class="card card-sm">
                     <div class="card-header">
+                      <h3 class="card-title">Akceptacja ogłoszeń</h3>
+                    </div>
+
+                    <div
+                      class="list-group list-group-flush list-group-hoverable overflow-auto"
+                      style="max-height: 240px"
+                    >
+                      {% if advertisements is empty %}
+                        <div class="d-flex justify-content-center">
+                          <div class="py-3">Brak ogłoszeń do akceptacji</div>
+                        </div>
+                      {% endif %}
+
+                      {% for advertisement in advertisements %}
+                        <div class="list-group-item">
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <a href="{{ path('panel_advertisement_edit', {'advertisementId': advertisement.id}) }}" class="fw-bold text-body d-block">{{ advertisement.title }}</a>
+                              <div class="text-muted text-truncate mt-1">{{ advertisement.content }}</div>
+                              <div class="text-muted small mt-1">
+                                Autor: <strong>{{ advertisement.author }}</strong> | Data: <strong>{{ advertisement.createdAt|date('d.m.Y H:i') }}</strong> | IP: <strong>{{ advertisement.ipAddress|default('---') }}</strong>
+                              </div>
+                            </div>
+                            
+                            <div class="col-auto ms-auto">
+                              <a
+                                href="{{ path('panel_dashboard_publish_advertisement', {'advertisementId': advertisement.id}) }}"
+                                class="btn btn-success btn-icon"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Opublikuj"
+                              >
+                                <i class="ti ti-check"></i>
+                              </a>
+                              <a
+                                href="{{ path('panel_advertisement_remove', {'advertisementId': advertisement.id}) }}"
+                                class="btn btn-danger btn-icon js-confirm"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Usuń"
+                              >
+                                <i class="ti ti-trash"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="card card-sm">
+                    <div class="card-header">
                       <h3 class="card-title">Akceptacja treści użytkowników</h3>
                     </div>
 
@@ -147,6 +199,9 @@
                               </div>
                               <div>
                                 Data: <strong>{{ image.createdAt|format_datetime(pattern='d MMMM') }}</strong>
+                              </div>
+                              <div>
+                                IP: <strong>{{ image.ipAddress|default('---') }}</strong>
                               </div>
                             </div>
 
@@ -194,6 +249,9 @@
                               </div>
                               <div>
                                 Data: <strong>{{ video.createdAt|format_datetime(pattern='d MMMM') }}</strong>
+                              </div>
+                              <div>
+                                IP: <strong>{{ video.ipAddress|default('---') }}</strong>
                               </div>
                             </div>
 
@@ -260,6 +318,8 @@
 
                             <div class="col-auto text-muted">
                               Cena z dnia: <strong>{{ gasPrice.date|format_datetime(pattern='d MMMM') }}</strong>
+                              <br>
+                              IP: <strong>{{ gasPrice.ipAddress|default('---') }}</strong>
                             </div>
 
                             <div class="col-auto ms-auto">

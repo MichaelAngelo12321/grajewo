@@ -82,8 +82,17 @@ class Article
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageCaption = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $videoUrl = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $bumpedAt = null;
+
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?Gallery $gallery = null;
+
+    #[ORM\ManyToOne]
+    private ?Poll $poll = null;
 
     public function __construct()
     {
@@ -329,6 +338,41 @@ class Article
         return $this;
     }
 
+    public function getVideoUrl(): ?string
+    {
+        return $this->videoUrl;
+    }
+
+    public function setVideoUrl(?string $videoUrl): static
+    {
+        $this->videoUrl = $videoUrl;
+
+        return $this;
+    }
+
+    public function getYoutubeId(): ?string
+    {
+        if (!$this->videoUrl) {
+            return null;
+        }
+
+        preg_match('/^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9\-_]+)(\&\S+)?$/', $this->videoUrl, $matches);
+
+        return $matches[4] ?? null;
+    }
+
+    public function getBumpedAt(): ?DateTimeImmutable
+    {
+        return $this->bumpedAt;
+    }
+
+    public function setBumpedAt(?DateTimeImmutable $bumpedAt): static
+    {
+        $this->bumpedAt = $bumpedAt;
+
+        return $this;
+    }
+
     public function getGallery(): ?Gallery
     {
         return $this->gallery;
@@ -337,6 +381,18 @@ class Article
     public function setGallery(?Gallery $gallery): static
     {
         $this->gallery = $gallery;
+
+        return $this;
+    }
+
+    public function getPoll(): ?Poll
+    {
+        return $this->poll;
+    }
+
+    public function setPoll(?Poll $poll): static
+    {
+        $this->poll = $poll;
 
         return $this;
     }

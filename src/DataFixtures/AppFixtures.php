@@ -7,12 +7,18 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture implements FixtureGroupInterface
 {
     public const ADMIN_USER_REFERENCE = 'admin-user';
+
+    public static function getGroups(): array
+    {
+        return ['app'];
+    }
 
     public function __construct(
         private PasswordHasherFactoryInterface $passwordHasherFactory,

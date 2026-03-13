@@ -106,6 +106,15 @@
 
                     {% if article.status.value == 1 %}
                       <a
+                        href="{{ path('panel_article_bump', {'id': article.id }) }}"
+                        class="btn btn-warning btn-icon"
+                        data-bs-toggle="tooltip"
+                        data-bs-title="Podbij artykuł"
+                      >
+                        <i class="ti ti-arrow-up"></i>
+                      </a>
+
+                      <a
                         href="{{ path('panel_article_change_status', {'id': article.id, 'status': 2 }) }}"
                         class="btn btn-icon opacity-45"
                         data-bs-toggle="tooltip"

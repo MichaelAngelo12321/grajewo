@@ -84,6 +84,7 @@ class UserContentController extends AbstractController
                 $gasStationPrice->setPrice((float) $price);
                 $gasStationPrice->setIsPublished(false);
                 $gasStationPrice->setDate(new DateTimeImmutable());
+                $gasStationPrice->setIpAddress($request->getClientIp());
 
                 $this->entityManager->persist($gasStationPrice);
             }

@@ -13,28 +13,60 @@
 
   {{ articlesList.horizontal('Najczęściej czytane', mostPopularArticles, 'info') }}
 
-  <div class="card widget mb-5">
-    <div class="card-header d-flex">
-      <h5 class="section-title info"><a href="{{ path('advertisement_list') }}">Najnowsze ogłoszenia</a></h5>
-      <div class="ms-auto">
-        <a href="{{ path('advertisement_add') }}" class="btn btn-sm btn-primary">Dodaj ogłoszenie</a>
+  {% if promotedCompanies|length > 0 %}
+    <div class="card widget mb-5">
+      <div class="card-header d-flex">
+        <h5 class="section-title info"><a href="{{ path('company_list') }}">Polecane firmy</a></h5>
       </div>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        {% for advertisement in latestAdvertisements %}
-          <div class="col-12 col-md-6 mb-3">
-            <div class="fw-bold">{{ advertisement.title }}</div>
-            <p class="mb-0">{{ advertisement.content }}</p>
-
-            <div class="text-muted">
-              <small>Dodane: {{ advertisement.createdAt|date|format_datetime(pattern=app_datetime_short_format) }}</small>
+      <div class="card-body">
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
+          {% for company in promotedCompanies %}
+            <div class="col">
+              <a href="{{ path('company_details', {slug: company.slug}) }}" class="d-block text-center text-decoration-none text-dark h-100 p-2 border rounded hover-shadow-sm transition-all">
+                {% if company.logo %}
+                  <img src="{{ company.logo|imagine_filter('company_logo_home') }}" class="img-fluid mb-2" alt="{{ company.name }}">
+                {% else %}
+                  <div class="d-flex align-items-center justify-content-center bg-light rounded mb-2" style="height: 100px;">
+                    <i class="ti ti-building-store fs-1 text-muted"></i>
+                  </div>
+                {% endif %}
+                <div class="fw-bold small text-truncate" title="{{ company.name }}">{{ company.name }}</div>
+                <div class="text-muted smaller text-truncate">{{ company.city }}</div>
+              </a>
             </div>
-          </div>
-        {% endfor %}
+          {% endfor %}
+        </div>
       </div>
     </div>
-  </div>
+  {% endif %}
+
+  {% if promotedAdvertisements|length > 0 %}
+    <div class="card widget mb-5 border-warning" style="border-width: 2px;">
+      <div class="card-header d-flex bg-warning-lt">
+        <h5 class="section-title text-dark"><a href="{{ path('advertisement_list') }}" class="text-dark">Polecane ogłoszenia</a></h5>
+        <div class="ms-auto">
+          <a href="{{ path('advertisement_add') }}" class="btn btn-sm btn-dark">Dodaj ogłoszenie</a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          {% for advertisement in promotedAdvertisements %}
+            <div class="col-12 col-md-6 mb-3">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="fw-bold">{{ advertisement.title }}</div>
+                <span class="badge bg-warning text-dark ms-2">Promowane</span>
+              </div>
+              <p class="mb-0">{{ advertisement.content }}</p>
+
+              <div class="text-muted">
+                <small>Dodane: {{ advertisement.createdAt|date|format_datetime(pattern=app_datetime_short_format) }}</small>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
 
   {% for category in categories %}
     {% if category.isRoot or category.positionOrder == 0 %}

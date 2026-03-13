@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Repository\AdvertisementRepository;
 use App\Repository\Cached\ArticleCachedRepository;
 use App\Repository\Cached\CategoryCachedRepository;
+use App\Repository\CompanyRepository;
 use App\Service\PolishCalendarEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ class HomeController extends AbstractController
         private readonly AdvertisementRepository $advertisementRepository,
         private readonly ArticleCachedRepository $articleRepository,
         private readonly CategoryCachedRepository $categoryRepository,
+        private readonly CompanyRepository $companyRepository,
         private readonly PolishCalendarEvent $polishCalendarEvent,
     ) {
     }
@@ -28,7 +30,8 @@ class HomeController extends AbstractController
         $topCategory = $this->categoryRepository->findTopCategory();
         $topCategoryArticles = $this->articleRepository->findLatestArticlesFromCategory($topCategory, 7);
         $mostPopularArticles = $this->articleRepository->findMostPopularArticles(4);
-        $latestAdvertisements = $this->advertisementRepository->findLatestAdvertisements(4);
+        $promotedAdvertisements = $this->advertisementRepository->findPromotedAdvertisements(4);
+        $promotedCompanies = $this->companyRepository->findBy(['isActive' => true, 'isPromoted' => true], ['name' => 'ASC'], 6);
 
         $categories = $this->categoryRepository->findAll();
         $articles = [];
@@ -42,7 +45,8 @@ class HomeController extends AbstractController
             [
                 'articles' => $articles,
                 'categories' => $categories,
-                'latestAdvertisements' => $latestAdvertisements,
+                'promotedAdvertisements' => $promotedAdvertisements,
+                'promotedCompanies' => $promotedCompanies,
                 'mostPopularArticles' => $mostPopularArticles,
                 'topCategory' => $topCategory,
                 'topCategoryArticles' => $topCategoryArticles,

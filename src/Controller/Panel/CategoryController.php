@@ -86,13 +86,21 @@ class CategoryController extends AbstractController
         $categories = $this->categoryRepository->findBy(['isRoot' => false], ['positionOrder' => 'ASC']);
         $positionOrder = 0;
 
-        foreach ($categories as $category) {
-            $category->setPositionOrder($positionOrder);
-            $this->entityManager->persist($category);
+        foreach ($categories as $cat) {
+            if ($cat->getId() === $id) {
+                continue;
+            }
+
+            $cat->setPositionOrder($positionOrder);
+            $this->entityManager->persist($cat);
             $positionOrder++;
         }
 
         $this->entityManager->flush();
+
+        $this->cache->delete(CacheKeyPrefix::CATEGORY_ALL);
+        $this->cache->delete(CacheKeyPrefix::CATEGORY_TOP);
+        $this->cache->delete(CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY);
 
         $this->addFlash('success', 'Kategoria została usunięta');
 

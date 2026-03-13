@@ -72,6 +72,9 @@
         <div class="user-report mb-2">Dodano
           <strong>{{ report.createdAt|relative_datetime }}</strong> przez
           <strong>{{ report.author|default('Czytelnik') }}</strong>
+          {% if is_granted('ROLE_ADMIN') %}
+            (IP: <strong>{{ report.ipAddress }}</strong>)
+          {% endif %}
         </div>
 
         <div>

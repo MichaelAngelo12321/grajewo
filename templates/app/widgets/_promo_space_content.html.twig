@@ -1,0 +1,11 @@
+{% if promoItem %}
+    <div class="promo-space">
+      {% if promoItem.targetUrl %}
+  <a href="{{ path('promo_redirect', { id: promoItem.id, redirectUrl: promoItem.encodedTargetUrl }) }}">
+    <img class="img-fluid" src="{{ promoItem.imageUrl }}" />
+  </a>
+{% else %}
+  <img class="img-fluid" src="{{ promoItem.imageUrl }}" />
+{% endif %}
+    </div>
+{% endif %}

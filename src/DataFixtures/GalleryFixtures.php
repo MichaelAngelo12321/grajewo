@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Gallery;
 use App\Entity\GalleryImage;
+use App\Entity\User;
 use App\Repository\ArticleRepository;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -37,8 +38,8 @@ class GalleryFixtures extends Fixture implements DependentFixtureInterface
             $gallery->setName($faker->sentence(3));
             $gallery->setCreatedAt(new DateTimeImmutable());
             $gallery->setUpdatedAt(new DateTimeImmutable());
-            $gallery->setAuthor($this->getReference(AppFixtures::ADMIN_USER_REFERENCE));
-            $gallery->setUpdateAuthor($this->getReference(AppFixtures::ADMIN_USER_REFERENCE));
+            $gallery->setAuthor($this->getReference(AppFixtures::ADMIN_USER_REFERENCE, User::class));
+            $gallery->setUpdateAuthor($this->getReference(AppFixtures::ADMIN_USER_REFERENCE, User::class));
 
             $imagesCount = rand(5, 15);
             for ($j = 0; $j < $imagesCount; $j++) {

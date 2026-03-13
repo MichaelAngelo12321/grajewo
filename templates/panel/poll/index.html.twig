@@ -1,0 +1,70 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Zarządzanie ankietami{% endblock %}
+
+{% block body %}
+    <div class="page-body">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">Lista ankiet</h3>
+                    <a href="{{ path('panel_poll_new') }}" class="btn btn-primary">
+                        <i class="ti ti-plus me-1"></i>
+                        Dodaj ankietę
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap datatable">
+                        <thead>
+                        <tr>
+                            <th class="w-1">ID</th>
+                            <th>Pytanie</th>
+                            <th>Aktywna</th>
+                            <th>Liczba głosów</th>
+                            <th>Data utworzenia</th>
+                            <th class="w-1">Akcje</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for poll in polls %}
+                            <tr>
+                                <td>{{ poll.id }}</td>
+                                <td class="text-truncate" style="max-width: 300px;" title="{{ poll.question }}">
+                                    {{ poll.question }}
+                                </td>
+                                <td>
+                                    {% if poll.isActive %}
+                                        <span class="badge bg-green text-green-fg">Tak</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary text-secondary-fg">Nie</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ poll.totalVotes }}</td>
+                                <td>{{ poll.createdAt|date('d.m.Y H:i') }}</td>
+                                <td>
+                                    <div class="btn-list flex-nowrap">
+                                        <a href="{{ path('panel_poll_edit', {'id': poll.id}) }}"
+                                           class="btn btn-white btn-sm">
+                                            Edytuj
+                                        </a>
+                                        <form method="post" action="{{ path('panel_poll_delete', {'id': poll.id}) }}"
+                                              onsubmit="return confirm('Czy na pewno chcesz usunąć tę ankietę?');"
+                                              class="d-inline-block">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ poll.id) }}">
+                                            <button class="btn btn-danger btn-sm">Usuń</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center">Brak ankiet.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

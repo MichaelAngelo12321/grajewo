@@ -25,8 +25,12 @@ class WeatherRepository
     ) {
     }
 
-    public function getWeather(): array
+    public function getWeather(): ?array
     {
+        if ($this->apiKey === '' || $this->lat === '' || $this->lon === '') {
+            return null;
+        }
+
         return $this->cache->get(CacheKeyPrefix::WEATHER, function (ItemInterface $item) {
             $item->expiresAfter(new DateInterval('PT1H'));
 
