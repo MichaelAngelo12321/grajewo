@@ -52,10 +52,10 @@
                 <div class="card h-100 bg-light border-0">
                   <div class="card-body d-flex align-items-center p-3">
                     {% if company.logo %}
-                      <img src="{{ asset(company.logo) }}" alt="{{ company.name }}" class="rounded me-3 bg-white border" style="width: 64px; height: 64px; object-fit: contain;">
+                      <img src="{{ asset(company.logo) }}" alt="{{ company.name }}" class="rounded me-3 bg-white" style="width: 64px; height: 64px; object-fit: contain;">
                     {% else %}
-                      <div class="bg-white border rounded d-flex align-items-center justify-content-center text-muted me-3" style="width: 64px; height: 64px;">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l18 0" /><path d="M9 8l1 0" /><path d="M9 12l1 0" /><path d="M9 16l1 0" /><path d="M14 8l1 0" /><path d="M14 12l1 0" /><path d="M14 16l1 0" /><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" /></svg>
+                      <div class="bg-white rounded d-flex align-items-center justify-content-center text-muted me-3" style="width: 64px; height: 64px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l18 0" /><path d="M9 8l1 0" /><path d="M9 12l1 0" /><path d="M9 16l1 0" /><path d="M14 8l1 0" /><path d="M14 12l1 0" /><path d="M14 16l1 0" /><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" /></svg>
                       </div>
                     {% endif %}
                     <div class="overflow-hidden">

@@ -12,6 +12,15 @@ services:
       APP_ENV: dev
       APP_SECRET: 1582665086ea0f0446de9feb261e01f1
       MAILER_DSN: smtp://mailer:1025
+      # Weather API
+      APP_AIR_POLLUTION_DATA_URL: ${APP_AIR_POLLUTION_DATA_URL:-}
+      APP_WEATHER_API_KEY: ${APP_WEATHER_API_KEY:-}
+      APP_WEATHER_API_LAT: ${APP_WEATHER_API_LAT:-}
+      APP_WEATHER_API_LON: ${APP_WEATHER_API_LON:-}
+      # ReCaptcha
+      RECAPTCHA3_KEY: ${RECAPTCHA3_KEY:-}
+      RECAPTCHA3_SECRET: ${RECAPTCHA3_SECRET:-}
+      RECAPTCHA3_ENABLED: ${RECAPTCHA3_ENABLED:-false}
     depends_on:
       - database
       - mailer

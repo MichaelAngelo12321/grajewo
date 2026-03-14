@@ -42,27 +42,39 @@ class CompanyFrontendType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Opis firmy',
                 'attr' => ['rows' => 5],
-                'required' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Proszę podać opis firmy.']),
+                ],
             ])
             ->add('address', TextType::class, [
                 'label' => 'Adres (ulica i numer)',
-                'required' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Proszę podać adres firmy.']),
+                ],
             ])
             ->add('postalCode', TextType::class, [
                 'label' => 'Kod pocztowy',
-                'required' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Proszę podać kod pocztowy.']),
+                ],
             ])
             ->add('city', TextType::class, [
                 'label' => 'Miasto',
-                'required' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Proszę podać miasto.']),
+                ],
             ])
             ->add('phone', TelType::class, [
                 'label' => 'Telefon',
-                'required' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Proszę podać numer telefonu.']),
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
-                'required' => false,
+                'constraints' => [
+                    new NotBlank(['message' => 'Proszę podać adres email.']),
+                ],
             ])
             ->add('website', UrlType::class, [
                 'label' => 'Strona WWW',
@@ -82,6 +94,10 @@ class CompanyFrontendType extends AbstractType
                         ],
                         'mimeTypesMessage' => 'Proszę przesłać poprawny obrazek (JPG, PNG, WEBP)',
                     ])
+                ],
+                'attr' => [
+                    'accept' => 'image/jpeg,image/png,image/webp',
+                    'data-max-size' => 2 * 1024 * 1024,
                 ],
             ]);
     }

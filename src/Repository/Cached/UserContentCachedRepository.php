@@ -43,7 +43,12 @@ class UserContentCachedRepository
 
             $videoUrl = $video->getVideoUrl();
 
-            if (!str_contains($videoUrl, 'embed')) {
+            // Pattern for standard watch URLs, embed URLs, and short URLs
+            // This handles URLs with additional parameters correctly by extracting just the video ID
+            if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $videoUrl, $matches)) {
+                $video->setVideoUrl('https://www.youtube.com/embed/' . $matches[1]);
+            } elseif (!str_contains($videoUrl, 'embed')) {
+                // Fallback for simple cases if regex fails but it's a watch URL
                 $videoUrl = str_replace('watch?v=', 'embed/', $videoUrl);
                 $video->setVideoUrl($videoUrl);
             }

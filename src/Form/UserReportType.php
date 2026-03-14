@@ -39,7 +39,7 @@ class UserReportType extends AbstractType
             ->add('image', FileType::class, [
                 'constraints' => [
                     new File([
-                        'maxSize' => '12m',
+                        'maxSize' => '2048k',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -51,6 +51,10 @@ class UserReportType extends AbstractType
                 'label' => 'Zdjęcie (opcjonalnie)',
                 'mapped' => false,
                 'required' => false,
+                'attr' => [
+                    'accept' => 'image/jpeg,image/png,image/gif',
+                    'data-max-size' => 2 * 1024 * 1024,
+                ],
             ])
             ->add('author', null, [
                 'label' => 'Twój podpis (opcjonalnie)',

@@ -14,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Validator\Constraints\File;
+
 class PromoItemType extends AbstractType
 {
     public function __construct(private ParameterBagInterface $params)
@@ -43,8 +45,23 @@ class PromoItemType extends AbstractType
                 'label' => 'Opis reklamy',
             ])
             ->add('imageUrl', FileType::class, [
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2048k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp',
+                        ],
+                        'mimeTypesMessage' => 'Proszę przesłać poprawny obrazek (JPG, PNG, WEBP)',
+                    ])
+                ],
                 'required' => true,
                 'mapped' => false,
+                'attr' => [
+                    'accept' => 'image/jpeg,image/png,image/webp',
+                    'data-max-size' => 2 * 1024 * 1024,
+                ],
             ])
             ->add('targetUrl', UrlType::class, [
                 'label' => 'URL docelowy',

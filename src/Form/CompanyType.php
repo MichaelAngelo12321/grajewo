@@ -82,6 +82,10 @@ class CompanyType extends AbstractType
                         'mimeTypesMessage' => 'Proszę przesłać poprawny obrazek (JPG, PNG, WEBP)',
                     ])
                 ],
+                'attr' => [
+                    'accept' => 'image/jpeg,image/png,image/webp',
+                    'data-max-size' => 2 * 1024 * 1024,
+                ],
             ])
             ->add('isActive', CheckboxType::class, [
                 'label' => 'Firma aktywna',

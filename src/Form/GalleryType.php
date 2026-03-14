@@ -12,6 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\File;
+
 class GalleryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -25,9 +28,25 @@ class GalleryType extends AbstractType
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
+                'constraints' => [
+                    new All([
+                        'constraints' => [
+                            new File([
+                                'maxSize' => '2048k',
+                                'mimeTypes' => [
+                                    'image/jpeg',
+                                    'image/png',
+                                    'image/webp',
+                                ],
+                                'mimeTypesMessage' => 'Proszę przesłać poprawny obrazek (JPG, PNG, WEBP)',
+                            ])
+                        ],
+                    ]),
+                ],
                 'attr' => [
-                    'accept' => 'image/*',
+                    'accept' => 'image/jpeg,image/png,image/webp',
                     'data-max-files' => 50,
+                    'data-max-size' => 2 * 1024 * 1024,
                 ],
             ])
             ->add('imageOrder', HiddenType::class, [

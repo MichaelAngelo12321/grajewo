@@ -14,7 +14,7 @@
                         Ogłoszenie pojawi się w serwisie po akceptacji przez administratora.
                     </p>
 
-                    {{ form_start(form) }}
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
                     {% if form_errors(form) %}
                         <div class="alert alert-danger">

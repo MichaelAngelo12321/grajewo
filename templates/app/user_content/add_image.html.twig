@@ -14,7 +14,7 @@
 {% block body %}
   <h1 class="fs-5 fw-bold mb-4">Prześlij nam ciekawe zdjęcie</h1>
 
-  {{ form_start(form) }}
+  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
   {% if form.vars.errors|length > 0 %}
     {% for error in form.vars.errors %}
       <div class="alert alert-danger">

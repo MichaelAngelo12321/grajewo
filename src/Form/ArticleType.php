@@ -52,7 +52,7 @@ class ArticleType extends AbstractType
             ->add('imageUrl', FileType::class, [
                 'constraints' => [
                     new File([
-                        'maxSize' => '12m',
+                        'maxSize' => '2048k',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -64,6 +64,10 @@ class ArticleType extends AbstractType
                 'label' => 'Zdjęcie',
                 'mapped' => false,
                 'required' => false,
+                'attr' => [
+                    'accept' => 'image/jpeg,image/png,image/gif',
+                    'data-max-size' => 2 * 1024 * 1024,
+                ],
             ])
             ->add('imageCaption', TextType::class, [
                 'label' => 'Podpis pod zdjęciem',

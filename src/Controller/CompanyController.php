@@ -67,9 +67,7 @@ class CompanyController extends AbstractController
             $this->entityManager->persist($company);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Firma została dodana i oczekuje na akceptację administratora.');
-
-            return $this->redirectToRoute('company_list');
+            return $this->redirectToRoute('user_content_thank_you');
         }
 
         return $this->render('app/company/add.html.twig', [

@@ -23,6 +23,7 @@ class DashboardController extends AbstractController
 
     public function __construct(
         private readonly \App\Repository\AdvertisementRepository $advertisementRepository,
+        private readonly \App\Repository\CompanyRepository $companyRepository,
         private DailyImageRepository $dailyImageRepository,
         private DailyVideoRepository $dailyVideoRepository,
         private EntityManagerInterface $entityManager,
@@ -66,8 +67,12 @@ class DashboardController extends AbstractController
         // advertisements
         $advertisements = $this->advertisementRepository->findBy(['isActive' => false], ['createdAt' => 'DESC']);
 
+        // companies
+        $companies = $this->companyRepository->findBy(['isActive' => false], ['createdAt' => 'DESC']);
+
         return $this->render('panel/dashboard/index.html.twig', [
             'advertisements' => $advertisements,
+            'companies' => $companies,
             'dailyImages' => $dailyImages,
             'dailyVideos' => $dailyVideos,
             'daysOfWeek' => $daysOfWeek,
@@ -171,6 +176,38 @@ class DashboardController extends AbstractController
 
         $this->settingRepository->set(self::NEXT_SUNDAY_IS_SHOPPING, $nextSundayIsShopping);
         $this->addFlash('success', 'Ustawienia niedzieli handlowej zostały zapisane');
+
+        return $this->redirectToRoute('panel_dashboard');
+    }
+
+    public function publishCompany(int $companyId): Response
+    {
+        $company = $this->companyRepository->find($companyId);
+
+        if ($company === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $company->setIsActive(true);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Firma została zaakceptowana');
+
+        return $this->redirectToRoute('panel_dashboard');
+    }
+
+    public function removeCompany(int $companyId): Response
+    {
+        $company = $this->companyRepository->find($companyId);
+
+        if ($company === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->entityManager->remove($company);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Firma została usunięta');
 
         return $this->redirectToRoute('panel_dashboard');
     }

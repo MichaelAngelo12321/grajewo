@@ -7,6 +7,7 @@ import 'chocolat/dist/css/chocolat.css'
 import './styles/app/index.scss'
 import './ad-rotation.js'
 import './theme-switcher.js'
+import './file-validator.js'
 
 const { Collapse, Tooltip } = bootstrap
 

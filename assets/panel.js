@@ -10,6 +10,7 @@ import 'tinymce/skins/ui/oxide/skin'
 import 'tinymce/themes/silver'
 import './styles/panel/index.scss'
 import './theme-switcher.js'
+import './file-validator.js'
 
 // Content editor
 const editor = tinymce.init({

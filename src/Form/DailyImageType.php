@@ -27,7 +27,7 @@ class DailyImageType extends AbstractType
             ->add('image', FileType::class, [
                 'constraints' => [
                     new File([
-                        'maxSize' => '12m',
+                        'maxSize' => '2048k',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
@@ -38,6 +38,10 @@ class DailyImageType extends AbstractType
                 ],
                 'label' => 'Zdjęcie',
                 'mapped' => false,
+                'attr' => [
+                    'accept' => 'image/jpeg,image/png,image/gif',
+                    'data-max-size' => 2 * 1024 * 1024,
+                ],
             ])
             ->add('author', null, [
                 'label' => 'Autor (opcjonalnie)',

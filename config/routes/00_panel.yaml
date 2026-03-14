@@ -41,6 +41,14 @@ panel_dashboard_save_pharmacy_duty:
   methods: [ POST ]
   controller: App\Controller\Panel\DashboardController::savePharmacyDuty
 
+panel_dashboard_publish_company:
+  path: /panel/publish-company/{companyId}
+  controller: App\Controller\Panel\DashboardController::publishCompany
+
+panel_dashboard_remove_company:
+  path: /panel/remove-company/{companyId}
+  controller: App\Controller\Panel\DashboardController::removeCompany
+
 # Advertisements
 panel_advertisement_list:
   path: /panel/advertisements

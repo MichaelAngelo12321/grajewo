@@ -19,6 +19,7 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\File;
 
 class UserType extends AbstractType
 {
@@ -64,8 +65,20 @@ class UserType extends AbstractType
                 'label' => 'Stanowisko',
             ])
             ->add('image', FileType::class, [
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2048k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp',
+                        ],
+                        'mimeTypesMessage' => 'Proszę przesłać poprawny obrazek (JPG, PNG, WEBP)',
+                    ])
+                ],
                 'attr' => [
-                    'accept' => 'image/jpeg',
+                    'accept' => 'image/jpeg,image/png,image/webp',
+                    'data-max-size' => 2 * 1024 * 1024,
                 ],
                 'help' => $options['is_edit'] ? 'Pozostaw puste, jeśli nie chcesz zmienić' : null,
                 'label' => 'Zdjęcie',
