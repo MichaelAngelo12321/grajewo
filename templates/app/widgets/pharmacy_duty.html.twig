@@ -4,7 +4,7 @@
   <div class="card">
     {% set todayPharmacyDuty = get_today_pharmacy_duty() %}
 
-    {% if todayPharmacyDuty %}
+    {% if todayPharmacyDuty and todayPharmacyDuty.name %}
       <p class="fw-medium">{{ todayPharmacyDuty.name }}</p>
       <span>{{ todayPharmacyDuty.address }}</span>
     {% else %}
