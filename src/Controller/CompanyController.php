@@ -67,12 +67,12 @@ class CompanyController extends AbstractController
             $this->entityManager->persist($company);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('user_content_thank_you');
+            return $this->redirectToRoute('user_content_thank_you', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('app/company/add.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
     #[Route('/katalog-firm/{categorySlug}', name: 'company_list', defaults: ['categorySlug' => null])]

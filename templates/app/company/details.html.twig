@@ -15,6 +15,14 @@
 {% endblock %}
 
 {% block body %}
+  {% for type, messages in app.flashes() %}
+    {% for message in messages %}
+      <div class="alert alert-{{ type }} mb-3">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endfor %}
+
   <div class="card mb-4">
     <div class="card-body">
       <div class="row">

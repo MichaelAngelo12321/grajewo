@@ -1,10 +1,12 @@
 <!doctype html>
-<html lang="pl" data-bs-theme="light">
+<html lang="pl" data-bs-theme="light" data-bs-core="app">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{% block description %}{{ app_meta_description }}{% endblock %}">
   <meta name="robots" content="{% block robots %}index, follow{% endblock %}">
+  <meta name="turbo-refresh-method" content="morph">
+  <meta name="turbo-refresh-scroll" content="preserve">
   <link rel="canonical" href="{% block canonical %}{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}{% endblock %}">
   <title>{% block title %}{% endblock %}</title>
 
@@ -30,9 +32,6 @@
   {% block stylesheets %}
   {% endblock %}
 
-  {% block javascripts %}
-  {% endblock %}
-
   {% block structured_data %}
   <script type="application/ld+json">
   {
@@ -43,8 +42,12 @@
   }
   </script>
   {% endblock %}
+
+  {% block javascripts %}
+  {% endblock %}
 </head>
 <body>
+<div class="d-flex flex-column min-vh-100">
 {% include 'app/layout/_header.html.twig' %}
 
 <div class="container container-main">

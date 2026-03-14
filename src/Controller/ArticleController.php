@@ -58,7 +58,7 @@ class ArticleController extends AbstractController
                         '__category' => $category->getSlug(),
                         'id' => $id,
                         'slug' => $slug,
-                    ]);
+                    ], Response::HTTP_SEE_OTHER);
                 }
 
                 $comment->setArticle($article);
@@ -80,7 +80,7 @@ class ArticleController extends AbstractController
                     '__category' => $category->getSlug(),
                     'id' => $id,
                     'slug' => $slug,
-                ]);
+                ], Response::HTTP_SEE_OTHER);
             }
         }
 
@@ -93,7 +93,7 @@ class ArticleController extends AbstractController
             'commentForm' => isset($commentForm) ? $commentForm->createView() : null,
             'id' => $id,
             'slug' => $slug,
-        ]);
+        ], new Response(null, isset($commentForm) && $commentForm->isSubmitted() && !$commentForm->isValid() ? 422 : 200));
     }
 
     public function eventsList(): Response

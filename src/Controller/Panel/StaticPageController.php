@@ -36,12 +36,12 @@ class StaticPageController extends AbstractController
 
             $this->addFlash('success', 'Strona statyczna została dodana');
 
-            return $this->redirectToRoute('panel_static_page_list');
+            return $this->redirectToRoute('panel_static_page_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/static_page/create.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function delete(int $id, Request $request): Response
@@ -58,8 +58,8 @@ class StaticPageController extends AbstractController
         $this->addFlash('success', 'Strona statyczna została usunięta');
 
         return $request->headers->has('referer')
-            ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('panel_static_page_list');
+            ? $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER)
+            : $this->redirectToRoute('panel_static_page_list', [], Response::HTTP_SEE_OTHER);
     }
 
     public function edit(int $id, Request $request): Response
@@ -79,13 +79,13 @@ class StaticPageController extends AbstractController
 
             $this->addFlash('success', 'Strona statyczna została zaktualizowana');
 
-            return $this->redirectToRoute('panel_static_page_list');
+            return $this->redirectToRoute('panel_static_page_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/static_page/edit.html.twig', [
             'staticPage' => $staticPage,
             'form' => $form->createView(),
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function list(Request $request): Response

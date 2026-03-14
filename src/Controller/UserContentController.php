@@ -44,7 +44,7 @@ class UserContentController extends AbstractController
             if (!$this->isCsrfTokenValid('gas_station_prices_add', $csrfToken)) {
                 $this->addFlash('danger', 'Nieprawidłowy token CSRF');
 
-                return $this->redirectToRoute('user_content_add_gas_station_prices_form');
+                return $this->redirectToRoute('user_content_add_gas_station_prices_form', [], Response::HTTP_SEE_OTHER);
             }
 
             if (!$this->userActivity->canUserPerformAction(
@@ -53,7 +53,7 @@ class UserContentController extends AbstractController
             )) {
                 $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
 
-                return $this->redirectToRoute('user_content_add_gas_station_prices_form');
+                return $this->redirectToRoute('user_content_add_gas_station_prices_form', [], Response::HTTP_SEE_OTHER);
             }
 
             $prices = $request->get('prices');
@@ -62,7 +62,7 @@ class UserContentController extends AbstractController
             if (count($emptyPrices) === count($prices)) {
                 $this->addFlash('danger', 'Nie podano żadnej ceny');
 
-                return $this->redirectToRoute('user_content_add_gas_station_prices_form');
+                return $this->redirectToRoute('user_content_add_gas_station_prices_form', [], Response::HTTP_SEE_OTHER);
             }
 
             $station = $this->gasStationRepository->find($request->get('station'));
@@ -70,7 +70,7 @@ class UserContentController extends AbstractController
             if ($station === null) {
                 $this->addFlash('danger', 'Nie znaleziono stacji');
 
-                return $this->redirectToRoute('user_content_add_gas_station_prices_form');
+                return $this->redirectToRoute('user_content_add_gas_station_prices_form', [], Response::HTTP_SEE_OTHER);
             }
 
             foreach ($prices as $type => $price) {
@@ -93,7 +93,7 @@ class UserContentController extends AbstractController
 
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('user_content_thank_you');
+            return $this->redirectToRoute('user_content_thank_you', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('app/user_content/add_gas_station_prices.html.twig', [
@@ -114,7 +114,7 @@ class UserContentController extends AbstractController
             )) {
                 $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
 
-                return $this->redirectToRoute('user_content_add_image_form');
+                return $this->redirectToRoute('user_content_add_image_form', [], Response::HTTP_SEE_OTHER);
             }
 
             $image->setIpAddress($request->getClientIp());
@@ -136,12 +136,12 @@ class UserContentController extends AbstractController
             $this->entityManager->persist($image);
             $this->entityManager->flush();
 
-            return $this->redirect($this->generateUrl('user_content_thank_you'));
+            return $this->redirect($this->generateUrl('user_content_thank_you'), Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('app/user_content/add_image.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
     public function addVideo(Request $request): Response
@@ -157,7 +157,7 @@ class UserContentController extends AbstractController
             )) {
                 $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
 
-                return $this->redirectToRoute('user_content_add_video_form');
+                return $this->redirectToRoute('user_content_add_video_form', [], Response::HTTP_SEE_OTHER);
             }
 
             $video->setIpAddress($request->getClientIp());
@@ -169,12 +169,12 @@ class UserContentController extends AbstractController
             $this->entityManager->persist($video);
             $this->entityManager->flush();
 
-            return $this->redirect($this->generateUrl('user_content_thank_you'));
+            return $this->redirect($this->generateUrl('user_content_thank_you'), Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('app/user_content/add_video.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
     public function thankYouPage(): Response

@@ -111,12 +111,16 @@
 
             {% if report.isHidden %}
               <a href="{{ path('panel_user_report_unlock', {'reportId': report.id}) }}"
-                 class="btn btn-sm btn-success text-white">
+                 class="btn btn-sm btn-success text-white"
+                 data-turbo-method="post"
+                 data-turbo-prefetch="false">
                 Odblokuj raport
               </a>
             {% else %}
               <a href="{{ path('panel_user_report_hide', {'reportId': report.id}) }}"
-                 class="btn btn-sm btn-danger">
+                 class="btn btn-sm btn-danger"
+                 data-turbo-method="post"
+                 data-turbo-prefetch="false">
                 Ukryj raport
               </a>
             {% endif %}

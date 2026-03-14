@@ -9,6 +9,7 @@ use App\Repository\ArticleCommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArticleCommentController extends AbstractController
 {
@@ -18,7 +19,7 @@ class ArticleCommentController extends AbstractController
     ) {
     }
 
-    public function hideComment(int $commentId, Request $request)
+    public function hideComment(int $commentId, Request $request): Response
     {
         $comment = $this->articleCommentRepository->find($commentId);
 
@@ -33,10 +34,10 @@ class ArticleCommentController extends AbstractController
 
         $this->addFlash('success', 'Komentarz został ukryty');
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
     }
 
-    public function unlockComment(int $commentId, Request $request)
+    public function unlockComment(int $commentId, Request $request): Response
     {
         $comment = $this->articleCommentRepository->find($commentId);
 
@@ -51,6 +52,6 @@ class ArticleCommentController extends AbstractController
 
         $this->addFlash('success', 'Komentarz został odblokowany');
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
     }
 }

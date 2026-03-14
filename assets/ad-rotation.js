@@ -1,7 +1,11 @@
-document.addEventListener('DOMContentLoaded', () => {
+let rotationInterval;
+
+document.addEventListener('turbo:load', () => {
+    if (rotationInterval) clearInterval(rotationInterval);
+
     const ROTATION_INTERVAL = 60000; // 60 seconds
 
-    setInterval(() => {
+    rotationInterval = setInterval(() => {
         const slots = document.querySelectorAll('.promo-slot-wrapper[data-slot-name]');
 
         slots.forEach(slotWrapper => {
@@ -47,4 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         });
     }, ROTATION_INTERVAL);
+});
+
+document.addEventListener('turbo:before-cache', () => {
+    if (rotationInterval) clearInterval(rotationInterval);
 });

@@ -125,12 +125,17 @@
                   Adres IP czytelnika: <strong>{{ advertisement.ipAddress }}</strong>
                 </div>
 
-                <a href="{{ path('panel_advertisement_toggle_promoted', {'advertisementId': advertisement.id}) }}" class="btn btn-sm btn-outline-warning me-2">
+                <a href="{{ path('panel_advertisement_toggle_promoted', {'advertisementId': advertisement.id}) }}" 
+                   class="btn btn-sm btn-outline-warning me-2" 
+                   data-turbo-method="post"
+                   data-turbo-prefetch="false">
                     Wyłącz promowanie
                 </a>
 
                 <a href="{{ path('panel_advertisement_remove', {'advertisementId': advertisement.id}) }}"
-                   class="btn btn-sm btn-danger text-white">
+                   class="btn btn-sm btn-danger text-white js-confirm"
+                   data-turbo-method="post"
+                   data-turbo-prefetch="false">
                   Usuń ogłoszenie
                 </a>
               </div>
@@ -187,7 +192,9 @@
                 </div>
 
                 <a href="{{ path('panel_advertisement_remove', {'advertisementId': advertisement.id}) }}"
-                   class="btn btn-sm btn-danger text-white">
+                   class="btn btn-sm btn-danger text-white js-confirm"
+                   data-turbo-method="post"
+                   data-turbo-prefetch="false">
                   Usuń ogłoszenie
                 </a>
               </div>

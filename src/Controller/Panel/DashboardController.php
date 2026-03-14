@@ -96,7 +96,7 @@ class DashboardController extends AbstractController
 
         $this->addFlash('success', 'Ogłoszenie zostało opublikowane');
 
-        return $this->redirectToRoute('panel_dashboard');
+        return $this->redirectToRoute('panel_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 
     public function publishDailyImage(int $imageId): Response
@@ -104,7 +104,7 @@ class DashboardController extends AbstractController
         $this->publishEntity($this->dailyImageRepository->find($imageId));
         $this->addFlash('success', 'Obrazek został opublikowany');
 
-        return $this->redirectToRoute('panel_dashboard');
+        return $this->redirectToRoute('panel_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 
     public function publishDailyVideo(int $videoId): Response
@@ -112,7 +112,7 @@ class DashboardController extends AbstractController
         $this->publishEntity($this->dailyVideoRepository->find($videoId));
         $this->addFlash('success', 'Wideo zostało opublikowane');
 
-        return $this->redirectToRoute('panel_dashboard');
+        return $this->redirectToRoute('panel_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 
     public function publishUserGasStationPrice(int $gasStationPriceId): Response
@@ -130,7 +130,7 @@ class DashboardController extends AbstractController
 
         $this->addFlash('success', 'Cena została opublikowana');
 
-        return $this->redirectToRoute('panel_dashboard');
+        return $this->redirectToRoute('panel_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 
     public function removeDailyImage(int $imageId): Response
@@ -140,7 +140,7 @@ class DashboardController extends AbstractController
         $this->removeEntity($dailyImage, $dailyImage->getImageUrl());
         $this->addFlash('success', 'Obrazek został usunięty');
 
-        return $this->redirectToRoute('panel_dashboard');
+        return $this->redirectToRoute('panel_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 
     public function removeDailyVideo(int $videoId): Response
@@ -150,7 +150,7 @@ class DashboardController extends AbstractController
         $this->removeEntity($dailyVideo);
         $this->addFlash('success', 'Wideo zostało usunięte');
 
-        return $this->redirectToRoute('panel_dashboard');
+        return $this->redirectToRoute('panel_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 
     public function removeUserGasStationPrice(int $gasStationPriceId): Response
@@ -166,7 +166,7 @@ class DashboardController extends AbstractController
 
         $this->addFlash('success', 'Cena została usunięta');
 
-        return $this->redirectToRoute('panel_dashboard');
+        return $this->redirectToRoute('panel_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 
     public function saveNextSundayIsShopping(Request $request): Response
@@ -177,7 +177,7 @@ class DashboardController extends AbstractController
         $this->settingRepository->set(self::NEXT_SUNDAY_IS_SHOPPING, $nextSundayIsShopping);
         $this->addFlash('success', 'Ustawienia niedzieli handlowej zostały zapisane');
 
-        return $this->redirectToRoute('panel_dashboard');
+        return $this->redirectToRoute('panel_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 
     public function publishCompany(int $companyId): Response
@@ -193,7 +193,7 @@ class DashboardController extends AbstractController
 
         $this->addFlash('success', 'Firma została zaakceptowana');
 
-        return $this->redirectToRoute('panel_dashboard');
+        return $this->redirectToRoute('panel_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 
     public function removeCompany(int $companyId): Response
@@ -209,7 +209,7 @@ class DashboardController extends AbstractController
 
         $this->addFlash('success', 'Firma została usunięta');
 
-        return $this->redirectToRoute('panel_dashboard');
+        return $this->redirectToRoute('panel_dashboard', [], Response::HTTP_SEE_OTHER);
     }
 
     public function savePharmacyDuty(Request $request): Response

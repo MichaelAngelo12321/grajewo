@@ -37,7 +37,7 @@ class AdvertisementController extends AbstractController
             )) {
                 $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnego ogłoszenia');
 
-                return $this->redirectToRoute('advertisement_list');
+                return $this->redirectToRoute('advertisement_list', [], Response::HTTP_SEE_OTHER);
             }
 
             $advertisement->setCreatedAt(new DateTimeImmutable());
@@ -51,12 +51,12 @@ class AdvertisementController extends AbstractController
 
             $this->addFlash('success', 'Dziękujemy za dodanie ogłoszenia. Będzie ono widoczne po zatwierdzeniu przez moderatora.');
 
-            return $this->redirectToRoute('advertisement_list');
+            return $this->redirectToRoute('advertisement_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('app/advertisement/add.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
     public function list(Request $request, ?string $category = null): Response

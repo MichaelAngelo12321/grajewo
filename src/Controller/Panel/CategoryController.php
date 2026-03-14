@@ -57,12 +57,12 @@ class CategoryController extends AbstractController
 
             $this->addFlash('success', 'Kategoria została dodana');
 
-            return $this->redirectToRoute('panel_categories_list');
+            return $this->redirectToRoute('panel_categories_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/category/create.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function delete(int $id): Response
@@ -78,7 +78,7 @@ class CategoryController extends AbstractController
         if ($categoryArticles > 0) {
             $this->addFlash('danger', 'Nie można usunąć kategorii, która posiada artykuły');
 
-            return $this->redirectToRoute('panel_categories_list');
+            return $this->redirectToRoute('panel_categories_list', [], Response::HTTP_SEE_OTHER);
         }
 
         $this->entityManager->remove($category);
@@ -104,7 +104,7 @@ class CategoryController extends AbstractController
 
         $this->addFlash('success', 'Kategoria została usunięta');
 
-        return $this->redirectToRoute('panel_categories_list');
+        return $this->redirectToRoute('panel_categories_list', [], Response::HTTP_SEE_OTHER);
     }
 
     public function edit(int $id, Request $request): Response
@@ -125,7 +125,7 @@ class CategoryController extends AbstractController
 
             $this->addFlash('success', 'Kategoria została zaktualizowana');
 
-            return $this->redirectToRoute('panel_categories_list');
+            return $this->redirectToRoute('panel_categories_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/category/edit.html.twig', [
@@ -133,7 +133,7 @@ class CategoryController extends AbstractController
             'category' => $category,
             'categories' => $this->categoryRepository->findBy(['isRoot' => false], ['positionOrder' => 'ASC']),
             'form' => $form->createView(),
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function list(): Response
@@ -149,7 +149,7 @@ class CategoryController extends AbstractController
     {
         $editFormRedirection = $this->redirectToRoute('panel_categories_edit', [
             'id' => $fromCategoryId,
-        ]);
+        ], Response::HTTP_SEE_OTHER);
         $fromCategory = $this->categoryRepository->find($fromCategoryId);
 
         if ($fromCategory === null) {

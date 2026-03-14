@@ -43,14 +43,14 @@ class PollController extends AbstractController
 
             $this->addFlash('success', 'Ankieta została dodana.');
 
-            return $this->redirectToRoute('panel_poll_list');
+            return $this->redirectToRoute('panel_poll_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/poll/form.html.twig', [
             'poll' => $poll,
             'form' => $form->createView(),
             'title' => 'Dodaj ankietę',
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     #[Route('/{id}/edytuj', name: 'panel_poll_edit', methods: ['GET', 'POST'])]
@@ -64,14 +64,14 @@ class PollController extends AbstractController
 
             $this->addFlash('success', 'Ankieta została zaktualizowana.');
 
-            return $this->redirectToRoute('panel_poll_list');
+            return $this->redirectToRoute('panel_poll_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/poll/form.html.twig', [
             'poll' => $poll,
             'form' => $form->createView(),
             'title' => 'Edytuj ankietę',
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     #[Route('/{id}', name: 'panel_poll_delete', methods: ['POST'])]
@@ -83,6 +83,6 @@ class PollController extends AbstractController
             $this->addFlash('success', 'Ankieta została usunięta.');
         }
 
-        return $this->redirectToRoute('panel_poll_list');
+        return $this->redirectToRoute('panel_poll_list', [], Response::HTTP_SEE_OTHER);
     }
 }

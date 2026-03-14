@@ -279,12 +279,16 @@
 
                 {% if comment.isHidden %}
                   <a href="{{ path('panel_article_comment_unlock', {'commentId': comment.id}) }}"
-                     class="btn btn-sm btn-success text-white">
+                     class="btn btn-sm btn-success text-white"
+                     data-turbo-method="post"
+                     data-turbo-prefetch="false">
                     Odblokuj komentarz
                   </a>
                 {% else %}
                   <a href="{{ path('panel_article_comment_hide', {'commentId': comment.id}) }}"
-                     class="btn btn-sm btn-danger">
+                     class="btn btn-sm btn-danger"
+                     data-turbo-method="post"
+                     data-turbo-prefetch="false">
                     Ukryj komentarz
                   </a>
                 {% endif %}

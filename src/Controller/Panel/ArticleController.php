@@ -50,8 +50,8 @@ class ArticleController extends AbstractController
         $this->addFlash('success', 'Status został zmieniony');
 
         return $request->headers->has('referer')
-            ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('panel_article_list');
+            ? $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER)
+            : $this->redirectToRoute('panel_article_list', [], Response::HTTP_SEE_OTHER);
     }
 
     public function bump(int $id, Request $request): Response
@@ -70,8 +70,8 @@ class ArticleController extends AbstractController
         $this->addFlash('success', 'Artykuł został podbity');
 
         return $request->headers->has('referer')
-            ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('panel_article_list');
+            ? $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER)
+            : $this->redirectToRoute('panel_article_list', [], Response::HTTP_SEE_OTHER);
     }
 
     public function create(Request $request): Response
@@ -108,13 +108,13 @@ class ArticleController extends AbstractController
 
             $this->addFlash('success', 'Artykuł został dodany');
 
-            return $this->redirectToRoute('panel_article_list');
+            return $this->redirectToRoute('panel_article_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/article/create.html.twig', [
             'categories' => $categories,
             'form' => $articleForm->createView(),
-        ]);
+        ], $articleForm->isSubmitted() && !$articleForm->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function edit(int $id, Request $request): Response
@@ -156,14 +156,14 @@ class ArticleController extends AbstractController
 
             $this->addFlash('success', 'Artykuł został zaktualizowany');
 
-            return $this->redirectToRoute('panel_article_list');
+            return $this->redirectToRoute('panel_article_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/article/edit.html.twig', [
             'article' => $article,
             'categories' => $categories,
             'form' => $articleForm->createView(),
-        ]);
+        ], $articleForm->isSubmitted() && !$articleForm->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function delete(int $id, Request $request): Response
@@ -184,8 +184,8 @@ class ArticleController extends AbstractController
         $this->addFlash('success', 'Artykuł został usunięty');
 
         return $request->headers->has('referer')
-            ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('panel_article_list');
+            ? $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER)
+            : $this->redirectToRoute('panel_article_list', [], Response::HTTP_SEE_OTHER);
     }
 
     public function list(Request $request): Response

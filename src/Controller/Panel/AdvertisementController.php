@@ -56,13 +56,13 @@ class AdvertisementController extends AbstractController
 
             $this->addFlash('success', 'Ogłoszenie zostało zaktualizowane');
 
-            return $this->redirectToRoute('panel_advertisement_list');
+            return $this->redirectToRoute('panel_advertisement_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/advertisement/edit.html.twig', [
             'advertisement' => $advertisement,
             'form' => $form->createView(),
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function remove(int $advertisementId, Request $request): Response
@@ -78,7 +78,7 @@ class AdvertisementController extends AbstractController
 
         $this->addFlash('success', 'Ogłoszenie zostało usunięte');
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
     }
 
     public function togglePromoted(int $advertisementId, Request $request): Response
@@ -94,7 +94,7 @@ class AdvertisementController extends AbstractController
 
         $this->addFlash('success', 'Status promowania został zmieniony.');
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
     }
 
     public function toggleActive(int $advertisementId, Request $request): Response
@@ -110,6 +110,6 @@ class AdvertisementController extends AbstractController
 
         $this->addFlash('success', 'Status aktywności został zmieniony.');
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
     }
 }

@@ -42,7 +42,7 @@ class UserReportController extends AbstractController
             )) {
                 $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
 
-                return $this->redirectToRoute('user_report_add');
+                return $this->redirectToRoute('user_report_add', [], Response::HTTP_SEE_OTHER);
             }
 
             $report->setIpAddress($request->getClientIp());
@@ -65,12 +65,12 @@ class UserReportController extends AbstractController
 
             $this->addFlash('success', 'Dziękujemy za przesłanie raportu');
 
-            return $this->redirectToRoute('user_report');
+            return $this->redirectToRoute('user_report', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('app/user_report/add.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
     public function index(): Response

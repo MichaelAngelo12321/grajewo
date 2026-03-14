@@ -43,7 +43,7 @@ class SettingController extends AbstractController
             $existingSetting = $this->settingRepository->find($setting->getName());
             if ($existingSetting) {
                 $this->addFlash('danger', 'Ustawienie o podanej nazwie już istnieje.');
-                return $this->redirectToRoute('panel_setting_new');
+                return $this->redirectToRoute('panel_setting_new', [], Response::HTTP_SEE_OTHER);
             }
 
             $this->entityManager->persist($setting);
@@ -51,14 +51,14 @@ class SettingController extends AbstractController
 
             $this->addFlash('success', 'Ustawienie zostało dodane.');
 
-            return $this->redirectToRoute('panel_setting_list');
+            return $this->redirectToRoute('panel_setting_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/setting/form.html.twig', [
             'setting' => $setting,
             'form' => $form->createView(),
             'title' => 'Dodaj ustawienie',
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     #[Route('/{name}/edytuj', name: 'panel_setting_edit', methods: ['GET', 'POST'])]
@@ -80,14 +80,14 @@ class SettingController extends AbstractController
 
             $this->addFlash('success', 'Ustawienie zostało zaktualizowane.');
 
-            return $this->redirectToRoute('panel_setting_list');
+            return $this->redirectToRoute('panel_setting_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/setting/form.html.twig', [
             'setting' => $setting,
             'form' => $form->createView(),
             'title' => 'Edytuj ustawienie',
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     #[Route('/{name}', name: 'panel_setting_delete', methods: ['POST'])]
@@ -101,6 +101,6 @@ class SettingController extends AbstractController
             $this->addFlash('success', 'Ustawienie zostało usunięte.');
         }
 
-        return $this->redirectToRoute('panel_setting_list');
+        return $this->redirectToRoute('panel_setting_list', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -66,13 +66,13 @@ class CompanyController extends AbstractController
             $this->handleForm($company, $form);
 
             $this->addFlash('success', 'Firma została dodana.');
-            return $this->redirectToRoute('panel_company_list');
+            return $this->redirectToRoute('panel_company_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/company/form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Dodaj firmę',
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function edit(int $id, Request $request): Response
@@ -90,14 +90,14 @@ class CompanyController extends AbstractController
             $this->handleForm($company, $form);
 
             $this->addFlash('success', 'Dane firmy zostały zaktualizowane.');
-            return $this->redirectToRoute('panel_company_list');
+            return $this->redirectToRoute('panel_company_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/company/form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Edytuj firmę',
             'company' => $company,
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function delete(int $id, Request $request): Response
@@ -114,7 +114,7 @@ class CompanyController extends AbstractController
             $this->addFlash('success', 'Firma została usunięta.');
         }
 
-        return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('panel_company_list'));
+        return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('panel_company_list'), Response::HTTP_SEE_OTHER);
     }
 
     private function handleForm(Company $company, $form): void

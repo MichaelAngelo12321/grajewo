@@ -9,6 +9,7 @@ use App\Repository\UserReportRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class UserReportController extends AbstractController
@@ -20,7 +21,7 @@ class UserReportController extends AbstractController
     ) {
     }
 
-    public function hideReport(int $reportId, Request $request)
+    public function hideReport(int $reportId, Request $request): Response
     {
         $report = $this->userReportRepository->find($reportId);
 
@@ -36,10 +37,10 @@ class UserReportController extends AbstractController
         $this->cache->delete(CacheKeyPrefix::USER_REPORT_LAST);
         $this->addFlash('success', 'Raport został ukryty');
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
     }
 
-    public function unlockReport(int $reportId, Request $request)
+    public function unlockReport(int $reportId, Request $request): Response
     {
         $report = $this->userReportRepository->find($reportId);
 
@@ -55,6 +56,6 @@ class UserReportController extends AbstractController
         $this->cache->delete(CacheKeyPrefix::USER_REPORT_LAST);
         $this->addFlash('success', 'Raport został odblokowany');
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
     }
 }

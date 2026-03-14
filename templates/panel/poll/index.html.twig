@@ -48,8 +48,8 @@
                                             Edytuj
                                         </a>
                                         <form method="post" action="{{ path('panel_poll_delete', {'id': poll.id}) }}"
-                                              onsubmit="return confirm('Czy na pewno chcesz usunąć tę ankietę?');"
-                                              class="d-inline-block">
+                                              class="d-inline-block js-form-confirm"
+                                              data-confirm="Czy na pewno chcesz usunąć tę ankietę?">
                                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ poll.id) }}">
                                             <button class="btn btn-danger btn-sm">Usuń</button>
                                         </form>

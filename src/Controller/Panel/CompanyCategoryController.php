@@ -58,13 +58,13 @@ class CompanyCategoryController extends AbstractController
             $this->handleForm($category);
 
             $this->addFlash('success', 'Kategoria została dodana.');
-            return $this->redirectToRoute('panel_company_category_list');
+            return $this->redirectToRoute('panel_company_category_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/company_category/form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Dodaj kategorię',
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function edit(int $id, Request $request): Response
@@ -82,14 +82,14 @@ class CompanyCategoryController extends AbstractController
             $this->handleForm($category);
 
             $this->addFlash('success', 'Kategoria została zaktualizowana.');
-            return $this->redirectToRoute('panel_company_category_list');
+            return $this->redirectToRoute('panel_company_category_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/company_category/form.html.twig', [
             'form' => $form->createView(),
             'title' => 'Edytuj kategorię',
             'category' => $category,
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function delete(int $id, Request $request): Response
@@ -100,7 +100,7 @@ class CompanyCategoryController extends AbstractController
             // Check if category has companies before deleting
             if ($category->getCompanies()->count() > 0) {
                 $this->addFlash('error', 'Nie można usunąć kategorii, która zawiera firmy.');
-                return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('panel_company_category_list'));
+                return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('panel_company_category_list'), Response::HTTP_SEE_OTHER);
             }
 
             $this->entityManager->remove($category);
@@ -108,7 +108,7 @@ class CompanyCategoryController extends AbstractController
             $this->addFlash('success', 'Kategoria została usunięta.');
         }
 
-        return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('panel_company_category_list'));
+        return $this->redirect($request->headers->get('referer') ?? $this->generateUrl('panel_company_category_list'), Response::HTTP_SEE_OTHER);
     }
 
     private function handleForm(CompanyCategory $category): void

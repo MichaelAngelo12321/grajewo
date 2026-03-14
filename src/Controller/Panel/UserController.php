@@ -54,22 +54,25 @@ class UserController extends AbstractController
 
             $this->addFlash('success', 'Użytkownik został dodany');
 
-            return $this->redirectToRoute('panel_user_list');
+            return $this->redirectToRoute('panel_user_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/user/create.html.twig', [
             'userForm' => $userForm->createView(),
-        ]);
+        ], $userForm->isSubmitted() && !$userForm->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function delete(int $id, Request $request): Response
     {
-        if ($this->getUser()->getId() === $id) {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+
+        if ($currentUser->getId() === $id) {
             $this->addFlash('danger', 'Nie możesz usunąć samego siebie');
 
             return $request->headers->has('referer')
-                ? $this->redirect($request->headers->get('referer'))
-                : $this->redirectToRoute('panel_user_list');
+                ? $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER)
+                : $this->redirectToRoute('panel_user_list', [], Response::HTTP_SEE_OTHER);
         }
 
         $user = $this->userRepository->find($id);
@@ -88,8 +91,8 @@ class UserController extends AbstractController
         $this->addFlash('success', 'Użytkownik został usunięty');
 
         return $request->headers->has('referer')
-            ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('panel_user_list');
+            ? $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER)
+            : $this->redirectToRoute('panel_user_list', [], Response::HTTP_SEE_OTHER);
     }
 
     public function edit(int $id, Request $request): Response
@@ -122,12 +125,12 @@ class UserController extends AbstractController
 
             $this->addFlash('success', 'Użytkownik został zaktualizowany');
 
-            return $this->redirectToRoute('panel_user_list');
+            return $this->redirectToRoute('panel_user_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/user/edit.html.twig', [
             'userForm' => $userForm->createView(),
-        ]);
+        ], $userForm->isSubmitted() && !$userForm->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function list(Request $request): Response

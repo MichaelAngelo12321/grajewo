@@ -23,6 +23,14 @@
 {% endblock %}
 
 {% block body %}
+  {% for type, messages in app.flashes() %}
+    {% for message in messages %}
+      <div class="alert alert-{{ type }} mb-3">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endfor %}
+
   <div class="card mb-3 p-3">
     <div class="row align-items-center">
       <div class="col">
@@ -150,7 +158,7 @@
                   <a href="{{ path('panel_company_edit', {'id': company.id}) }}" class="btn btn-sm btn-outline-primary me-2">
                       Edytuj
                   </a>
-                  <a href="{{ path('panel_company_delete', {'id': company.id}) }}" class="btn btn-sm btn-danger text-white js-confirm">
+                  <a href="{{ path('panel_company_delete', {'id': company.id}) }}" class="btn btn-sm btn-danger text-white js-confirm" data-turbo-method="post">
                     Usuń
                   </a>
                 </div>

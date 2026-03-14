@@ -56,12 +56,12 @@ class GasPriceController extends AbstractController
 
             $this->addFlash('success', 'Stacja paliw została dodana');
 
-            return $this->redirectToRoute('panel_gas_station');
+            return $this->redirectToRoute('panel_gas_station', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/gas_price/create_station.html.twig', [
             'form' => $form->createView(),
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function deleteStation(int $id): Response
@@ -87,7 +87,7 @@ class GasPriceController extends AbstractController
 
         $this->addFlash('success', 'Stacja paliw została usunięta');
 
-        return $this->redirectToRoute('panel_gas_station');
+        return $this->redirectToRoute('panel_gas_station', [], Response::HTTP_SEE_OTHER);
     }
 
     public function editStation(int $id, Request $request): Response
@@ -107,13 +107,13 @@ class GasPriceController extends AbstractController
 
             $this->addFlash('success', 'Stacja paliw została zaktualizowana');
 
-            return $this->redirectToRoute('panel_gas_station');
+            return $this->redirectToRoute('panel_gas_station', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/gas_price/edit_station.html.twig', [
             'station' => $station,
             'form' => $form->createView(),
-        ]);
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function setPrices(Request $request): Response
@@ -151,7 +151,7 @@ class GasPriceController extends AbstractController
         $this->entityManager->flush();
         $this->addFlash('success', 'Ceny zostały zaktualizowane');
 
-        return $this->redirectToRoute('panel_gas_station');
+        return $this->redirectToRoute('panel_gas_station', [], Response::HTTP_SEE_OTHER);
     }
 
     public function stationList(): Response

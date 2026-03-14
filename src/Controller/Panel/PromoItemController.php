@@ -57,12 +57,12 @@ class PromoItemController extends AbstractController
 
             $this->addFlash('success', 'Reklama została dodana');
 
-            return $this->redirectToRoute('panel_ad_list');
+            return $this->redirectToRoute('panel_ad_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/promo/item/create.html.twig', [
             'form' => $promoForm->createView(),
-        ]);
+        ], $promoForm->isSubmitted() && !$promoForm->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function edit(int $id, Request $request): Response
@@ -95,13 +95,13 @@ class PromoItemController extends AbstractController
 
             $this->addFlash('success', 'Reklama została zaktualizowana');
 
-            return $this->redirectToRoute('panel_ad_list');
+            return $this->redirectToRoute('panel_ad_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/promo/item/edit.html.twig', [
             'promoItem' => $promoItem,
             'form' => $promoItemForm->createView(),
-        ]);
+        ], $promoItemForm->isSubmitted() && !$promoItemForm->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function delete(int $id, Request $request): Response
@@ -122,8 +122,8 @@ class PromoItemController extends AbstractController
         $this->addFlash('success', 'Reklama została usunięta');
 
         return $request->headers->has('referer')
-            ? $this->redirect($request->headers->get('referer'))
-            : $this->redirectToRoute('panel_ad_list');
+            ? $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER)
+            : $this->redirectToRoute('panel_ad_list', [], Response::HTTP_SEE_OTHER);
     }
 
     public function list(Request $request): Response

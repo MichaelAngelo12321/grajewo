@@ -67,12 +67,12 @@ class GalleryController extends AbstractController
 
             $this->addFlash('success', 'Galeria zdjęć została dodana');
 
-            return $this->redirectToRoute('panel_gallery_list');
+            return $this->redirectToRoute('panel_gallery_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/gallery/create.html.twig', [
             'form' => $galleryForm->createView(),
-        ]);
+        ], $galleryForm->isSubmitted() && !$galleryForm->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function delete($id): Response
@@ -93,7 +93,7 @@ class GalleryController extends AbstractController
 
         $this->addFlash('success', 'Galeria zdjęć została usunięta');
 
-        return $this->redirectToRoute('panel_gallery_list');
+        return $this->redirectToRoute('panel_gallery_list', [], Response::HTTP_SEE_OTHER);
     }
 
     public function edit(int $id, Request $request): Response
@@ -173,7 +173,7 @@ class GalleryController extends AbstractController
 
             $this->addFlash('success', 'Galeria zdjęć została zaktualizowana');
 
-            return $this->redirectToRoute('panel_gallery_list');
+            return $this->redirectToRoute('panel_gallery_list', [], Response::HTTP_SEE_OTHER);
         }
 
         $images = $gallery->getGalleryImages()->toArray();
@@ -185,7 +185,7 @@ class GalleryController extends AbstractController
             'form' => $galleryForm->createView(),
             'gallery' => $gallery,
             'sortedImages' => $images,
-        ]);
+        ], $galleryForm->isSubmitted() && !$galleryForm->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function list(Request $request): Response
