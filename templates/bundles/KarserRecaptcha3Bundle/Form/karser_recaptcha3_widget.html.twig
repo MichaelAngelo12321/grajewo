@@ -1,0 +1,14 @@
+{% block karser_recaptcha3_widget %}
+    {%- set type = type|default('hidden') -%}
+    
+    {% if form.vars.enabled -%}
+        {%- set attr = attr|merge({
+            'data-recaptcha-site-key-value': form.vars.site_key,
+            'data-recaptcha-action-name-value': form.vars.action_name,
+            'data-recaptcha-host-value': form.vars.host,
+            'data-recaptcha-locale-value': form.vars.locale|default('')
+        }) -%}
+    {%- endif %}
+    
+    {{ block('form_widget_simple') }}
+{% endblock %}

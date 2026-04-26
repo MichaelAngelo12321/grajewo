@@ -6,6 +6,7 @@ namespace App\Twig;
 
 use App\Entity\PromoItem;
 use App\Enum\ArticleStatus;
+use App\Repository\Cached\ArticleCommentCachedRepository;
 use App\Repository\Cached\GasStationCachedRepository;
 use App\Repository\Cached\NameDayCachedRepository;
 use App\Repository\Cached\PharmacyDutyCachedRepository;
@@ -28,6 +29,7 @@ class AppExtension extends AbstractExtension
 {
     public function __construct(
         private AirPollutionRepository $airPollutionRepository,
+        private ArticleCommentCachedRepository $articleCommentCachedRepository,
         private CurrencyRateRepository $currencyRateRepository,
         private GasStationCachedRepository $gasStationCachedRepository,
         private NameDayCachedRepository $nameDayCachedRepository,
@@ -87,10 +89,10 @@ class AppExtension extends AbstractExtension
 
         // Render ads
         $adLeftHtml = '';
-        $promoItemLeft = $this->getPromoItem('ARTYKUL_LEWA');
+        $promoItemLeft = $this->getPromoItem('W_TRESCI_ARTYKULU_LEWA');
         if ($promoItemLeft) {
             $adLeftHtml = $env->render('app/widgets/promo_space.html.twig', [
-                'slot' => 'ARTYKUL_LEWA'
+                'slot' => 'W_TRESCI_ARTYKULU_LEWA'
             ]);
             
             if (!empty(trim($adLeftHtml))) {
@@ -101,10 +103,10 @@ class AppExtension extends AbstractExtension
 
         $adMiddleHtml = '';
         if ($count >= 2) {
-            $promoItemMiddle = $this->getPromoItem('ARTYKUL_SRODEK');
+            $promoItemMiddle = $this->getPromoItem('W_TRESCI_ARTYKULU_SRODEK');
             if ($promoItemMiddle) {
                 $adMiddleHtml = $env->render('app/widgets/promo_space.html.twig', [
-                    'slot' => 'ARTYKUL_SRODEK'
+                    'slot' => 'W_TRESCI_ARTYKULU_SRODEK'
                 ]);
 
                 if (!empty(trim($adMiddleHtml))) {
@@ -146,6 +148,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('get_current_weather', [$this->weatherRepository, 'getWeather']),
             new TwigFunction('get_gas_stations', [$this->gasStationCachedRepository, 'findStationsWithPrices']),
             new TwigFunction('get_gas_station_fuel_types', [$this, 'getGasStationFuelTypes']),
+            new TwigFunction('get_latest_comments', [$this->articleCommentCachedRepository, 'findLatest']),
             new TwigFunction('get_latest_daily_image', [$this->userContentCachedRepository, 'findLatestDailyImage']),
             new TwigFunction('get_latest_daily_video', [$this->userContentCachedRepository, 'findLatestDailyVideo']),
             new TwigFunction('get_latest_user_reports', [$this->userReportCachedRepository, 'findLatest']),

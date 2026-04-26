@@ -222,7 +222,8 @@ class DashboardController extends AbstractController
                     (new PharmacyDuty())
                         ->setDay($day)
                         ->setName($pharmacyDuty['name'])
-                        ->setAddress($pharmacyDuty['address']),
+                        ->setAddress($pharmacyDuty['address'])
+                        ->setPhone($pharmacyDuty['phone'] ?? null),
                 );
             }
 

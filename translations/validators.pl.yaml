@@ -1,1 +1,1 @@
-'Your computer or network may be sending automated queries': 'System antyspamowy wykrył, że jesteś robotem. Spróbuj ponownie.'
+'Your computer or network may be sending automated queries': 'System antyspamowy wykrył, że jesteś robotem (kod: {{ errorCodes }}). Spróbuj ponownie.'

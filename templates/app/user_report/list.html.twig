@@ -56,13 +56,13 @@
   {% for report in reports %}
     {% if loop.index == 4 %}
       {% include 'app/widgets/promo_space.html.twig' with {
-        'slot': 'SRODEK_1'
+        'slot': 'ZAWARTOSC_GLOWNA_1'
       } %}
     {% endif %}
 
     {% if loop.index == 8 %}
       {% include 'app/widgets/promo_space.html.twig' with {
-        'slot': 'SRODEK_2'
+        'slot': 'ZAWARTOSC_GLOWNA_2'
       } %}
     {% endif %}
 
@@ -112,15 +112,15 @@
             {% if report.isHidden %}
               <a href="{{ path('panel_user_report_unlock', {'reportId': report.id}) }}"
                  class="btn btn-sm btn-success text-white"
-                 data-turbo-method="post"
-                 data-turbo-prefetch="false">
+                 data-method="post"
+                 >
                 Odblokuj raport
               </a>
             {% else %}
               <a href="{{ path('panel_user_report_hide', {'reportId': report.id}) }}"
                  class="btn btn-sm btn-danger"
-                 data-turbo-method="post"
-                 data-turbo-prefetch="false">
+                 data-method="post"
+                 >
                 Ukryj raport
               </a>
             {% endif %}

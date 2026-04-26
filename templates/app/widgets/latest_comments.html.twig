@@ -1,0 +1,31 @@
+<div class="widget">
+  <div class="d-flex">
+    <h3 class="section-title primary">Ostatnie komentarze</h3>
+  </div>
+
+  <ul class="post-list mt-3">
+    {% for comment in get_latest_comments() %}
+      <li class="item">
+        <div class="item-description">
+          <a class="name text-decoration-none" href="{{ path('article_details', {
+            '__category': comment.article.category.slug,
+            'id': comment.article.id,
+            'slug': comment.article.name|lower|slug
+          }) }}#comment-{{ comment.id }}">
+            <strong class="text-primary">{{ comment.author|default('Anonim') }}:</strong>
+            <span class="text-body">{{ comment.content|slice(0, 60) ~ (comment.content|length > 60 ? '...' : '') }}</span>
+          </a>
+          <p class="date-place mt-1">
+            <span class="text-muted fs-smaller">
+              Pod artykułem: <em>{{ comment.article.name|slice(0, 40) ~ (comment.article.name|length > 40 ? '...' : '') }}</em>
+            </span>
+            <br>
+            {{ comment.createdAt|relative_datetime }}
+          </p>
+        </div>
+      </li>
+    {% else %}
+      <li class="item text-muted">Brak komentarzy.</li>
+    {% endfor %}
+  </ul>
+</div>

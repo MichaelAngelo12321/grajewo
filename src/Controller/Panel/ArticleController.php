@@ -74,6 +74,27 @@ class ArticleController extends AbstractController
             : $this->redirectToRoute('panel_article_list', [], Response::HTTP_SEE_OTHER);
     }
 
+    public function lower(int $id, Request $request): Response
+    {
+        $article = $this->articleRepository->find($id);
+
+        if ($article === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $bumpedAt = $article->getBumpedAt() ?? $article->getCreatedAt();
+        $article->setBumpedAt($bumpedAt->modify('-1 day'));
+
+        $this->entityManager->persist($article);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Artykuł został obniżony');
+
+        return $request->headers->has('referer')
+            ? $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER)
+            : $this->redirectToRoute('panel_article_list', [], Response::HTTP_SEE_OTHER);
+    }
+
     public function create(Request $request): Response
     {
         $categories = $this->categoryCachedRepository->findAll();

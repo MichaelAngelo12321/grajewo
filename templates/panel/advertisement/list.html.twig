@@ -70,16 +70,16 @@
                 </td>
                 <td>
                   <div class="btn-list justify-content-end">
-                    <a href="{{ path('panel_advertisement_toggle_active', {'advertisementId': advertisement.id}) }}" class="btn btn-icon {{ advertisement.isActive ? 'btn-green' : 'btn-outline-green' }}" title="{{ advertisement.isActive ? 'Dezaktywuj' : 'Aktywuj' }}" data-turbo-method="post" data-turbo-prefetch="false">
+                    <a href="{{ path('panel_advertisement_toggle_active', {'advertisementId': advertisement.id}) }}" class="btn btn-icon {{ advertisement.isActive ? 'btn-green' : 'btn-outline-green' }}" title="{{ advertisement.isActive ? 'Dezaktywuj' : 'Aktywuj' }}" data-method="post" >
                       <i class="ti ti-check"></i>
                     </a>
-                    <a href="{{ path('panel_advertisement_toggle_promoted', {'advertisementId': advertisement.id}) }}" class="btn btn-icon {{ advertisement.isPromoted ? 'btn-yellow' : 'btn-outline-yellow' }}" title="{{ advertisement.isPromoted ? 'Wyłącz promowanie' : 'Włącz promowanie' }}" data-turbo-method="post" data-turbo-prefetch="false">
+                    <a href="{{ path('panel_advertisement_toggle_promoted', {'advertisementId': advertisement.id}) }}" class="btn btn-icon {{ advertisement.isPromoted ? 'btn-yellow' : 'btn-outline-yellow' }}" title="{{ advertisement.isPromoted ? 'Wyłącz promowanie' : 'Włącz promowanie' }}" data-method="post" >
                       <i class="ti ti-star"></i>
                     </a>
                     <a href="{{ path('panel_advertisement_edit', {'advertisementId': advertisement.id}) }}" class="btn btn-icon btn-primary" title="Edytuj">
                       <i class="ti ti-edit"></i>
                     </a>
-                    <a href="{{ path('panel_advertisement_remove', {'advertisementId': advertisement.id}) }}" class="btn btn-danger btn-icon js-confirm" data-turbo-method="post" data-turbo-prefetch="false">
+                    <a href="{{ path('panel_advertisement_remove', {'advertisementId': advertisement.id}) }}" class="btn btn-danger btn-icon js-confirm" data-method="post" >
                       <i class="ti ti-trash"></i>
                     </a>
                   </div>

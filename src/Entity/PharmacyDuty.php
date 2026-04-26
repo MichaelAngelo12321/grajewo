@@ -21,6 +21,9 @@ class PharmacyDuty
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $phone = null;
+
     public function getDay(): ?int
     {
         return $this->day;
@@ -53,6 +56,18 @@ class PharmacyDuty
     public function setAddress(string $address): static
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
 
         return $this;
     }

@@ -40,6 +40,9 @@ class UserReport
     #[ORM\Column(length: 255)]
     private ?string $ipAddress = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $phone = null;
+
     public function getAuthor(): ?string
     {
         return $this->author;
@@ -125,6 +128,18 @@ class UserReport
     public function setIsHidden(?bool $isHidden): static
     {
         $this->isHidden = $isHidden;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
 
         return $this;
     }

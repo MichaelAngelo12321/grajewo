@@ -193,7 +193,7 @@
   </div>
 
   {% include 'app/widgets/promo_space.html.twig' with {
-    'slot': 'SRODEK_1'
+    'slot': 'ZAWARTOSC_GLOWNA_1'
   } %}
 
   {% if article.poll and article.poll.isActive %}
@@ -280,15 +280,15 @@
                 {% if comment.isHidden %}
                   <a href="{{ path('panel_article_comment_unlock', {'commentId': comment.id}) }}"
                      class="btn btn-sm btn-success text-white"
-                     data-turbo-method="post"
-                     data-turbo-prefetch="false">
+                     data-method="post"
+                     >
                     Odblokuj komentarz
                   </a>
                 {% else %}
                   <a href="{{ path('panel_article_comment_hide', {'commentId': comment.id}) }}"
                      class="btn btn-sm btn-danger"
-                     data-turbo-method="post"
-                     data-turbo-prefetch="false">
+                     data-method="post"
+                     >
                     Ukryj komentarz
                   </a>
                 {% endif %}
@@ -300,7 +300,7 @@
     {% endif %}
 
     {% include 'app/widgets/promo_space.html.twig' with {
-      'slot': 'SRODEK_2'
+      'slot': 'ZAWARTOSC_GLOWNA_2'
     } %}
 
     <h4 class="fs-6 fw-bold mt-4 mb-3">Dodaj swój komentarz</h4>

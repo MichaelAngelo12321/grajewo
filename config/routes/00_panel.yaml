@@ -70,6 +70,23 @@ panel_advertisement_edit:
   path: /panel/advertisements/{advertisementId}/edit
   controller: App\Controller\Panel\AdvertisementController::edit
 
+# Advertisement Categories
+panel_advertisement_category_list:
+  path: /panel/advertisement-categories
+  controller: App\Controller\Panel\AdvertisementCategoryController::list
+
+panel_advertisement_category_create:
+  path: /panel/advertisement-categories/create
+  controller: App\Controller\Panel\AdvertisementCategoryController::create
+
+panel_advertisement_category_edit:
+  path: /panel/advertisement-categories/{id}/edit
+  controller: App\Controller\Panel\AdvertisementCategoryController::edit
+
+panel_advertisement_category_delete:
+  path: /panel/advertisement-categories/{id}/delete
+  controller: App\Controller\Panel\AdvertisementCategoryController::delete
+
 # Promo items
 panel_ad_list:
   path: /panel/ads
@@ -104,6 +121,10 @@ panel_article_change_status:
 panel_article_bump:
   path: /panel/articles/{id}/bump
   controller: App\Controller\Panel\ArticleController::bump
+
+panel_article_lower:
+  path: /panel/articles/{id}/lower
+  controller: App\Controller\Panel\ArticleController::lower
 
 panel_article_delete:
   path: /panel/articles/{id}/delete

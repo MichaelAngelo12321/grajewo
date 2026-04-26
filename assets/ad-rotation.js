@@ -1,6 +1,6 @@
 let rotationInterval;
 
-document.addEventListener('turbo:load', () => {
+document.addEventListener('DOMContentLoaded', () => {
     if (rotationInterval) clearInterval(rotationInterval);
 
     const ROTATION_INTERVAL = 60000; // 60 seconds
@@ -13,7 +13,7 @@ document.addEventListener('turbo:load', () => {
             if (!slotName) return;
 
             // Avoid rotating POPUP slot as it's meant to be shown once
-            if (slotName === 'POPUP') return;
+            if (slotName === 'WYSKAKUJACE_OKIENKO_POPUP') return;
 
             fetch(`/promo/render/${slotName}`)
                 .then(response => {
@@ -53,6 +53,4 @@ document.addEventListener('turbo:load', () => {
     }, ROTATION_INTERVAL);
 });
 
-document.addEventListener('turbo:before-cache', () => {
-    if (rotationInterval) clearInterval(rotationInterval);
-});
+

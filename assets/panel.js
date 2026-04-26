@@ -1,4 +1,3 @@
-import '@hotwired/turbo'
 import {Toast} from 'bootstrap'
 import Sortable from 'sortablejs'
 import tinymce from 'tinymce'
@@ -9,11 +8,14 @@ import 'tinymce/models/dom/model.min'
 import 'tinymce/plugins/link'
 import 'tinymce/plugins/lists'
 import 'tinymce/plugins/table'
+import 'tinymce/plugins/image'
 import 'tinymce/skins/ui/oxide/skin'
 import 'tinymce/themes/silver'
 import './styles/panel/index.scss'
 import './theme-switcher.js'
 import './file-validator.js'
+import './recaptcha.js'
+import './post-link.js'
 
 const initPanel = () => {
     // Content editor
@@ -22,11 +24,11 @@ const initPanel = () => {
         content_css: false,
         height: 500,
         menubar: false,
-        plugins: ['link', 'lists', 'table'],
+        plugins: ['link', 'lists', 'table', 'image'],
         promotion: false,
         selector: '.content-editor',
         table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
-        toolbar: 'styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists | forecolor backcolor | link table',
+        toolbar: 'styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists | forecolor backcolor | link image table',
     })
 
     // Toasts
@@ -113,18 +115,7 @@ const initPanel = () => {
     }
 }
 
-document.addEventListener('turbo:load', initPanel)
-document.addEventListener('turbo:render', initPanel)
-document.addEventListener('turbo:before-cache', () => {
-    tinymce.remove()
-})
-
-// Fallback for initial load
-if (document.readyState !== 'loading') {
-    initPanel();
-} else {
-    document.addEventListener('DOMContentLoaded', initPanel);
-}
+document.addEventListener('DOMContentLoaded', initPanel)
 
 // Global SweetAlert2 handlers for confirmations
 document.addEventListener('click', function(e) {

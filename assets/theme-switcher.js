@@ -44,11 +44,4 @@ document.addEventListener('change', (e) => {
     }
 })
 
-document.addEventListener('turbo:load', initThemeSwitcher)
-
-// Fallback for initial load if turbo is not yet active or disabled
-if (document.readyState !== 'loading') {
-    initThemeSwitcher();
-} else {
-    document.addEventListener('DOMContentLoaded', initThemeSwitcher);
-}
+document.addEventListener('DOMContentLoaded', initThemeSwitcher);

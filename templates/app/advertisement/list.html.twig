@@ -31,7 +31,7 @@
       </div>
       <div class="col-12 col-lg-auto ms-auto d-flex align-items-center justify-content-end">
         <a href="{{ path('advertisement_add') }}" class="btn btn-primary fw-medium w-100 mt-3 m-lg-0">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="pe-none"
                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -127,15 +127,15 @@
 
                 <a href="{{ path('panel_advertisement_toggle_promoted', {'advertisementId': advertisement.id}) }}" 
                    class="btn btn-sm btn-outline-warning me-2" 
-                   data-turbo-method="post"
-                   data-turbo-prefetch="false">
+                   data-method="post"
+                   >
                     Wyłącz promowanie
                 </a>
 
                 <a href="{{ path('panel_advertisement_remove', {'advertisementId': advertisement.id}) }}"
                    class="btn btn-sm btn-danger text-white js-confirm"
-                   data-turbo-method="post"
-                   data-turbo-prefetch="false">
+                   data-method="post"
+                   >
                   Usuń ogłoszenie
                 </a>
               </div>
@@ -193,8 +193,8 @@
 
                 <a href="{{ path('panel_advertisement_remove', {'advertisementId': advertisement.id}) }}"
                    class="btn btn-sm btn-danger text-white js-confirm"
-                   data-turbo-method="post"
-                   data-turbo-prefetch="false">
+                   data-method="post"
+                   >
                   Usuń ogłoszenie
                 </a>
               </div>

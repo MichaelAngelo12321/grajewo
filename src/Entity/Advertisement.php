@@ -56,6 +56,9 @@ class Advertisement
     #[ORM\Column(options: ['default' => false])]
     private ?bool $isPromoted = false;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $type = null;
+
     #[ORM\Column(options: ['default' => 0])]
     private ?int $views = 0;
 
@@ -214,6 +217,18 @@ class Advertisement
     public function setClicks(int $clicks): static
     {
         $this->clicks = $clicks;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

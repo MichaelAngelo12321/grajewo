@@ -1,4 +1,3 @@
-import './bootstrap.js';
 import * as bootstrap from 'bootstrap'
 window.bootstrap = bootstrap
 
@@ -11,6 +10,8 @@ import './styles/app/index.scss'
 import './ad-rotation.js'
 import './theme-switcher.js'
 import './file-validator.js'
+import './recaptcha.js'
+import './post-link.js'
 
 const { Collapse, Tooltip } = bootstrap
 
@@ -128,11 +129,4 @@ const initApp = () => {
   })
 }
 
-// Initialize on Turbo load (covers initial load and navigation)
-document.addEventListener('turbo:load', initApp)
-// Fallback for initial load if turbo is not yet active or disabled
-if (document.readyState !== 'loading') {
-    initApp();
-} else {
-    document.addEventListener('DOMContentLoaded', initApp);
-}
+document.addEventListener('DOMContentLoaded', initApp)

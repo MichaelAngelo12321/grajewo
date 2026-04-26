@@ -1,13 +1,15 @@
 {% include 'app/widgets/infoBox.html.twig' %}
 
 {% include 'app/widgets/promo_space.html.twig' with {
-  'slot': 'PRAWA_1'
+  'slot': 'PANEL_BOCZNY_GORA'
 } %}
+
+{% include 'app/widgets/latest_comments.html.twig' %}
 
 {% include 'app/widgets/last_user_reports.html.twig' %}
 
 {% include 'app/widgets/promo_space.html.twig' with {
-  'slot': 'PRAWA_2'
+  'slot': 'PANEL_BOCZNY_SRODEK_1'
 } %}
 
 {% include 'app/widgets/events_calendar.html.twig' %}
@@ -19,7 +21,7 @@
 {% include 'app/widgets/daily_video.html.twig' %}
 
 {% include 'app/widgets/promo_space.html.twig' with {
-  'slot': 'PRAWA_3'
+  'slot': 'PANEL_BOCZNY_SRODEK_2'
 } %}
 
 {% include 'app/widgets/gas_station_prices.html.twig' %}
@@ -27,5 +29,5 @@
 {% include 'app/widgets/currency_rates.html.twig' %}
 
 {% include 'app/widgets/promo_space.html.twig' with {
-  'slot': 'PRAWA_4'
+  'slot': 'PANEL_BOCZNY_DOL'
 } %}
