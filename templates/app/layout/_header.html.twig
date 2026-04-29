@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-xl">
     <div class="container">
       <a href="{{ path('homepage') }}" class="navbar-brand">
-        <img src="{{ asset('build/images/logo-dark.svg') }}" id="logo-top" alt="Logo serwisu" class="my-2"
+        <img src="{{ asset('build/images/logo-dark-e24.svg') }}" id="logo-top" alt="Logo serwisu" class="my-2"
              height="42"/>
       </a>
 
@@ -13,7 +13,7 @@
 
       <div class="collapse navbar-collapse d-xl-flex justify-content-xl-between gap-3" id="navbarTogglerContent">
         <form class="d-flex align-items-center gap-2 ms-auto me-auto mb-2 mb-lg-0" role="search" action="{{ path('search') }}" method="get">
-          <input type="search" class="form-control" placeholder="Szukaj w Grajewie..." name="search_query" value="{{ app.request.query.get('search_query') }}"/>
+          <input type="search" class="form-control" placeholder="Szukaj w Ełku..." name="search_query" value="{{ app.request.query.get('search_query') }}"/>
 
           <button type="submit" class="btn btn-primary">
             <img src="{{ asset('build/images/icons/search.svg') }}" alt="Lupa"/>

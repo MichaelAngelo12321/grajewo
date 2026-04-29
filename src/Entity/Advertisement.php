@@ -71,6 +71,8 @@ class Advertisement
     #[ORM\ManyToOne(inversedBy: 'advertisements')]
     private ?AdvertisementCategory $category = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Gallery $gallery = null;
 
     public function getAuthor(): ?string
     {
@@ -205,6 +207,18 @@ class Advertisement
     public function setViews(int $views): static
     {
         $this->views = $views;
+
+        return $this;
+    }
+
+    public function getGallery(): ?Gallery
+    {
+        return $this->gallery;
+    }
+
+    public function setGallery(?Gallery $gallery): static
+    {
+        $this->gallery = $gallery;
 
         return $this;
     }
