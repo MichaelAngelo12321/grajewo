@@ -38,6 +38,9 @@ class CategoryController extends AbstractController
 
         $this->entityManager->flush();
 
+        $this->cache->delete(CacheKeyPrefix::CATEGORY_ALL);
+        $this->cache->delete(CacheKeyPrefix::CATEGORY_TOP);
+
         return $this->json(['success' => true]);
     }
 
@@ -50,10 +53,13 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $lastCategory = $this->categoryRepository->findOneBy([], ['positionOrder' => 'DESC']);
 
-            $category->setPositionOrder($lastCategory ? $lastCategory->getPositionOrder() + 1 : 1);
+            $category->setPositionOrder($lastCategory ? $lastCategory->getPositionOrder() + 1 : 0);
 
             $this->entityManager->persist($category);
             $this->entityManager->flush();
+
+            $this->cache->delete(CacheKeyPrefix::CATEGORY_ALL);
+            $this->cache->delete(CacheKeyPrefix::CATEGORY_TOP);
 
             $this->addFlash('success', 'Kategoria została dodana');
 
@@ -122,6 +128,9 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($category);
             $this->entityManager->flush();
+
+            $this->cache->delete(CacheKeyPrefix::CATEGORY_ALL);
+            $this->cache->delete(CacheKeyPrefix::CATEGORY_TOP);
 
             $this->addFlash('success', 'Kategoria została zaktualizowana');
 

@@ -8,13 +8,19 @@ use App\Entity\Advertisement;
 use App\Entity\AdvertisementCategory;
 use App\Entity\NameDay;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Monolog\DateTimeImmutable;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
-class NameDayFixtures extends Fixture
+class NameDayFixtures extends Fixture implements FixtureGroupInterface
 {
+    public static function getGroups(): array
+    {
+        return ['NameDayGroup'];
+    }
+
     private const DAY_NAMES = [
         1 => [
             1 => 'Mieczysław, Mieszko, Maria, Mieczysława, Masław, Odys, Odyseusz, Wilhelm, Piotr',

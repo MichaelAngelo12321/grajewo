@@ -22,7 +22,7 @@
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
           {% for company in promotedCompanies %}
             <div class="col">
-              <a href="{{ path('company_details', {slug: company.slug}) }}" class="d-block text-center text-decoration-none text-dark h-100 p-2 border rounded hover-shadow-sm transition-all">
+              <a href="{{ path('company_details', {slug: company.slug}) }}" class="d-block text-center text-decoration-none text-reset h-100 p-2 border rounded hover-shadow-sm transition-all">
                 {% if company.logo %}
                   <img src="{{ company.logo|imagine_filter('company_logo_home') }}" class="img-fluid mb-2" alt="{{ company.name }}">
                 {% else %}
@@ -43,7 +43,7 @@
   {% if promotedAdvertisements|length > 0 %}
     <div class="card widget mb-5 border-warning" style="border-width: 2px;">
       <div class="card-header d-flex bg-warning-lt">
-        <h5 class="section-title text-dark"><a href="{{ path('advertisement_list') }}" class="text-dark">Polecane ogłoszenia</a></h5>
+        <h5 class="section-title text-reset"><a href="{{ path('advertisement_list') }}" class="text-reset">Polecane ogłoszenia</a></h5>
         <div class="ms-auto">
           <a href="{{ path('advertisement_add') }}" class="btn btn-sm btn-dark">Dodaj ogłoszenie</a>
         </div>
@@ -68,14 +68,16 @@
     </div>
   {% endif %}
 
+  {% set visibleIndex = 0 %}
   {% for category in categories %}
-    {% if category.isRoot or category.positionOrder == 0 %}
-    {% else %}
-      {% if loop.index == 3 %}
+    {% if not category.isRoot and category.positionOrder > 0 %}
+      {% set visibleIndex = visibleIndex + 1 %}
+
+      {% if visibleIndex == 1 %}
         <div class="row">
       {% endif %}
 
-      {% if loop.index == 3 or loop.index == 4 %}
+      {% if visibleIndex == 1 or visibleIndex == 2 %}
         <div class="col-12 col-lg-6">
           {{ articlesList.vertical(
             category,
@@ -85,17 +87,17 @@
         </div>
       {% endif %}
 
-      {% if loop.index == 4 %}
+      {% if visibleIndex == 2 or (loop.last and visibleIndex == 1) %}
         </div>
       {% endif %}
 
-      {% if loop.index == 6 %}
+      {% if visibleIndex == 4 %}
         {% include 'app/widgets/promo_space.html.twig' with {
           'slot': 'STRONA_GLOWNA_SRODEK_LISTY'
         } %}
       {% endif %}
 
-      {% if loop.index > 4 %}
+      {% if visibleIndex > 2 %}
         {% if articles[category.id] %}
           {{ articlesList.horizontal(
             category,

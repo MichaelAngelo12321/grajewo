@@ -59,15 +59,11 @@
       <div class="list-group">
         <a href="{{ path('advertisement_list') }}"
            class="list-group-item list-group-item-action d-flex align-items-center gap-2 {{ currentCategory is null ? 'active' }}">
-          <img src="{{ asset('build/images/icons/menu-3.svg') }}" alt="Ikona rozwiniętego menu" width="20" height="20"/>
           Wszystkie kategorie
         </a>
         {% for category in categories %}
           <a href="{{ path('advertisement_list', {category: category.slug}) }}"
              class="list-group-item list-group-item-action {{ currentCategory == category.slug ? 'active' }}">
-            <img src="{{ asset('build/images/icons/'~category.iconName~'.svg') }}"
-                 alt="Ikona kategorii {{ category.name }}"
-                 width="22" height="22"/>
             {{ category.name }}
           </a>
         {% endfor %}
@@ -108,7 +104,7 @@
                   {% if currentCategory == null %}
                   <div>
                     <small class="d-block">Kategoria:</small>
-                    <strong class="text-secondary">{{ advertisement.category.name }}</strong>
+                    <strong class="text-secondary">{{ advertisement.category ? advertisement.category.name : 'Brak kategorii' }}</strong>
                   </div>
                   {% endif %}
                   <div class="ms-auto text-sm-end">
@@ -174,7 +170,7 @@
                   {% if currentCategory == null %}
                   <div>
                     <small class="d-block">Kategoria:</small>
-                    <strong class="text-secondary">{{ advertisement.category.name }}</strong>
+                    <strong class="text-secondary">{{ advertisement.category ? advertisement.category.name : 'Brak kategorii' }}</strong>
                   </div>
                   {% endif %}
                   <div class="ms-auto text-sm-end">

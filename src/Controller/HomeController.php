@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Repository\AdvertisementRepository;
+use App\Repository\Cached\AdvertisementCachedRepository;
 use App\Repository\Cached\ArticleCachedRepository;
 use App\Repository\Cached\CategoryCachedRepository;
-use App\Repository\CompanyRepository;
+use App\Repository\Cached\CompanyCachedRepository;
 use App\Service\PolishCalendarEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,10 +15,10 @@ use Symfony\Component\HttpFoundation\Response;
 class HomeController extends AbstractController
 {
     public function __construct(
-        private readonly AdvertisementRepository $advertisementRepository,
+        private readonly AdvertisementCachedRepository $advertisementRepository,
         private readonly ArticleCachedRepository $articleRepository,
         private readonly CategoryCachedRepository $categoryRepository,
-        private readonly CompanyRepository $companyRepository,
+        private readonly CompanyCachedRepository $companyRepository,
         private readonly PolishCalendarEvent $polishCalendarEvent,
     ) {
     }
@@ -31,7 +31,7 @@ class HomeController extends AbstractController
         $topCategoryArticles = $this->articleRepository->findLatestArticlesFromCategory($topCategory, 7);
         $mostPopularArticles = $this->articleRepository->findMostPopularArticles(4);
         $promotedAdvertisements = $this->advertisementRepository->findPromotedAdvertisements(4);
-        $promotedCompanies = $this->companyRepository->findBy(['isActive' => true, 'isPromoted' => true], ['name' => 'ASC'], 6);
+        $promotedCompanies = $this->companyRepository->findPromotedCompanies(6);
 
         $categories = $this->categoryRepository->findAll();
         $articles = [];

@@ -97,6 +97,28 @@ class LegacyCopyImagesCommand extends Command
             $copyFile($image->getImageUrl());
         }
 
+        $io->section('Kopiowanie logo firm');
+        $companies = $this->em->getRepository(\App\Entity\Company::class)
+            ->createQueryBuilder('c')
+            ->where('c.logo IS NOT NULL')
+            ->getQuery()
+            ->toIterable();
+
+        foreach ($companies as $company) {
+            $copyFile($company->getLogo());
+        }
+
+        $io->section('Kopiowanie materiałów reklamowych (banery)');
+        $promos = $this->em->getRepository(\App\Entity\PromoItem::class)
+            ->createQueryBuilder('p')
+            ->where('p.imageUrl IS NOT NULL')
+            ->getQuery()
+            ->toIterable();
+
+        foreach ($promos as $promo) {
+            $copyFile($promo->getImageUrl());
+        }
+
         $io->success(sprintf('Gotowe! Skopiowano %d plików. Brakowało %d plików w folderze źródłowym.', $copied, $missing));
 
         return Command::SUCCESS;
