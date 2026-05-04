@@ -45,23 +45,42 @@ class LegacyCopyImagesCommand extends Command
 
         $io->title('Kopiowanie starych obrazków na właściwe miejsca');
 
+        $io->info('Indeksowanie plików w katalogu źródłowym...');
+        $fileIndex = [];
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($sourceDir, \FilesystemIterator::SKIP_DOTS)
+        );
+        foreach ($iterator as $file) {
+            if ($file->isFile()) {
+                // Mapujemy nazwę pliku na jego pełną ścieżkę, aby szybko wyszukiwać
+                $fileIndex[$file->getFilename()] = $file->getPathname();
+            }
+        }
+        $io->info(sprintf('Znaleziono %d plików w katalogu źródłowym.', count($fileIndex)));
+
         $copied = 0;
         $missing = 0;
+        $missingFilesList = [];
 
         // Funkcja pomocnicza do kopiowania plików
-        $copyFile = function (string $targetRelativePath) use ($sourceDir, $io, &$copied, &$missing) {
+        $copyFile = function (string $targetRelativePath) use ($sourceDir, $fileIndex, $io, &$copied, &$missing, &$missingFilesList) {
             if (!$targetRelativePath) {
                 return;
             }
 
             $fileName = basename($targetRelativePath);
-            $sourceFile = $sourceDir . '/' . $fileName;
             $targetFile = $this->publicDirectory . $targetRelativePath;
 
-            if (!file_exists($sourceFile)) {
+            // Szukamy pliku w naszym indeksie (wspiera subfoldery)
+            if (!isset($fileIndex[$fileName])) {
                 $missing++;
+                if (count($missingFilesList) < 10) {
+                    $missingFilesList[] = $fileName;
+                }
                 return;
             }
+            
+            $sourceFile = $fileIndex[$fileName];
 
             $targetDir = dirname($targetFile);
             if (!is_dir($targetDir)) {
@@ -120,6 +139,14 @@ class LegacyCopyImagesCommand extends Command
         }
 
         $io->success(sprintf('Gotowe! Skopiowano %d plików. Brakowało %d plików w folderze źródłowym.', $copied, $missing));
+
+        if ($missing > 0 && $io->isVerbose()) {
+            $io->warning('Przykładowe brakujące pliki:');
+            $io->listing($missingFilesList);
+            if ($missing > count($missingFilesList)) {
+                $io->text(sprintf('... i %d innych.', $missing - count($missingFilesList)));
+            }
+        }
 
         return Command::SUCCESS;
     }
