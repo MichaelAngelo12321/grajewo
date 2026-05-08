@@ -6,13 +6,13 @@ const setTheme = (isDarkMode) => {
     const themeSwitcherSun = document.querySelector('#theme-switcher-sun')
 
     if (isDarkMode) {
-        if (logoTop && logoTop.src.includes('dark')) logoTop.src = logoTop.src.replace('dark', 'light')
+        if (logoTop && logoTop.dataset.darkSrc) logoTop.src = logoTop.dataset.darkSrc
         if (themeSwitcher) themeSwitcher.checked = true
         if (themeSwitcherMoon) themeSwitcherMoon.classList.remove('d-none')
         if (themeSwitcherSun) themeSwitcherSun.classList.add('d-none')
         document.documentElement.setAttribute('data-bs-theme', 'dark')
     } else {
-        if (logoTop && logoTop.src.includes('light')) logoTop.src = logoTop.src.replace('light', 'dark')
+        if (logoTop && logoTop.dataset.lightSrc) logoTop.src = logoTop.dataset.lightSrc
         if (themeSwitcher) themeSwitcher.checked = false
         if (themeSwitcherMoon) themeSwitcherMoon.classList.add('d-none')
         if (themeSwitcherSun) themeSwitcherSun.classList.remove('d-none')
