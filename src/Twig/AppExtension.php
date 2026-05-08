@@ -80,6 +80,20 @@ class AppExtension extends AbstractExtension
             return '';
         }
 
+        // Auto-paragraph plain text content to ensure ads can be injected correctly
+        if (!str_contains($content, '<p>') && !str_contains($content, '<p ')) {
+            $content = str_replace("\r\n", "\n", $content);
+            $textParagraphs = preg_split('/\n\s*\n/', $content);
+            $html = '';
+            foreach ($textParagraphs as $p) {
+                $p = trim($p);
+                if ($p !== '') {
+                    $html .= '<p>' . nl2br($p) . '</p>';
+                }
+            }
+            $content = $html;
+        }
+
         $paragraphs = explode('</p>', $content);
         $paragraphs = array_filter($paragraphs, function ($p) {
             return trim($p) !== '';

@@ -133,7 +133,10 @@ class ArticleController extends AbstractController
             'articles' => $articles,
             'category' => $category,
             'paginator' => new Paginator(
-                $this->articleRepository->count(['category' => $category]),
+                $this->articleRepository->count([
+                    'category' => $category,
+                    'status' => \App\Enum\ArticleStatus::PUBLISHED,
+                ]),
                 $itemsPerPage,
                 $currentPage,
                 $request->getPathInfo(),

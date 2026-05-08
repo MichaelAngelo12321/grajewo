@@ -63,12 +63,13 @@ class ArticleCachedRepository
 
             return $this->articleRepository->createQueryBuilder('a')
                 ->addSelect('c')
+                ->addSelect('COALESCE(a.bumpedAt, a.createdAt) AS HIDDEN sortDate')
                 ->join('a.category', 'c')
                 ->where('a.category = :category')
                 ->setParameter('category', $category)
                 ->andWhere('a.status = :status')
                 ->setParameter('status', ArticleStatus::PUBLISHED)
-                ->orderBy('a.bumpedAt', 'DESC')
+                ->orderBy('sortDate', 'DESC')
                 ->setMaxResults($limit)
                 ->getQuery()
                 ->getResult();

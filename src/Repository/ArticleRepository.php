@@ -54,8 +54,29 @@ class ArticleRepository extends ServiceEntityRepository
                         ->setParameter($field, "%$criteriaValue%");
                     break;
                 case 'FULLTEXT':
-                    $query->andWhere("MATCH(a.name, a.content) AGAINST(:$field boolean) > 0.1")
-                        ->setParameter($field, "*$criteriaValue*");
+                    $cleanQuery = preg_replace('/[^\p{L}\p{N}\s]/u', ' ', (string) $criteriaValue);
+                    $cleanQuery = preg_replace('/\s+/', ' ', trim($cleanQuery));
+                    $words = array_filter(explode(' ', $cleanQuery));
+                    
+                    if (empty($words)) {
+                        $query->andWhere('1 = 0'); // Brak wyników dla pustego zapytania
+                        break;
+                    }
+                    
+                    $booleanWords = [];
+                    foreach ($words as $word) {
+                        if (mb_strlen($word) >= 3) {
+                            $booleanWords[] = '+' . $word . '*';
+                        } else {
+                            $booleanWords[] = $word . '*';
+                        }
+                    }
+                    
+                    $exactPhrase = $cleanQuery;
+                    $booleanQuery = implode(' ', $booleanWords) . ' >"' . $exactPhrase . '"';
+
+                    $query->andWhere("MATCH(a.name, a.content) AGAINST(:$field boolean) > 0")
+                        ->setParameter($field, $booleanQuery);
                     break;
             }
         }
@@ -64,11 +85,35 @@ class ArticleRepository extends ServiceEntityRepository
     public function findBy(array $criteria, array|null $orderBy = null, $limit = null, $offset = null): array
     {
         $query = $this->createQueryBuilder('a')
-            ->orderBy('a.bumpedAt', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 
         $this->applyCriteria($query, $criteria);
+
+        $hasFulltext = false;
+        foreach ($criteria as $field => $value) {
+            if (is_array($value) && $value[0] === 'FULLTEXT') {
+                $hasFulltext = true;
+                $rawQuery = (string) $value[1];
+                
+                $query->addSelect("(CASE WHEN a.name LIKE :exactSearch THEN 1000 ELSE 0 END) + MATCH(a.name, a.content) AGAINST(:$field boolean) AS HIDDEN score");
+                $query->setParameter('exactSearch', '%' . trim($rawQuery) . '%');
+                $query->orderBy('score', 'DESC');
+                $query->addOrderBy('a.bumpedAt', 'DESC');
+                break;
+            }
+        }
+
+        if (!$hasFulltext) {
+            if ($orderBy) {
+                foreach ($orderBy as $sort => $order) {
+                    $query->addOrderBy("a.$sort", $order);
+                }
+            } else {
+                $query->addSelect('COALESCE(a.bumpedAt, a.createdAt) AS HIDDEN sortDate');
+                $query->orderBy('sortDate', 'DESC');
+            }
+        }
 
         return $query->getQuery()->getResult();
     }
@@ -107,7 +152,8 @@ class ArticleRepository extends ServiceEntityRepository
                 ->setParameter('status', ArticleStatus::PUBLISHED);
         }
 
-        $query->orderBy('a.bumpedAt', 'DESC')
+        $query->addSelect('COALESCE(a.bumpedAt, a.createdAt) AS HIDDEN sortDate')
+            ->orderBy('sortDate', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 
