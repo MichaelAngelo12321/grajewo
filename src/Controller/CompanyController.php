@@ -81,29 +81,26 @@ class CompanyController extends AbstractController
         $page = $request->query->getInt('page', 1);
         $itemsPerPage = 20;
 
-        $criteria = ['isActive' => true];
         $currentCategory = null;
-
         if ($categorySlug) {
             $currentCategory = $this->companyCategoryRepository->findOneBy(['slug' => $categorySlug]);
-            if ($currentCategory) {
-                $criteria['category'] = $currentCategory;
-            }
         }
 
         $promotedCompanies = $this->companyRepository->findBy(
             ['isActive' => true, 'isPromoted' => true],
             ['name' => 'ASC'],
-            6
         );
 
+        $criteria = ['isActive' => true];
+        if ($currentCategory) {
+            $criteria['category'] = $currentCategory;
+        }
         $companies = $this->companyRepository->findBy(
             $criteria,
             ['isPromoted' => 'DESC', 'name' => 'ASC'],
             $itemsPerPage,
             ($page - 1) * $itemsPerPage
         );
-
         $totalItems = $this->companyRepository->count($criteria);
 
         return $this->render('app/company/list.html.twig', [

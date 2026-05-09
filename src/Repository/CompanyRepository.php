@@ -39,3 +39,4 @@ class CompanyRepository extends ServiceEntityRepository
         }
     }
 }
+

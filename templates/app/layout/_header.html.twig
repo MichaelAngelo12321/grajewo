@@ -14,13 +14,38 @@
       </button>
 
       <div class="collapse navbar-collapse d-xl-flex justify-content-xl-between gap-3" id="navbarTogglerContent">
-        <form class="d-flex align-items-center gap-2 ms-auto me-auto mb-2 mb-lg-0" role="search" action="{{ path('search') }}" method="get">
-          <input type="search" class="form-control" placeholder="Szukaj w Ełku..." name="search_query" value="{{ app.request.query.get('search_query') }}"/>
-
-          <button type="submit" class="btn btn-primary">
-            <img src="{{ asset('build/images/icons/search.svg') }}" alt="Lupa"/>
-          </button>
+        <form class="d-flex ms-auto me-auto mb-2 mb-lg-0" role="search" id="search-form" action="{{ path('search') }}" method="get">
+          <div class="input-group">
+            <input type="search" class="form-control" placeholder="Szukaj w Ełku..." name="search_query" id="search-input" value="{{ app.request.query.get('search_query') }}"/>
+           <select class="form-select border" id="search-engine-select" style="max-width: 140px; background-color: #f1f3f4; color: #5f6368; border-color: #dee2e6; cursor: pointer;">
+      <option value="site">Serwis</option>
+      <option value="google">w Google</option>
+    </select>
+           
+            <button type="submit" class="btn btn-primary">
+              <img src="{{ asset('build/images/icons/search.svg') }}" alt="Lupa"/>
+            </button>
+          </div>
         </form>
+        <script>
+          (function () {
+    var form = document.getElementById('search-form');
+    var engineSelect = document.getElementById('search-engine-select');
+
+    form.addEventListener('submit', function (e) {
+      var query = document.getElementById('search-input').value.trim();
+      var engine = engineSelect.value;
+      
+      if (!query) return;
+      
+      // Jeśli wybrano Google, blokujemy domyślne wyszukiwanie serwisu i otwieramy nową kartę
+      if (engine === 'google') {
+        e.preventDefault();
+        window.open('https://www.google.com/search?q=' + encodeURIComponent(query), '_blank', 'noopener');
+      }
+    });
+  })();
+        </script>
 
         <ul class="navbar-nav gap-3 ms-auto quick-links">
           <li class="nav-item">

@@ -85,10 +85,19 @@ document.addEventListener('DOMContentLoaded', function () {
     {% if hasCompanies %}
     <div class="col-12 {{ hasAds ? 'col-md-6' : '' }}">
       <div class="card widget h-100">
-        <div class="card-header d-flex">
+        <div class="card-header d-flex align-items-center">
           <h5 class="section-title info mb-0"><a href="{{ path('company_list') }}">Polecane firmy</a></h5>
+          <div class="ms-auto">
+            <a href="{{ path('company_add') }}" class="btn btn-sm btn-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                   stroke-width="2" stroke="currentColor" fill="none">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+              Dodaj firmę
+            </a>
+          </div>
         </div>
-        <div class="card-body p-2 promo-h-container">
+        <div class="card-body p-2 pt-3 promo-h-container">
           <div class="promo-h-track" id="companies-track">
             {% for company in promotedCompanies %}
             <div class="promo-h-item">
