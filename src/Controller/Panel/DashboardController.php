@@ -10,6 +10,7 @@ use App\Repository\DailyVideoRepository;
 use App\Repository\GasStationPriceRepository;
 use App\Repository\PharmacyDutyRepository;
 use App\Repository\SettingRepository;
+use App\Repository\UserReportRepository;
 use App\Service\FileCleaner;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,6 +32,7 @@ class DashboardController extends AbstractController
         private GasStationPriceRepository $gasStationPriceRepository,
         private PharmacyDutyRepository $pharmacyDutyRepository,
         private SettingRepository $settingRepository,
+        private UserReportRepository $userReportRepository,
     ) {
     }
 
@@ -70,9 +72,13 @@ class DashboardController extends AbstractController
         // companies
         $companies = $this->companyRepository->findBy(['isActive' => false], ['createdAt' => 'DESC']);
 
+        // user reports
+        $userReports = $this->userReportRepository->findBy(['isActive' => false], ['createdAt' => 'DESC']);
+
         return $this->render('panel/dashboard/index.html.twig', [
             'advertisements' => $advertisements,
             'companies' => $companies,
+            'userReports' => $userReports,
             'dailyImages' => $dailyImages,
             'dailyVideos' => $dailyVideos,
             'daysOfWeek' => $daysOfWeek,

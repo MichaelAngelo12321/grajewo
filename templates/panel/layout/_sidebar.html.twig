@@ -6,8 +6,10 @@
 
   <h1 class="navbar-brand navbar-brand-autodark">
     <a href="{{ path('panel_dashboard') }}">
-      <img src="{{ asset('build/images/logo-dark.svg') }}" id="logo-top" alt="Logo serwisu" class="my-2"
-           height="42"/>
+      <img src="/media/upload/uploads/logo_elk24_light_285e6ec57a_f3b1ebfec3.png"
+           data-light-src="/media/upload/uploads/logo_elk24_light_285e6ec57a_f3b1ebfec3.png"
+           data-dark-src="/media/upload/uploads/logo_elk24_dark_f028535b4d_2eac4cea9b.png"
+           id="logo-top" alt="Logo serwisu" class="my-2" height="42"/>
     </a>
   </h1>
 
@@ -37,38 +39,6 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="{{ path('panel_categories_list') }}">
-          <i class="ti ti-tag me-2"></i>
-
-          <span class="nav-link-title">Kategorie</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="{{ path('panel_gas_station') }}">
-          <i class="ti ti-gas-station me-2"></i>
-
-          <span class="nav-link-title">Ceny paliw</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="{{ path('panel_user_list') }}">
-          <i class="ti ti-users me-2"></i>
-
-          <span class="nav-link-title">Użytkownicy</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="{{ path('panel_ad_list') }}">
-          <i class="ti ti-ad-circle-filled me-2"></i>
-
-          <span class="nav-link-title">Reklamy</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
         <a class="nav-link" href="{{ path('panel_advertisement_list') }}">
           <i class="ti ti-speakerphone me-2"></i>
 
@@ -84,17 +54,49 @@
       </li>
 
       <li class="nav-item">
+        <a class="nav-link" href="{{ path('panel_gas_station') }}">
+          <i class="ti ti-gas-station me-2"></i>
+
+          <span class="nav-link-title">Ceny paliw</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('panel_ad_list') }}">
+          <i class="ti ti-ad-circle-filled me-2"></i>
+
+          <span class="nav-link-title">Reklamy</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
         <a class="nav-link" href="{{ path('panel_company_category_list') }}">
           <i class="ti ti-category me-2"></i>
           <span class="nav-link-title">Kategorie firm</span>
         </a>
       </li>
 
-      <li class="nav-item"> 
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('panel_categories_list') }}">
+          <i class="ti ti-tag me-2"></i>
+
+          <span class="nav-link-title">Kategorie</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
         <a class="nav-link" href="{{ path('panel_static_page_list') }}">
           <i class="ti ti-file-description me-2"></i>
 
           <span class="nav-link-title">Strony statyczne</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('panel_user_list') }}">
+          <i class="ti ti-users me-2"></i>
+
+          <span class="nav-link-title">Użytkownicy</span>
         </a>
       </li>
 
@@ -128,6 +130,10 @@
 
           <span class="nav-link-title">Wyloguj</span>
         </a>
+      </li>
+
+      <li class="nav-item mt-3">
+        <span class="nav-link text-muted small pe-none">elk24.pl &copy; 2008</span>
       </li>
 
       <li class="nav-item d-flex align-items-center">

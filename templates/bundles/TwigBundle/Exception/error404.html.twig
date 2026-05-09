@@ -1,22 +1,29 @@
-{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
 {% extends 'app/layout/base.html.twig' %}
 
+{% block title %}Nie znaleziono strony (404) - {{ app_name }}{% endblock %}
+
+{% block robots %}noindex, nofollow{% endblock %}
+
 {% block body %}
-  <div class="d-flex align-items-center gap-3 card">
-    <div class="d-flex flex-column align-items-center">
-      <svg xmlns="http://www.w3.org/2000/svg" class="text-muted" width="128" height="128" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M14.5 16.05a3.5 3.5 0 0 0 -5 0" /><path d="M8 9l2 2" /><path d="M10 9l-2 2" /><path d="M14 9l2 2" /><path d="M16 9l-2 2" /></svg>
-    </div>
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="d-flex align-items-center gap-4 py-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="text-muted flex-shrink-0" width="96" height="96" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/>
+          <path d="M14.5 16.05a3.5 3.5 0 0 0 -5 0"/>
+          <path d="M8 9l2 2"/><path d="M10 9l-2 2"/>
+          <path d="M14 9l2 2"/><path d="M16 9l-2 2"/>
+        </svg>
 
-    <div class="d-flex flex-column">
-      <h1 class="fs-3 fw-semibold">Taka strona nie istnieje... (<span>err.<strong>404</strong></span>)</h1>
-
-      <p class="text-muted">
-        Strona, której poszukujesz nie istnieje, lub zmieniła adres.
-      </p>
-
-      <p class="text-muted">
-        Możesz spróbować <a href="{{ path('homepage') }}" class="link-primary">przejść na stronę główną</a>, lub skorzystać z wyszukiwarki.
-      </p>
+        <div>
+          <h1 class="fs-2 fw-semibold mb-2">Strona nie istnieje <span class="text-muted fs-4">(404)</span></h1>
+          <p class="text-muted mb-3">Strona, której szukasz nie istnieje lub zmieniła adres.</p>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{{ path('homepage') }}" class="btn btn-primary">Strona główna</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock %}

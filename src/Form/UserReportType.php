@@ -27,8 +27,7 @@ class UserReportType extends AbstractType
                 'attr' => [
                     'class' => 'form-control-lg',
                 ],
-                'label' => 'Tytuł raportu (opcjonalnie)',
-                'required' => false,
+                'label' => 'Tytuł raportu',
             ])
             ->add('content', null, [
                 'attr' => [
@@ -57,8 +56,7 @@ class UserReportType extends AbstractType
                 ],
             ])
             ->add('author', null, [
-                'label' => 'Twój podpis (opcjonalnie)',
-                'required' => false,
+                'label' => 'Twój podpis',
             ]);
 
         if ($this->recaptchaEnabled) {

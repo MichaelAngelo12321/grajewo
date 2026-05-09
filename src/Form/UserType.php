@@ -18,7 +18,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\File;
 
 class UserType extends AbstractType
@@ -46,10 +45,6 @@ class UserType extends AbstractType
                         new Length([
                             'min' => 8,
                             'minMessage' => 'Hasło powinno zawierać co najmniej {{ limit }} znaków',
-                        ]),
-                        new Regex([
-                            'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/',
-                            'message' => 'Hasło powinno zawierać co najmniej jedną małą literę, jedną wielką literę i jedną cyfrę',
                         ]),
                     ] : [],
                 'empty_data' => '',

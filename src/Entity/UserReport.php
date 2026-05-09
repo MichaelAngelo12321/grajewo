@@ -34,6 +34,9 @@ class UserReport
     #[ORM\Column(nullable: true)]
     private ?bool $isHidden = false;
 
+    #[ORM\Column(options: ['default' => false])]
+    private bool $isActive = false;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageUrl = null;
 
@@ -140,6 +143,18 @@ class UserReport
     public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

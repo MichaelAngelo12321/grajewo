@@ -4,13 +4,13 @@
       <div class="col-6 col-md-2 mb-4 mt-md-2 mt-lg-4">
         <h5 class="text-muted">{{ app_name }}</h5>
         <ul class="nav flex-column">
-          <li><a class="nav-link" href="http://elk24/redakcja.html">Redakcja</a></li>
-          <li><a class="nav-link" href="http://elk24/wspolpraca.html">Współpraca</a></li>
-          <li><a class="nav-link" href="http://elk24/reklama.html">Reklama</a></li>
-          <li><a class="nav-link" href="http://elk24/regulamin-forum.html">Regulamin forum</a></li>
-          <li><a class="nav-link" href="http://elk24/regulamin-ogloszen.html">Regulamin ogłoszeń</a></li>
-          <li><a class="nav-link" href="http://elk24/regulamin-katalogu-firm.html">Regulamin katalogu firm</a></li>
-          <li><a class="nav-link" href="http://elk24/prywatnosc.html">Prywatność</a></li>
+          <li><a class="nav-link" href="{{ path('static_page_show', {slug: 'redakcja'}) }}">Redakcja</a></li>
+          <li><a class="nav-link" href="{{ path('static_page_show', {slug: 'wspolpraca'}) }}">Współpraca</a></li>
+          <li><a class="nav-link" href="{{ path('static_page_show', {slug: 'reklama'}) }}">Reklama</a></li>
+          <li><a class="nav-link" href="{{ path('static_page_show', {slug: 'regulamin-forum'}) }}">Regulamin forum</a></li>
+          <li><a class="nav-link" href="{{ path('static_page_show', {slug: 'regulamin-ogloszen'}) }}">Regulamin ogłoszeń</a></li>
+          <li><a class="nav-link" href="{{ path('static_page_show', {slug: 'regulamin-katalogu-firm'}) }}">Regulamin katalogu firm</a></li>
+          <li><a class="nav-link" href="{{ path('static_page_show', {slug: 'prywatnosc'}) }}">Prywatność</a></li>
         </ul>
       </div>
 
@@ -59,7 +59,7 @@
           <li>E-mail: <a href="mailto:redakcja@elk24.pl" class="link-primary fw-medium">redakcja@elk24.pl</a>
           </li>
           <li>Telefon: <a href="tel:604833731" class="link-primary fw-medium">604 833 731</a></li>
-          <li>Tel. / Fax: <a href="tel:0862726697" class="link-primary fw-medium">(0 86) 272 66 97</a></li>
+          <li>Tel. / Fax: <a href="tel:862726697" class="link-primary fw-medium">86 272 66 97</a></li>
         </ul>
       </div>
     </div>

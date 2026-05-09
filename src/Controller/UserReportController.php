@@ -60,10 +60,12 @@ class UserReportController extends AbstractController
 
             $this->userActivity->recordUserActivity($request->getClientIp(), $request->headers->get('User-Agent'));
 
+            $report->setIsActive(false);
+
             $this->entityManager->persist($report);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Dziękujemy za przesłanie raportu');
+            $this->addFlash('success', 'Dziękujemy za przesłanie raportu. Zostanie opublikowany po akceptacji przez moderatora.');
 
             return $this->redirectToRoute('user_report', [], Response::HTTP_SEE_OTHER);
         }
@@ -75,7 +77,7 @@ class UserReportController extends AbstractController
 
     public function index(): Response
     {
-        $userReports = $this->userReportRepository->findBy([], ['createdAt' => 'DESC'], 30);
+        $userReports = $this->userReportRepository->findBy(['isActive' => true, 'isHidden' => false], ['createdAt' => 'DESC'], 30);
 
         return $this->render('app/user_report/list.html.twig', [
             'reports' => $userReports

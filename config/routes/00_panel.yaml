@@ -210,6 +210,14 @@ panel_user_list:
   controller: App\Controller\Panel\UserController::list
 
 # User report
+panel_user_report_publish:
+  path: /panel/user-report/{reportId}/publish
+  controller: App\Controller\Panel\UserReportController::publishReport
+
+panel_user_report_delete:
+  path: /panel/user-report/{reportId}/delete
+  controller: App\Controller\Panel\UserReportController::deleteReport
+
 panel_user_report_hide:
   path: /panel/user-report/{reportId}/hide
   controller: App\Controller\Panel\UserReportController::hideReport

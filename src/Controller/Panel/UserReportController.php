@@ -21,6 +21,42 @@ class UserReportController extends AbstractController
     ) {
     }
 
+    public function publishReport(int $reportId, Request $request): Response
+    {
+        $report = $this->userReportRepository->find($reportId);
+
+        if ($report === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $report->setIsActive(true);
+
+        $this->entityManager->persist($report);
+        $this->entityManager->flush();
+
+        $this->cache->delete(CacheKeyPrefix::USER_REPORT_LAST . '5');
+        $this->addFlash('success', 'Raport został zaakceptowany i opublikowany');
+
+        return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
+    }
+
+    public function deleteReport(int $reportId, Request $request): Response
+    {
+        $report = $this->userReportRepository->find($reportId);
+
+        if ($report === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->entityManager->remove($report);
+        $this->entityManager->flush();
+
+        $this->cache->delete(CacheKeyPrefix::USER_REPORT_LAST . '5');
+        $this->addFlash('success', 'Raport został usunięty');
+
+        return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
+    }
+
     public function hideReport(int $reportId, Request $request): Response
     {
         $report = $this->userReportRepository->find($reportId);

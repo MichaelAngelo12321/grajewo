@@ -60,7 +60,7 @@
             <tr>
               <th class="w-1">ID</th>
               <th>Zdjęcie</th>
-              <th>Tytuł</th>
+              <th style="max-width: 0; width: 35%">Tytuł</th>
               {% if app.request.get('category') == null %}
                 <th>Kategoria</th>
               {% endif %}
@@ -81,7 +81,7 @@
                     width="40"
                   />
                 </td>
-                <td class="text-truncate">{{ article.name }}</td>
+                <td class="text-truncate" style="max-width: 0">{{ article.name }}</td>
                 {% if app.request.get('category') == null %}
                   <td class="fs-5">{{ article.category.name }}</td>
                 {% endif %}
@@ -92,7 +92,7 @@
                     class="badge bg-{{ article.status|article_status_color }} me-1"></span> {{ article.status|article_status_name }}
                 </td>
                 <td>
-                  <div class="btn-list justify-content-end">
+                  <div class="btn-list flex-nowrap justify-content-end">
                     {% if article.status.value == 0 or article.status.value == 2 %}
                       <a
                         href="{{ path('panel_article_change_status', {'id': article.id, 'status': 1 }) }}"

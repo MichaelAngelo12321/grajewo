@@ -214,6 +214,58 @@
                 <div class="col-12">
                   <div class="card card-sm">
                     <div class="card-header">
+                      <h3 class="card-title">Akceptacja raportów czytelników</h3>
+                    </div>
+
+                    <div
+                      class="list-group list-group-flush list-group-hoverable overflow-auto"
+                      style="max-height: 240px"
+                    >
+                      {% if userReports is empty %}
+                        <div class="d-flex justify-content-center">
+                          <div class="py-3">Brak raportów do akceptacji</div>
+                        </div>
+                      {% endif %}
+
+                      {% for report in userReports %}
+                        <div class="list-group-item">
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <div class="fw-bold text-body d-block">{{ report.name }}</div>
+                              <div class="text-muted text-truncate mt-1">{{ report.content }}</div>
+                              <div class="text-muted small mt-1">
+                                Autor: <strong>{{ report.author|default('Czytelnik') }}</strong> | Data: <strong>{{ report.createdAt|date('d.m.Y H:i') }}</strong> | IP: <strong>{{ report.ipAddress|default('---') }}</strong>
+                              </div>
+                            </div>
+
+                            <div class="col-auto ms-auto">
+                              <a
+                                href="{{ path('panel_user_report_publish', {'reportId': report.id}) }}"
+                                class="btn btn-success btn-icon"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Opublikuj"
+                              >
+                                <i class="ti ti-check"></i>
+                              </a>
+                              <a
+                                href="{{ path('panel_user_report_delete', {'reportId': report.id}) }}"
+                                class="btn btn-danger btn-icon js-confirm"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Usuń"
+                              >
+                                <i class="ti ti-trash"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="card card-sm">
+                    <div class="card-header">
                       <h3 class="card-title">Akceptacja treści użytkowników</h3>
                     </div>
 
