@@ -29,11 +29,13 @@
         </div>
 
         {% if slotCounts is defined and slotCounts|length > 0 %}
-        <div class="card-body border-bottom py-3 bg-light">
-          <div class="d-flex flex-wrap gap-2">
-            <div class="fw-bold me-2">Aktywne reklamy w modułach:</div>
+        <div class="card-body border-bottom py-3">
+          <div class="d-flex flex-wrap gap-2 align-items-center">
+            <div class="fw-bold me-2 text-secondary">Aktywne reklamy w modułach:</div>
             {% for sc in slotCounts %}
-              <span class="badge bg-blue-lt">{{ sc.slot }}: {{ sc.count }}</span>
+              <span class="badge bg-blue text-white fs-6 fw-medium px-2 py-1">
+                {{ sc.slot }}: <strong>{{ sc.count }}</strong>
+              </span>
             {% endfor %}
           </div>
         </div>
@@ -86,7 +88,7 @@
                   {% endif %}
                 </td>
                 <td>
-                  <span class="badge">
+                  <span class="badge bg-secondary text-white">
                     {{ promo.position }}
                   </span>
                 </td>
