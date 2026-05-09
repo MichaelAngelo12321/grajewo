@@ -220,6 +220,13 @@ aside {
   }
 }
 
+#promoPopup {
+  .modal-dialog,
+  .modal-content {
+    overflow: visible;
+  }
+}
+
 .promo-popup-close {
   position: absolute;
   top: -18px;
