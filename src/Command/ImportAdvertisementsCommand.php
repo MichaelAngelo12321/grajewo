@@ -113,7 +113,7 @@ class ImportAdvertisementsCommand extends Command
         $totalMigrated = 0;
 
         while (true) {
-            $adsData = $legacyDb->fetchAllAssociative("SELECT * FROM offers LIMIT $limit OFFSET $offset");
+            $adsData = $legacyDb->fetchAllAssociative("SELECT * FROM offers WHERE created_at >= '2026-04-23 00:00:00' LIMIT $limit OFFSET $offset");
             
             if (empty($adsData)) {
                 break;

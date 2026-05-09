@@ -57,10 +57,11 @@ class ImportCommentsCommand extends Command
         while (true) {
             // Pobieramy komentarze złączone z postami, żeby od razu mieć tytuł posta
             $sql = "
-                SELECT c.*, p.title as post_title 
+                SELECT c.*, p.title as post_title
                 FROM comments c
                 LEFT JOIN posts p ON c.postId = p.id
-                ORDER BY c.id ASC 
+                WHERE c.created_at >= '2026-04-23 00:00:00'
+                ORDER BY c.id ASC
                 LIMIT $limit OFFSET $offset
             ";
             $commentsData = $legacyDb->fetchAllAssociative($sql);
