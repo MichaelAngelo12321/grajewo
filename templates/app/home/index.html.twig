@@ -2,7 +2,70 @@
 
 {% block title %}{{ app_meta_title }}{% endblock %}
 
+{% block stylesheets %}
+<style>
+.promo-h-container { overflow: hidden; height: 130px; position: relative; }
+.promo-h-track { display: flex; gap: 0.5rem; align-items: center; will-change: transform; }
+.promo-h-item { flex-shrink: 0; width: 100px; }
+
+.promo-v-container { overflow: hidden; height: 130px; position: relative; }
+.promo-v-track { will-change: transform; }
+
+@keyframes scroll-h {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes scroll-v {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
+.promo-h-container:hover .promo-h-track,
+.promo-v-container:hover .promo-v-track {
+  animation-play-state: paused;
+}
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  function setupHScroll(id, secPerItem) {
+    var track = document.getElementById(id);
+    if (!track) return;
+    var items = Array.from(track.children);
+    if (items.length < 2) return;
+    shuffle(items).forEach(function (el) { track.appendChild(el); });
+    items.forEach(function (el) { track.appendChild(el.cloneNode(true)); });
+    track.style.animation = 'scroll-h ' + (items.length * secPerItem) + 's linear infinite';
+  }
+
+  function setupVScroll(id, secPerItem) {
+    var track = document.getElementById(id);
+    if (!track) return;
+    var items = Array.from(track.children);
+    if (items.length < 2) return;
+    shuffle(items).forEach(function (el) { track.appendChild(el); });
+    items.forEach(function (el) { track.appendChild(el.cloneNode(true)); });
+    track.style.animation = 'scroll-v ' + (items.length * secPerItem) + 's linear infinite';
+  }
+
+  setupHScroll('companies-track', 3);
+  setupVScroll('ads-track', 2);
+});
+</script>
+{% endblock %}
+
 {% block body %}
+  {% include 'app/widgets/popup.html.twig' %}
   {% import "app/home/partials/articles-list.html.twig" as articlesList %}
 
   {% include 'app/home/partials/top-category-articles.html.twig' %}
@@ -13,59 +76,64 @@
 
   {{ articlesList.horizontal('Najczęściej czytane', mostPopularArticles, 'info') }}
 
-  {% if promotedCompanies|length > 0 %}
-    <div class="card widget mb-5">
-      <div class="card-header d-flex">
-        <h5 class="section-title info"><a href="{{ path('company_list') }}">Polecane firmy</a></h5>
-      </div>
-      <div class="card-body">
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
-          {% for company in promotedCompanies %}
-            <div class="col">
-              <a href="{{ path('company_details', {slug: company.slug}) }}" class="d-block text-center text-decoration-none text-reset h-100 p-2 border rounded hover-shadow-sm transition-all">
+  {% set hasCompanies = promotedCompanies|length > 0 %}
+  {% set hasAds = promotedAdvertisements|length > 0 %}
+
+  {% if hasCompanies or hasAds %}
+  <div class="row mb-5 g-3">
+
+    {% if hasCompanies %}
+    <div class="col-12 {{ hasAds ? 'col-md-6' : '' }}">
+      <div class="card widget h-100">
+        <div class="card-header d-flex">
+          <h5 class="section-title info mb-0"><a href="{{ path('company_list') }}">Polecane firmy</a></h5>
+        </div>
+        <div class="card-body p-2 promo-h-container">
+          <div class="promo-h-track" id="companies-track">
+            {% for company in promotedCompanies %}
+            <div class="promo-h-item">
+              <a href="{{ path('company_details', {slug: company.slug}) }}" class="d-flex flex-column align-items-center text-decoration-none text-reset p-1 rounded hover-shadow-sm transition-all">
                 {% if company.logo %}
-                  <img src="{{ company.logo|imagine_filter('company_logo_home') }}" class="img-fluid mb-2" alt="{{ company.name }}">
+                  <img src="{{ company.logo|imagine_filter('company_logo_home') }}" alt="{{ company.name }}" class="mb-1" style="height: 56px; width: 88px; object-fit: contain;">
                 {% else %}
-                  <div class="d-flex align-items-center justify-content-center bg-light rounded mb-2" style="height: 100px;">
-                    <i class="ti ti-building-store fs-1 text-muted"></i>
+                  <div class="d-flex align-items-center justify-content-center bg-light rounded mb-1" style="height: 56px; width: 88px;">
+                    <i class="ti ti-building-store fs-2 text-muted"></i>
                   </div>
                 {% endif %}
-                <div class="fw-bold small text-truncate" title="{{ company.name }}">{{ company.name }}</div>
-                <div class="text-muted smaller text-truncate">{{ company.city }}</div>
+                <div class="fw-bold text-truncate text-center" style="font-size: 0.7rem; max-width: 88px;" title="{{ company.name }}">{{ company.name }}</div>
               </a>
             </div>
-          {% endfor %}
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
-  {% endif %}
+    {% endif %}
 
-  {% if promotedAdvertisements|length > 0 %}
-    <div class="card widget mb-5 border-warning" style="border-width: 2px;">
-      <div class="card-header d-flex bg-warning-lt">
-        <h5 class="section-title text-reset"><a href="{{ path('advertisement_list') }}" class="text-reset">Polecane ogłoszenia</a></h5>
-        <div class="ms-auto">
-          <a href="{{ path('advertisement_add') }}" class="btn btn-sm btn-dark">Dodaj ogłoszenie</a>
+    {% if hasAds %}
+    <div class="col-12 {{ hasCompanies ? 'col-md-6' : '' }}">
+      <div class="card widget h-100 border-warning" style="border-width: 2px;">
+        <div class="card-header d-flex bg-warning-lt align-items-center">
+          <h5 class="section-title text-reset mb-0"><a href="{{ path('advertisement_list') }}" class="text-reset">Polecane ogłoszenia</a></h5>
+          <div class="ms-auto">
+            <a href="{{ path('advertisement_add') }}" class="btn btn-sm btn-dark">Dodaj ogłoszenie</a>
+          </div>
         </div>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          {% for advertisement in promotedAdvertisements %}
-            <div class="col-12 col-md-6 mb-3">
-              <div class="d-flex justify-content-between align-items-start">
-                <div class="fw-bold">{{ advertisement.title }}</div>
-                <span class="badge bg-warning text-dark ms-2">Promowane</span>
-              </div>
-              <p class="mb-0">{{ advertisement.content }}</p>
-
-              <div class="text-muted">
-                <small>Dodane: {{ advertisement.createdAt|date|format_datetime(pattern=app_datetime_short_format) }}</small>
-              </div>
-            </div>
-          {% endfor %}
+        <div class="card-body p-0 promo-v-container">
+          <div class="promo-v-track" id="ads-track">
+            {% for advertisement in promotedAdvertisements %}
+            <a href="{{ path('advertisement_list') }}" class="d-flex align-items-center px-3 py-2 border-bottom text-decoration-none text-reset">
+              <span class="fw-bold small flex-grow-1 text-truncate">{{ advertisement.title }}</span>
+              <span class="badge bg-warning text-dark ms-2 flex-shrink-0" style="font-size: 0.65rem;">Promowane</span>
+            </a>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
+    {% endif %}
+
+  </div>
   {% endif %}
 
   {% set visibleIndex = 0 %}
