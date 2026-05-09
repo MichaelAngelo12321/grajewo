@@ -1,7 +1,7 @@
 {% macro horizontal(category, articles, headerColor) %}
   {% if articles is not empty %}
     <div class="widget">
-      <h2 class="section-title {{ headerColor }}">
+      <h2 class="section-title {{ headerColor ?: 'primary' }}">
         {% if category.slug is defined %}
           <a
             href="{{ path('article_category', { '__category': category.slug }) }}"
@@ -46,6 +46,14 @@
           </div>
         {% endfor %}
       </div>
+
+      {% if category.slug is defined %}
+      <div class="d-flex justify-content-end mt-1 mb-3">
+        <a href="{{ path('article_category', { '__category': category.slug }) }}" class="btn btn-sm btn-primary">
+          Zobacz wszystkie
+        </a>
+      </div>
+      {% endif %}
     </div>
   {% endif %}
 {% endmacro %}
@@ -53,7 +61,7 @@
 {% macro vertical(category, articles, headerColor) %}
   {% if articles is not empty %}
     <div class="widget">
-      <h3 class="section-title {{ headerColor }}">
+      <h3 class="section-title {{ headerColor ?: 'primary' }}">
         {% if category.slug is defined %}
           <a
             href="{{ path('article_category', { '__category': category.slug }) }}"
@@ -110,6 +118,14 @@
           </div>
         </div>
       {% endfor %}
+
+      {% if category.slug is defined %}
+      <div class="d-flex justify-content-end mt-1 mb-2">
+        <a href="{{ path('article_category', { '__category': category.slug }) }}" class="btn btn-sm btn-primary">
+          Zobacz wszystkie
+        </a>
+      </div>
+      {% endif %}
     </div>
   {% endif %}
 {% endmacro %}

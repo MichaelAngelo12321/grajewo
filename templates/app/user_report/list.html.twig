@@ -104,24 +104,31 @@
         {% endif %}
 
         {% if is_granted('ROLE_ADMIN') %}
-          <div class="d-flex justify-content-end align-items-center mt-4 pt-3 border-top">
+          <div class="d-flex justify-content-end align-items-center gap-2 mt-4 pt-3 border-top">
             <div class="me-auto text-muted fs-smaller">
               Adres IP czytelnika: <strong>{{ report.ipAddress }}</strong>
             </div>
 
+            <a href="{{ path('panel_user_report_edit', {'reportId': report.id}) }}"
+               class="btn btn-sm btn-secondary">
+              Edytuj
+            </a>
+
+            <a href="{{ path('panel_user_report_delete', {'reportId': report.id}) }}"
+               class="btn btn-sm btn-outline-danger js-confirm"
+               data-method="post">
+              Usuń
+            </a>
+
             {% if report.isHidden %}
               <a href="{{ path('panel_user_report_unlock', {'reportId': report.id}) }}"
-                 class="btn btn-sm btn-success text-white"
-                 data-method="post"
-                 >
-                Odblokuj raport
+                 class="btn btn-sm btn-success text-white">
+                Odblokuj
               </a>
             {% else %}
               <a href="{{ path('panel_user_report_hide', {'reportId': report.id}) }}"
-                 class="btn btn-sm btn-danger"
-                 data-method="post"
-                 >
-                Ukryj raport
+                 class="btn btn-sm btn-warning">
+                Ukryj
               </a>
             {% endif %}
           </div>

@@ -6,7 +6,7 @@
 <style>
 .promo-h-container { overflow: hidden; height: 130px; position: relative; }
 .promo-h-track { display: flex; gap: 0.5rem; align-items: center; will-change: transform; }
-.promo-h-item { flex-shrink: 0; width: 100px; }
+.promo-h-item { flex-shrink: 0; width: 120px; }
 
 .promo-v-container { overflow: hidden; height: 130px; position: relative; }
 .promo-v-track { will-change: transform; }
@@ -79,72 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
   {% set hasCompanies = promotedCompanies|length > 0 %}
   {% set hasAds = promotedAdvertisements|length > 0 %}
 
-  {% if hasCompanies or hasAds %}
-  <div class="row mb-5 g-3">
-
-    {% if hasCompanies %}
-    <div class="col-12 {{ hasAds ? 'col-md-6' : '' }}">
-      <div class="card widget h-100">
-        <div class="card-header d-flex align-items-center">
-          <h5 class="section-title info mb-0"><a href="{{ path('company_list') }}">Polecane firmy</a></h5>
-          <div class="ms-auto">
-            <a href="{{ path('company_add') }}" class="btn btn-sm btn-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                   stroke-width="2" stroke="currentColor" fill="none">
-                <path d="M12 5v14M5 12h14"/>
-              </svg>
-              Dodaj firmę
-            </a>
-          </div>
-        </div>
-        <div class="card-body p-2 pt-3 promo-h-container">
-          <div class="promo-h-track" id="companies-track">
-            {% for company in promotedCompanies %}
-            <div class="promo-h-item">
-              <a href="{{ path('company_details', {slug: company.slug}) }}" class="d-flex flex-column align-items-center text-decoration-none text-reset p-1 rounded hover-shadow-sm transition-all">
-                {% if company.logo %}
-                  <img src="{{ company.logo|imagine_filter('company_logo_home') }}" alt="{{ company.name }}" class="mb-1" style="height: 56px; width: 88px; object-fit: contain;">
-                {% else %}
-                  <div class="d-flex align-items-center justify-content-center bg-light rounded mb-1" style="height: 56px; width: 88px;">
-                    <i class="ti ti-building-store fs-2 text-muted"></i>
-                  </div>
-                {% endif %}
-                <div class="fw-bold text-truncate text-center" style="font-size: 0.7rem; max-width: 88px;" title="{{ company.name }}">{{ company.name }}</div>
-              </a>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endif %}
-
-    {% if hasAds %}
-    <div class="col-12 {{ hasCompanies ? 'col-md-6' : '' }}">
-      <div class="card widget h-100 border-warning" style="border-width: 2px;">
-        <div class="card-header d-flex bg-warning-lt align-items-center">
-          <h5 class="section-title text-reset mb-0"><a href="{{ path('advertisement_list') }}" class="text-reset">Polecane ogłoszenia</a></h5>
-          <div class="ms-auto">
-            <a href="{{ path('advertisement_add') }}" class="btn btn-sm btn-dark">Dodaj ogłoszenie</a>
-          </div>
-        </div>
-        <div class="card-body p-0 promo-v-container">
-          <div class="promo-v-track" id="ads-track">
-            {% for advertisement in promotedAdvertisements %}
-            <a href="{{ path('advertisement_list') }}" class="d-flex align-items-center px-3 py-2 border-bottom text-decoration-none text-reset">
-              <span class="fw-bold small flex-grow-1 text-truncate">{{ advertisement.title }}</span>
-              <span class="badge bg-warning text-dark ms-2 flex-shrink-0" style="font-size: 0.65rem;">Promowane</span>
-            </a>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endif %}
-
-  </div>
-  {% endif %}
-
   {% set visibleIndex = 0 %}
   {% for category in categories %}
     {% if not category.isRoot and category.positionOrder > 0 %}
@@ -166,6 +100,72 @@ document.addEventListener('DOMContentLoaded', function () {
 
       {% if visibleIndex == 2 or (loop.last and visibleIndex == 1) %}
         </div>
+
+        {% if hasCompanies or hasAds %}
+        <div class="row mb-5 g-3">
+
+          {% if hasCompanies %}
+          <div class="col-12 {{ hasAds ? 'col-md-6' : '' }}">
+            <div class="card widget h-100">
+              <div class="card-header d-flex align-items-center">
+                <h5 class="section-title info mb-0"><a href="{{ path('company_list') }}">Polecane firmy</a></h5>
+                <div class="ms-auto">
+                  <a href="{{ path('company_add') }}" class="btn btn-sm btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                         stroke-width="2" stroke="currentColor" fill="none">
+                      <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    Dodaj firmę
+                  </a>
+                </div>
+              </div>
+              <div class="card-body p-2 pt-3 promo-h-container">
+                <div class="promo-h-track" id="companies-track">
+                  {% for company in promotedCompanies %}
+                  <div class="promo-h-item">
+                    <a href="{{ path('company_details', {slug: company.slug}) }}" class="d-flex flex-column align-items-center text-decoration-none text-reset p-1 rounded hover-shadow-sm transition-all">
+                      {% if company.logo %}
+                        <img src="{{ company.logo|imagine_filter('company_logo_home') }}" alt="{{ company.name }}" class="mb-1" style="height: 80px; width: 110px; object-fit: contain;">
+                      {% else %}
+                        <div class="d-flex align-items-center justify-content-center bg-light rounded mb-1" style="height: 80px; width: 110px;">
+                          <i class="ti ti-building-store fs-2 text-muted"></i>
+                        </div>
+                      {% endif %}
+                      <div class="fw-bold text-truncate text-center" style="font-size: 0.7rem; max-width: 110px;" title="{{ company.name }}">{{ company.name }}</div>
+                    </a>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+          {% if hasAds %}
+          <div class="col-12 {{ hasCompanies ? 'col-md-6' : '' }}">
+            <div class="card widget h-100 border-warning" style="border-width: 2px;">
+              <div class="card-header d-flex bg-warning-lt align-items-center">
+                <h5 class="section-title warning mb-0"><a href="{{ path('advertisement_list') }}" class="text-reset">Polecane ogłoszenia</a></h5>
+                <div class="ms-auto">
+                  <a href="{{ path('advertisement_add') }}" class="btn btn-sm btn-dark">Dodaj ogłoszenie</a>
+                </div>
+              </div>
+              <div class="card-body p-0 promo-v-container">
+                <div class="promo-v-track" id="ads-track">
+                  {% for advertisement in promotedAdvertisements %}
+                  <a href="{{ path('advertisement_list') }}" class="d-flex align-items-center px-3 py-2 border-bottom text-decoration-none text-reset">
+                    <span class="fw-bold small flex-grow-1 text-truncate">{{ advertisement.title }}</span>
+                    <span class="badge bg-warning text-dark ms-2 flex-shrink-0" style="font-size: 0.65rem;">Promowane</span>
+                  </a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+        </div>
+        {% endif %}
       {% endif %}
 
       {% if visibleIndex == 4 %}

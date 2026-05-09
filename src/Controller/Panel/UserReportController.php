@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Panel;
 
+use App\Form\PanelUserReportType;
 use App\Repository\Cached\CacheKeyPrefix;
 use App\Repository\UserReportRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,6 +20,32 @@ class UserReportController extends AbstractController
         private EntityManagerInterface $entityManager,
         private UserReportRepository $userReportRepository,
     ) {
+    }
+
+    public function editReport(int $reportId, Request $request): Response
+    {
+        $report = $this->userReportRepository->find($reportId);
+
+        if ($report === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(PanelUserReportType::class, $report);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->flush();
+
+            $this->cache->delete(CacheKeyPrefix::USER_REPORT_LAST . '5');
+            $this->addFlash('success', 'Raport został zaktualizowany');
+
+            return $this->redirectToRoute('user_report', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('panel/user_report/edit.html.twig', [
+            'report' => $report,
+            'form' => $form->createView(),
+        ], $form->isSubmitted() && !$form->isValid() ? new Response('', Response::HTTP_UNPROCESSABLE_ENTITY) : null);
     }
 
     public function publishReport(int $reportId, Request $request): Response

@@ -16,9 +16,9 @@
       <div class="collapse navbar-collapse d-xl-flex justify-content-xl-between gap-3" id="navbarTogglerContent">
         <form class="d-flex ms-auto me-auto mb-2 mb-lg-0" role="search" id="search-form" action="{{ path('search') }}" method="get">
           <div class="input-group">
-            <input type="search" class="form-control" placeholder="Szukaj w Ełku..." name="search_query" id="search-input" value="{{ app.request.query.get('search_query') }}"/>
-           <select class="form-select border" id="search-engine-select" style="max-width: 140px; background-color: #f1f3f4; color: #5f6368; border-color: #dee2e6; cursor: pointer;">
-      <option value="site">Serwis</option>
+            <input type="search" class="form-control" placeholder="Szukaj..." name="search_query" id="search-input" value="{{ app.request.query.get('search_query') }}"/>
+           <select class="form-select border" id="search-engine-select" style="max-width: 140px; cursor: pointer;">
+      <option value="site">w Serwisie</option>
       <option value="google">w Google</option>
     </select>
            
