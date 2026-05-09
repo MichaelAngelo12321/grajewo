@@ -104,15 +104,7 @@ const initApp = () => {
   const promoPopupEl = document.getElementById('promoPopup')
   if (promoPopupEl) {
     const myModal = new bootstrap.Modal(promoPopupEl)
-
-    // Check if popup was shown in this session
-    const sessionShown = sessionStorage.getItem('promoPopupShown')
-    const forcePopup = new URLSearchParams(window.location.search).has('test_popup')
-
-    if (!sessionShown || forcePopup) {
-      myModal.show()
-      sessionStorage.setItem('promoPopupShown', 'true')
-    }
+    myModal.show()
   }
 
   // Lightbox
