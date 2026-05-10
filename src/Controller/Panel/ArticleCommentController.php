@@ -54,4 +54,20 @@ class ArticleCommentController extends AbstractController
 
         return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
     }
+
+    public function deleteComment(int $commentId, Request $request): Response
+    {
+        $comment = $this->articleCommentRepository->find($commentId);
+
+        if ($comment === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->entityManager->remove($comment);
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Komentarz został usunięty');
+
+        return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
+    }
 }

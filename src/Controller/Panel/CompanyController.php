@@ -8,6 +8,7 @@ use App\Entity\Company;
 use App\Enum\UploadDirectory;
 use App\Form\CompanyType;
 use App\Helper\Paginator;
+use App\Repository\Cached\CompanyCachedRepository;
 use App\Repository\CompanyRepository;
 use App\Service\FileCleaner;
 use App\Service\FileUploader;
@@ -22,6 +23,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class CompanyController extends AbstractController
 {
     public function __construct(
+        private readonly CompanyCachedRepository $companyCachedRepository,
         private readonly CompanyRepository $companyRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly FileCleaner $fileCleaner,
@@ -64,6 +66,7 @@ class CompanyController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->handleForm($company, $form);
+            $this->companyCachedRepository->invalidatePromotedCompanies();
 
             $this->addFlash('success', 'Firma została dodana.');
             return $this->redirectToRoute('panel_company_list', [], Response::HTTP_SEE_OTHER);
@@ -88,6 +91,7 @@ class CompanyController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->handleForm($company, $form);
+            $this->companyCachedRepository->invalidatePromotedCompanies();
 
             $this->addFlash('success', 'Dane firmy zostały zaktualizowane.');
             return $this->redirectToRoute('panel_company_list', [], Response::HTTP_SEE_OTHER);
@@ -111,6 +115,7 @@ class CompanyController extends AbstractController
 
             $this->entityManager->remove($company);
             $this->entityManager->flush();
+            $this->companyCachedRepository->invalidatePromotedCompanies();
             $this->addFlash('success', 'Firma została usunięta.');
         }
 

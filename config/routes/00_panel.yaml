@@ -150,6 +150,10 @@ panel_article_comment_unlock:
   path: /panel/articles/comments/{commentId}/unlock
   controller: App\Controller\Panel\ArticleCommentController::unlockComment
 
+panel_article_comment_delete:
+  path: /panel/articles/comments/{commentId}/delete
+  controller: App\Controller\Panel\ArticleCommentController::deleteComment
+
 # Categories
 panel_categories_change_order:
   path: /panel/categories/change-order

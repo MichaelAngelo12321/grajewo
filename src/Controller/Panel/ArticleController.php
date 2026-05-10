@@ -11,6 +11,7 @@ use App\Form\ArticleEditType;
 use App\Form\ArticleType;
 use App\Helper\Paginator;
 use App\Repository\ArticleRepository;
+use App\Repository\Cached\ArticleCachedRepository;
 use App\Repository\Cached\CategoryCachedRepository;
 use App\Service\FileCleaner;
 use App\Service\FileUploader;
@@ -25,6 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ArticleController extends AbstractController
 {
     public function __construct(
+        private ArticleCachedRepository $articleCachedRepository,
         private ArticleRepository $articleRepository,
         private CategoryCachedRepository $categoryCachedRepository,
         private EntityManagerInterface $entityManager,
@@ -46,6 +48,8 @@ class ArticleController extends AbstractController
 
         $this->entityManager->persist($article);
         $this->entityManager->flush();
+        $this->articleCachedRepository->invalidateLatestArticlesFromCategory($article->getCategory());
+        $this->articleCachedRepository->invalidateMostPopularArticles();
 
         $this->addFlash('success', 'Status został zmieniony');
 
@@ -66,6 +70,7 @@ class ArticleController extends AbstractController
 
         $this->entityManager->persist($article);
         $this->entityManager->flush();
+        $this->articleCachedRepository->invalidateLatestArticlesFromCategory($article->getCategory());
 
         $this->addFlash('success', 'Artykuł został podbity');
 
@@ -87,6 +92,7 @@ class ArticleController extends AbstractController
 
         $this->entityManager->persist($article);
         $this->entityManager->flush();
+        $this->articleCachedRepository->invalidateLatestArticlesFromCategory($article->getCategory());
 
         $this->addFlash('success', 'Artykuł został obniżony');
 
@@ -126,6 +132,8 @@ class ArticleController extends AbstractController
 
             $this->entityManager->persist($article);
             $this->entityManager->flush();
+            $this->articleCachedRepository->invalidateLatestArticlesFromCategory($article->getCategory());
+            $this->articleCachedRepository->invalidateMostPopularArticles();
 
             $this->addFlash('success', 'Artykuł został dodany');
 
@@ -174,6 +182,8 @@ class ArticleController extends AbstractController
 
             $this->entityManager->persist($article);
             $this->entityManager->flush();
+            $this->articleCachedRepository->invalidateLatestArticlesFromCategory($article->getCategory());
+            $this->articleCachedRepository->invalidateMostPopularArticles();
 
             $this->addFlash('success', 'Artykuł został zaktualizowany');
 
@@ -199,8 +209,11 @@ class ArticleController extends AbstractController
             $this->fileCleaner->removeFile($article->getImageUrl());
         }
 
+        $category = $article->getCategory();
         $this->entityManager->remove($article);
         $this->entityManager->flush();
+        $this->articleCachedRepository->invalidateLatestArticlesFromCategory($category);
+        $this->articleCachedRepository->invalidateMostPopularArticles();
 
         $this->addFlash('success', 'Artykuł został usunięty');
 

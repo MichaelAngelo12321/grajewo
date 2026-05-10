@@ -6,6 +6,7 @@ namespace App\Controller\Panel;
 
 use App\Form\AdvertisementType;
 use App\Helper\Paginator;
+use App\Repository\Cached\AdvertisementCachedRepository;
 use App\Repository\AdvertisementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AdvertisementController extends AbstractController
 {
     public function __construct(
+        private readonly AdvertisementCachedRepository $advertisementCachedRepository,
         private readonly AdvertisementRepository $advertisementRepository,
         private readonly EntityManagerInterface $entityManager,
     ) {
@@ -53,6 +55,8 @@ class AdvertisementController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->flush();
+            $this->advertisementCachedRepository->invalidatePromotedAdvertisements();
+            $this->advertisementCachedRepository->invalidateLatestAdvertisements();
 
             $this->addFlash('success', 'Ogłoszenie zostało zaktualizowane');
 
@@ -75,6 +79,8 @@ class AdvertisementController extends AbstractController
 
         $this->entityManager->remove($advertisement);
         $this->entityManager->flush();
+        $this->advertisementCachedRepository->invalidatePromotedAdvertisements();
+        $this->advertisementCachedRepository->invalidateLatestAdvertisements();
 
         $this->addFlash('success', 'Ogłoszenie zostało usunięte');
 
@@ -91,6 +97,7 @@ class AdvertisementController extends AbstractController
 
         $advertisement->setIsPromoted(!$advertisement->isPromoted());
         $this->entityManager->flush();
+        $this->advertisementCachedRepository->invalidatePromotedAdvertisements();
 
         $this->addFlash('success', 'Status promowania został zmieniony.');
 
@@ -107,6 +114,8 @@ class AdvertisementController extends AbstractController
 
         $advertisement->setIsActive(!$advertisement->isIsActive());
         $this->entityManager->flush();
+        $this->advertisementCachedRepository->invalidatePromotedAdvertisements();
+        $this->advertisementCachedRepository->invalidateLatestAdvertisements();
 
         $this->addFlash('success', 'Status aktywności został zmieniony.');
 

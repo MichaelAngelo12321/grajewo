@@ -25,4 +25,9 @@ class CompanyCachedRepository
             return $this->companyRepository->findBy(['isActive' => true, 'isPromoted' => true], ['name' => 'ASC'], $limit);
         });
     }
+
+    public function invalidatePromotedCompanies(int $limit = 6): void
+    {
+        $this->cache->delete(CacheKeyPrefix::COMPANY_PROMOTED . $limit);
+    }
 }

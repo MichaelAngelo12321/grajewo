@@ -34,4 +34,14 @@ class AdvertisementCachedRepository
             return $this->advertisementRepository->findLatestAdvertisements($limit);
         });
     }
+
+    public function invalidatePromotedAdvertisements(int $limit = 4): void
+    {
+        $this->cache->delete(CacheKeyPrefix::ADVERTISEMENT_PROMOTED . $limit);
+    }
+
+    public function invalidateLatestAdvertisements(int $limit = 4): void
+    {
+        $this->cache->delete(CacheKeyPrefix::ADVERTISEMENT_LATEST . $limit);
+    }
 }

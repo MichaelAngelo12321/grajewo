@@ -277,21 +277,31 @@
                   Adres IP czytelnika: <strong>{{ comment.ipAddress }}</strong>
                 </div>
 
-                {% if comment.isHidden %}
-                  <a href="{{ path('panel_article_comment_unlock', {'commentId': comment.id}) }}"
-                     class="btn btn-sm btn-success text-white"
-                     data-method="post"
-                     >
-                    Odblokuj komentarz
-                  </a>
-                {% else %}
-                  <a href="{{ path('panel_article_comment_hide', {'commentId': comment.id}) }}"
+                <div class="d-flex gap-2">
+                  {% if comment.isHidden %}
+                    <a href="{{ path('panel_article_comment_unlock', {'commentId': comment.id}) }}"
+                       class="btn btn-sm btn-success text-white"
+                       data-method="post"
+                       >
+                      Odblokuj komentarz
+                    </a>
+                  {% else %}
+                    <a href="{{ path('panel_article_comment_hide', {'commentId': comment.id}) }}"
+                       class="btn btn-sm btn-warning"
+                       data-method="post"
+                       >
+                      Ukryj komentarz
+                    </a>
+                  {% endif %}
+
+                  <a href="{{ path('panel_article_comment_delete', {'commentId': comment.id}) }}"
                      class="btn btn-sm btn-danger"
                      data-method="post"
+                     onclick="return confirm('Czy na pewno chcesz usunąć ten komentarz? Operacja jest nieodwracalna.')"
                      >
-                    Ukryj komentarz
+                    Usuń
                   </a>
-                {% endif %}
+                </div>
               {% endif %}
             </div>
           </div>

@@ -97,6 +97,18 @@ class ArticleCachedRepository
         });
     }
 
+    public function invalidateLatestArticlesFromCategory(Category $category): void
+    {
+        $this->cache->delete(CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY . $category->getId() . '_limit_4');
+        $this->cache->delete(CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY . $category->getId() . '_limit_7');
+        $this->cache->delete(CacheKeyPrefix::ARTICLE_LATEST_FROM_CATEGORY . $category->getId() . '_limit_10');
+    }
+
+    public function invalidateMostPopularArticles(int $limit = 4): void
+    {
+        $this->cache->delete(CacheKeyPrefix::ARTICLE_MOST_POPULAR . $limit);
+    }
+
     public function findUpcomingEvents(): array
     {
         $cacheKey = CacheKeyPrefix::ARTICLE_EVENTS_UPCOMING;
