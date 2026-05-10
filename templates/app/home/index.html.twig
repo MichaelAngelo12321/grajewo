@@ -13,7 +13,7 @@
 
 @keyframes scroll-h {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(calc(-1 * var(--orig-w))); }
 }
 @keyframes scroll-v {
   from { transform: translateY(0); }
@@ -44,7 +44,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var items = Array.from(track.children);
     if (items.length < 2) return;
     shuffle(items).forEach(function (el) { track.appendChild(el); });
-    items.forEach(function (el) { track.appendChild(el.cloneNode(true)); });
+    var origWidth = track.scrollWidth;
+    var containerWidth = track.parentElement.offsetWidth;
+    while (track.scrollWidth < containerWidth * 2 + origWidth) {
+      items.forEach(function (el) { track.appendChild(el.cloneNode(true)); });
+    }
+    track.style.setProperty('--orig-w', origWidth + 'px');
     track.style.animation = 'scroll-h ' + (items.length * secPerItem) + 's linear infinite';
   }
 
