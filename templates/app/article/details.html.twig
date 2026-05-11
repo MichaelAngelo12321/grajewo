@@ -315,6 +315,10 @@
 
     <h4 class="fs-6 fw-bold mt-4 mb-3">Dodaj swój komentarz</h4>
 
+    <p class="text-danger mb-3" style="font-size: 0.9rem;">
+      Komentarze są prywatnymi opiniami użytkowników portalu i w żaden sposób nie odzwierciedlają poglądów prezentowanych przez właścicieli i administratorów serwisu. Redakcja nie ponosi odpowiedzialności za treść komentarzy.
+    </p>
+
     <div class="mb-md-5" id="comment-form">
       {{ form_start(commentForm, { 'action': "#{app.request.uri}#comment-form"}) }}
       {% if commentForm.vars.errors|length > 0 %}

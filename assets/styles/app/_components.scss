@@ -272,3 +272,13 @@ aside {
   position: relative;
   padding-top: 1.25rem;
 }
+
+[data-slot-name="NAGLOWEK_STRONY"] .promo-space img {
+  max-height: 300px;
+  object-fit: contain;
+}
+
+[data-slot-name^="PANEL_BOCZNY"] .promo-space img {
+  max-height: 400px;
+  object-fit: contain;
+}
