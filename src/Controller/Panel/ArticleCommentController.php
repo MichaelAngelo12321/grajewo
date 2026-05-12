@@ -19,12 +19,25 @@ class ArticleCommentController extends AbstractController
     ) {
     }
 
+    public function list(): Response
+    {
+        return $this->render('panel/article_comment/list.html.twig', [
+            'comments' => $this->articleCommentRepository->findPending(),
+        ]);
+    }
+
     public function hideComment(int $commentId, Request $request): Response
     {
         $comment = $this->articleCommentRepository->find($commentId);
 
         if ($comment === null) {
             throw $this->createNotFoundException();
+        }
+
+        if (!$comment->isIsHidden()) {
+            $article = $comment->getArticle();
+            $article->setCommentsNumber(max(0, $article->getCommentsNumber() - 1));
+            $this->entityManager->persist($article);
         }
 
         $comment->setIsHidden(true);
@@ -45,12 +58,18 @@ class ArticleCommentController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        if ($comment->isIsHidden()) {
+            $article = $comment->getArticle();
+            $article->setCommentsNumber($article->getCommentsNumber() + 1);
+            $this->entityManager->persist($article);
+        }
+
         $comment->setIsHidden(false);
 
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
 
-        $this->addFlash('success', 'Komentarz został odblokowany');
+        $this->addFlash('success', 'Komentarz został zaakceptowany');
 
         return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
     }

@@ -2,10 +2,10 @@
     <div class="promo-space">
       {% if promoItem.targetUrl %}
   <a href="{{ path('promo_redirect', { id: promoItem.id, redirectUrl: promoItem.encodedTargetUrl }) }}">
-    <img class="img-fluid w-100" src="{{ promoItem.imageUrl }}" alt="{{ promoItem.title }}" />
+    <img class="img-fluid" src="{{ promoItem.imageUrl }}" alt="{{ promoItem.title }}" />
   </a>
 {% else %}
-  <img class="img-fluid w-100" src="{{ promoItem.imageUrl }}" alt="{{ promoItem.title }}" />
+  <img class="img-fluid" src="{{ promoItem.imageUrl }}" alt="{{ promoItem.title }}" />
 {% endif %}
     </div>
 {% endif %}

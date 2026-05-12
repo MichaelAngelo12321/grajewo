@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Panel;
 
 use App\Entity\PharmacyDuty;
+use App\Repository\ArticleCommentRepository;
 use App\Repository\DailyImageRepository;
 use App\Repository\DailyVideoRepository;
 use App\Repository\GasStationPriceRepository;
@@ -25,6 +26,7 @@ class DashboardController extends AbstractController
     public function __construct(
         private readonly \App\Repository\AdvertisementRepository $advertisementRepository,
         private readonly \App\Repository\CompanyRepository $companyRepository,
+        private ArticleCommentRepository $articleCommentRepository,
         private DailyImageRepository $dailyImageRepository,
         private DailyVideoRepository $dailyVideoRepository,
         private EntityManagerInterface $entityManager,
@@ -62,6 +64,9 @@ class DashboardController extends AbstractController
             ],
         );
 
+        // pending comments
+        $pendingComments = $this->articleCommentRepository->findPending();
+
         // daily images and videos
         $dailyImages = $this->dailyImageRepository->findBy(['isPublished' => false], ['id' => 'DESC']);
         $dailyVideos = $this->dailyVideoRepository->findBy(['isPublished' => false], ['id' => 'DESC']);
@@ -78,6 +83,7 @@ class DashboardController extends AbstractController
         return $this->render('panel/dashboard/index.html.twig', [
             'advertisements' => $advertisements,
             'companies' => $companies,
+            'pendingComments' => $pendingComments,
             'userReports' => $userReports,
             'dailyImages' => $dailyImages,
             'dailyVideos' => $dailyVideos,

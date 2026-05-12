@@ -64,16 +64,14 @@ class ArticleController extends AbstractController
                 $comment->setArticle($article);
                 $comment->setIpAddress($request->getClientIp());
                 $comment->setCreatedAt(new DateTimeImmutable());
+                $comment->setIsHidden(true);
 
-                $article->setCommentsNumber($article->getCommentsNumber() + 1);
-
-                $this->entityManager->persist($article);
                 $this->entityManager->persist($comment);
                 $this->entityManager->flush();
 
                 $this->userActivity->recordUserActivity($request->getClientIp(), $request->headers->get('User-Agent'));
 
-                $this->addFlash('success', 'Twój komentarz został dodany');
+                $this->addFlash('success', 'Twój komentarz czeka na akceptację');
 
                 return $this->redirectToRoute('article_details', [
                     '_fragment' => 'comment-' . $comment->getId(),

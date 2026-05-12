@@ -214,7 +214,7 @@
                 <div class="col-12">
                   <div class="card card-sm">
                     <div class="card-header">
-                      <h3 class="card-title">Akceptacja raportów czytelników</h3>
+                      <h3 class="card-title">Akceptacja raportów</h3>
                     </div>
 
                     <div
@@ -249,6 +249,58 @@
                               </a>
                               <a
                                 href="{{ path('panel_user_report_delete', {'reportId': report.id}) }}"
+                                class="btn btn-danger btn-icon js-confirm"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Usuń"
+                              >
+                                <i class="ti ti-trash"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="card card-sm">
+                    <div class="card-header">
+                      <h3 class="card-title">Akceptacja komentarzy</h3>
+                    </div>
+
+                    <div
+                      class="list-group list-group-flush list-group-hoverable overflow-auto"
+                      style="max-height: 240px"
+                    >
+                      {% if pendingComments is empty %}
+                        <div class="d-flex justify-content-center">
+                          <div class="py-3">Brak komentarzy do akceptacji</div>
+                        </div>
+                      {% endif %}
+
+                      {% for comment in pendingComments %}
+                        <div class="list-group-item">
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <a class="fw-bold text-body d-block" href="{{ path('article_details', {'__category': comment.article.category.slug, 'id': comment.article.id, 'slug': comment.article.name|lower|slug}) }}#comment-{{ comment.id }}" target="_blank">{{ comment.article.name }}</a>
+                              <div class="text-muted text-truncate mt-1">{{ comment.content }}</div>
+                              <div class="text-muted small mt-1">
+                                Autor: <strong>{{ comment.author|default('Anonim') }}</strong> | Data: <strong>{{ comment.createdAt|date('d.m.Y H:i') }}</strong> | IP: <strong>{{ comment.ipAddress|default('---') }}</strong>
+                              </div>
+                            </div>
+
+                            <div class="col-auto ms-auto">
+                              <a
+                                href="{{ path('panel_article_comment_unlock', {commentId: comment.id}) }}"
+                                class="btn btn-success btn-icon"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Akceptuj"
+                              >
+                                <i class="ti ti-check"></i>
+                              </a>
+                              <a
+                                href="{{ path('panel_article_comment_delete', {commentId: comment.id}) }}"
                                 class="btn btn-danger btn-icon js-confirm"
                                 data-bs-toggle="tooltip"
                                 data-bs-title="Usuń"
@@ -385,7 +437,7 @@
                 <div class="col-12">
                   <div class="card card-sm">
                     <div class="card-header">
-                      <h3 class="card-title">Akceptacja cen paliw użytkowników</h3>
+                      <h3 class="card-title">Akceptacja cen paliw</h3>
                     </div>
 
                     <div

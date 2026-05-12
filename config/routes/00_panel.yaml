@@ -142,6 +142,10 @@ panel_article_create:
   path: /panel/articles/create
   controller: App\Controller\Panel\ArticleController::create
 
+panel_article_comment_list:
+  path: /panel/articles/comments
+  controller: App\Controller\Panel\ArticleCommentController::list
+
 panel_article_comment_hide:
   path: /panel/articles/comments/{commentId}/hide
   controller: App\Controller\Panel\ArticleCommentController::hideComment

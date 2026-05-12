@@ -22,4 +22,16 @@ class ArticleCommentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ArticleComment::class);
     }
+
+    public function findPending(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->addSelect('a')
+            ->join('c.article', 'a')
+            ->where('c.isHidden = :isHidden')
+            ->setParameter('isHidden', true)
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,0 +1,75 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Komentarze oczekujące na akceptację{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">
+            Komentarze oczekujące na akceptację
+            {% if comments|length > 0 %}
+              <span class="badge bg-red ms-2">{{ comments|length }}</span>
+            {% endif %}
+          </h1>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table card-table table-vcenter table-striped table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Autor</th>
+                <th>Treść</th>
+                <th>Artykuł</th>
+                <th>IP</th>
+                <th>Data dodania</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for comment in comments %}
+                <tr>
+                  <td>{{ comment.id }}</td>
+                  <td>{{ comment.author|default('Czytelnik') }}</td>
+                  <td>
+                    <div style="max-width: 300px;">{{ comment.content|u.truncate(120, '...') }}</div>
+                  </td>
+                  <td>
+                    <a href="{{ path('article_details', {
+                      '__category': comment.article.category.slug,
+                      'id': comment.article.id,
+                      'slug': comment.article.slug
+                    }) }}" target="_blank" class="text-decoration-none">
+                      {{ comment.article.name|u.truncate(50, '...') }}
+                      <i class="ti ti-external-link ms-1 text-muted small"></i>
+                    </a>
+                  </td>
+                  <td>{{ comment.ipAddress }}</td>
+                  <td>{{ comment.createdAt|date('d.m.Y H:i') }}</td>
+                  <td>
+                    <div class="btn-list justify-content-end">
+                      <a href="{{ path('panel_article_comment_unlock', {'commentId': comment.id}) }}"
+                         class="btn btn-success btn-sm" title="Akceptuj">
+                        <i class="ti ti-check me-1"></i> Akceptuj
+                      </a>
+                      <a href="{{ path('panel_article_comment_delete', {'commentId': comment.id}) }}"
+                         class="btn btn-danger btn-sm js-confirm" data-method="post" title="Usuń">
+                        <i class="ti ti-trash me-1"></i> Usuń
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td colspan="7" class="text-center py-4 text-muted">Brak komentarzy oczekujących na akceptację</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
