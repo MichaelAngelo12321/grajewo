@@ -283,7 +283,12 @@ aside {
   object-fit: contain;
 }
 
-[data-slot-name^="PRAWY"] .promo-space img {
-  max-height: 400px;
-  object-fit: contain;
+[data-slot-name^="PRAWY"] .promo-space {
+  display: block;
+
+  img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+  }
 }
