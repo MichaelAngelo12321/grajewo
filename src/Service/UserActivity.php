@@ -31,7 +31,7 @@ class UserActivity
 
         $differenceInMinutes = ($currentTimestamp - $lastActivityTimestamp) / 60;
 
-        return $differenceInMinutes >= 2;
+        return $differenceInMinutes >= 1;
     }
 
     public function recordUserActivity(string $ipAddress, string $userAgent): void

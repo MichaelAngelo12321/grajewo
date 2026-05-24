@@ -48,7 +48,6 @@
               <th>ID</th>
               <th>Grafika</th>
               <th>Tytuł</th>
-              <th>Opis</th>
               <th>Data rozpoczęcia</th>
               <th>Data zakończenia</th>
               <th>Pozycja</th>
@@ -72,7 +71,6 @@
                   />
                 </td>
                 <td class="fw-medium {{ isExpired ? 'text-danger' : '' }}">{{ promo.title }}</td>
-                <td title="{{ promo.description }}">{{ promo.description|slice(0, 20) }}</td>
                 <td>
                   {% if promo.startDate %}
                     {{ promo.startDate|date('Y-m-d') }}

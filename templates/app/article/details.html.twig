@@ -69,6 +69,10 @@
           </div>
         </div>
 
+        {% include 'app/widgets/promo_space.html.twig' with {
+          'slot': 'LEWA_1'
+        } %}
+
         <div class="content">
       {{ article.content|inject_ads|sanitize_html }}
     </div>
@@ -192,10 +196,6 @@
     </div>
   </div>
 
-  {% include 'app/widgets/promo_space.html.twig' with {
-    'slot': 'ZAWARTOSC_GLOWNA_1'
-  } %}
-
   {% if article.poll and article.poll.isActive %}
     <div class="card my-4 border-primary">
       <div class="card-header bg-primary text-white">
@@ -241,6 +241,10 @@
       </div>
     </div>
   {% endif %}
+
+  {% include 'app/widgets/promo_space.html.twig' with {
+    'slot': 'LEWA_2'
+  } %}
 
   <h3 class="fs-4 mt-2">
     Komentarze
@@ -310,7 +314,7 @@
     {% endif %}
 
     {% include 'app/widgets/promo_space.html.twig' with {
-      'slot': 'ZAWARTOSC_GLOWNA_2'
+      'slot': 'LEWA_3'
     } %}
 
     <h4 class="fs-6 fw-bold mt-4 mb-3">Dodaj swój komentarz</h4>
@@ -357,6 +361,10 @@
       </div>
     </div>
   {% endif %}
+
+  {% include 'app/widgets/promo_space.html.twig' with {
+    'slot': 'LEWA_4'
+  } %}
 
   <hr class="d-md-none my-5"/>
 

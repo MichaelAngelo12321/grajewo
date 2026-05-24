@@ -23,6 +23,10 @@
 {% endblock %}
 
 {% block body %}
+  {% include 'app/widgets/promo_space.html.twig' with {
+    'slot': 'LEWA_1'
+  } %}
+
   <div class="card mb-3">
     <div class="row">
       <div class="col-12 col-lg-8">
@@ -206,4 +210,8 @@
       </nav>
     </div>
   </div>
+
+  {% include 'app/widgets/promo_space.html.twig' with {
+    'slot': 'LEWA_2'
+  } %}
 {% endblock %}

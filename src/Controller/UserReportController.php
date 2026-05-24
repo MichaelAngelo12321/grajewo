@@ -40,7 +40,7 @@ class UserReportController extends AbstractController
                 $request->getClientIp(),
                 $request->headers->get('User-Agent'),
             )) {
-                $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
+                $this->addFlash('danger', 'Musisz poczekać 1 minutę przed dodaniem kolejnej treści');
 
                 return $this->redirectToRoute('user_report_add', [], Response::HTTP_SEE_OTHER);
             }

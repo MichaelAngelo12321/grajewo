@@ -35,7 +35,7 @@ class AdvertisementController extends AbstractController
                 $request->getClientIp(),
                 $request->headers->get('User-Agent'),
             )) {
-                $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnego ogłoszenia');
+                $this->addFlash('danger', 'Musisz poczekać 1 minutę przed dodaniem kolejnego ogłoszenia');
 
                 return $this->redirectToRoute('advertisement_list', [], Response::HTTP_SEE_OTHER);
             }

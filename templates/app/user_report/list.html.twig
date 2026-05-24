@@ -15,21 +15,6 @@
 {% block body %}
   <div class="card mb-3">
     <div class="row">
-      <div class="col-12 col-lg-8">
-        <p class="fs-5 fw-bold">
-          <svg xmlns="http://www.w3.org/2000/svg" class="me-1" width="24" height="24" viewBox="0 0 24 24"
-               stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"/>
-            <path d="M12 9v4"/>
-            <path d="M12 16v.01"/>
-          </svg>
-          To jest wersja beta Raportu Czytelników
-        </p>
-        <p class="m-0 text-secondary">Obecnie prezentujemy 30 ostatnich raportów czytelników. Wkrótce dodane zostanie
-          wyszukiwanie,
-          wyświetlanie oraz komentowanie wszystkich raportów.</p>
-      </div>
       <div class="col-12 col-lg-auto ms-auto d-flex align-items-center justify-content-end">
         <a href="{{ path('user_report_add') }}" class="btn btn-primary fw-medium w-100 mt-3 m-lg-0">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -56,13 +41,13 @@
   {% for report in reports %}
     {% if loop.index == 4 %}
       {% include 'app/widgets/promo_space.html.twig' with {
-        'slot': 'ZAWARTOSC_GLOWNA_1'
+        'slot': 'LEWA_3'
       } %}
     {% endif %}
 
     {% if loop.index == 8 %}
       {% include 'app/widgets/promo_space.html.twig' with {
-        'slot': 'ZAWARTOSC_GLOWNA_2'
+        'slot': 'LEWA_4'
       } %}
     {% endif %}
 

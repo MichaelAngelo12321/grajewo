@@ -274,16 +274,16 @@ aside {
 
   a, > img {
     display: block;
-    width: 100%;
+    max-width: 100%;
   }
 }
 
-[data-slot-name="NAGLOWEK_STRONY"] .promo-space img {
+[data-slot-name="NAGLOWKOWA"] .promo-space img {
   max-height: 300px;
   object-fit: contain;
 }
 
-[data-slot-name^="PANEL_BOCZNY"] .promo-space img {
+[data-slot-name^="PRAWY"] .promo-space img {
   max-height: 400px;
   object-fit: contain;
 }

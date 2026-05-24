@@ -52,7 +52,7 @@ class ArticleController extends AbstractController
                     $request->getClientIp(),
                     $request->headers->get('User-Agent'),
                 )) {
-                    $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
+                    $this->addFlash('danger', 'Musisz poczekać 1 minutę przed dodaniem kolejnej treści');
 
                     return $this->redirectToRoute('article_details', [
                         '__category' => $category->getSlug(),

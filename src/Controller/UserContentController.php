@@ -51,7 +51,7 @@ class UserContentController extends AbstractController
                 $request->getClientIp(),
                 $request->headers->get('User-Agent'),
             )) {
-                $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
+                $this->addFlash('danger', 'Musisz poczekać 1 minutę przed dodaniem kolejnej treści');
 
                 return $this->redirectToRoute('user_content_add_gas_station_prices_form', [], Response::HTTP_SEE_OTHER);
             }
@@ -112,7 +112,7 @@ class UserContentController extends AbstractController
                 $request->getClientIp(),
                 $request->headers->get('User-Agent'),
             )) {
-                $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
+                $this->addFlash('danger', 'Musisz poczekać 1 minutę przed dodaniem kolejnej treści');
 
                 return $this->redirectToRoute('user_content_add_image_form', [], Response::HTTP_SEE_OTHER);
             }
@@ -155,7 +155,7 @@ class UserContentController extends AbstractController
                 $request->getClientIp(),
                 $request->headers->get('User-Agent'),
             )) {
-                $this->addFlash('danger', 'Musisz poczekać 2 minuty przed dodaniem kolejnej treści');
+                $this->addFlash('danger', 'Musisz poczekać 1 minutę przed dodaniem kolejnej treści');
 
                 return $this->redirectToRoute('user_content_add_video_form', [], Response::HTTP_SEE_OTHER);
             }

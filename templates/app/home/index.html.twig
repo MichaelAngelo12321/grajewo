@@ -76,10 +76,14 @@ document.addEventListener('DOMContentLoaded', function () {
   {% include 'app/home/partials/top-category-articles.html.twig' %}
 
   {% include 'app/widgets/promo_space.html.twig' with {
-    'slot': 'STRONA_GLOWNA_POD_KARUZELA'
+    'slot': 'LEWA_1'
   } %}
 
   {{ articlesList.horizontal('Najczęściej czytane', mostPopularArticles, 'info') }}
+
+  {% include 'app/widgets/promo_space.html.twig' with {
+    'slot': 'LEWA_2'
+  } %}
 
   {% set hasCompanies = promotedCompanies|length > 0 %}
   {% set hasAds = promotedAdvertisements|length > 0 %}
@@ -108,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         {% if hasCompanies or hasAds %}
         <div class="row mb-5 g-3">
+
 
           {% if hasCompanies %}
           <div class="col-12 {{ hasAds ? 'col-md-6' : '' }}">
@@ -171,11 +176,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         </div>
         {% endif %}
+
+        {% include 'app/widgets/promo_space.html.twig' with {
+          'slot': 'LEWA_3'
+        } %}
       {% endif %}
 
       {% if visibleIndex == 4 %}
         {% include 'app/widgets/promo_space.html.twig' with {
-          'slot': 'STRONA_GLOWNA_SRODEK_LISTY'
+          'slot': 'LEWA_4'
         } %}
       {% endif %}
 
@@ -190,4 +199,8 @@ document.addEventListener('DOMContentLoaded', function () {
       {% endif %}
     {% endif %}
   {% endfor %}
+
+  {% include 'app/widgets/promo_space.html.twig' with {
+    'slot': 'LEWA_5'
+  } %}
 {% endblock %}

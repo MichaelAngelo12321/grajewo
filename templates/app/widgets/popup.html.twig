@@ -1,15 +1,15 @@
-{% set promoItem = get_promo_item('WYSKAKUJACE_OKIENKO_POPUP') %}
+{% set promoItem = get_promo_item('WYSKAKUJACA') %}
 
 {% if promoItem %}
 <div class="modal fade" id="promoPopup" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered w-auto">
     <div class="modal-content border-0 bg-transparent position-relative">
       <button type="button" class="promo-popup-close" data-bs-dismiss="modal" aria-label="Close">
         &times;
       </button>
       <div class="modal-body p-0">
         {% if promoItem.targetUrl %}
-          <a href="{{ path('promo_redirect', { id: promoItem.id, redirectUrl: promoItem.encodedTargetUrl }) }}">
+          <a href="{{ path('promo_redirect', { id: promoItem.id, redirectUrl: promoItem.encodedTargetUrl }) }}" target="_blank" rel="noopener noreferrer">
             <img class="img-fluid rounded" src="{{ promoItem.imageUrl }}" alt="{{ promoItem.title }}" />
           </a>
         {% else %}

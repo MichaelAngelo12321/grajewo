@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!slotName) return;
 
             // Avoid rotating POPUP slot as it's meant to be shown once
-            if (slotName === 'WYSKAKUJACE_OKIENKO_POPUP') return;
+            if (slotName === 'WYSKAKUJACA') return;
 
             fetch(`/promo/render/${slotName}`)
                 .then(response => {

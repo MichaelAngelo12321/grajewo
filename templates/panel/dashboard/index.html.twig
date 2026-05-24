@@ -230,6 +230,17 @@
                       {% for report in userReports %}
                         <div class="list-group-item">
                           <div class="row align-items-center">
+                            {% if report.imageUrl %}
+                            <div class="col-auto">
+                              <a data-fslightbox="gallery" href="{{ report.imageUrl }}">
+                                <img
+                                  class="rounded"
+                                  src="{{ report.imageUrl|imagine_filter('round_small') }}"
+                                  width="48"
+                                />
+                              </a>
+                            </div>
+                            {% endif %}
                             <div class="col">
                               <div class="fw-bold text-body d-block">{{ report.name }}</div>
                               <div class="text-muted text-truncate mt-1">{{ report.content }}</div>
