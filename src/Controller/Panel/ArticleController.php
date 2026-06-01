@@ -187,7 +187,7 @@ class ArticleController extends AbstractController
 
             $this->addFlash('success', 'Artykuł został zaktualizowany');
 
-            return $this->redirectToRoute('panel_article_list', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('panel_article_list', ['category' => $article->getCategory()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('panel/article/edit.html.twig', [

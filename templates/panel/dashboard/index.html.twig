@@ -179,14 +179,22 @@
                         <div class="list-group-item">
                           <div class="row align-items-center">
                             <div class="col">
-                              <a href="{{ path('panel_advertisement_edit', {'advertisementId': advertisement.id}) }}" class="fw-bold text-body d-block">{{ advertisement.title }}</a>
-                              <div class="text-muted text-truncate mt-1">{{ advertisement.content }}</div>
+                              <div class="fw-bold text-body d-block">{{ advertisement.title }}</div>
+                              <div class="text-muted mt-1" style="white-space: pre-wrap; word-break: break-word;">{{ advertisement.content }}</div>
                               <div class="text-muted small mt-1">
                                 Autor: <strong>{{ advertisement.author }}</strong> | Data: <strong>{{ advertisement.createdAt|date('d.m.Y H:i') }}</strong> | IP: <strong>{{ advertisement.ipAddress|default('---') }}</strong>
                               </div>
                             </div>
-                            
-                            <div class="col-auto ms-auto">
+
+                            <div class="col-auto ms-auto d-flex gap-1">
+                              <a
+                                href="{{ path('panel_advertisement_edit', {'advertisementId': advertisement.id}) }}"
+                                class="btn btn-secondary btn-icon"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Edytuj"
+                              >
+                                <i class="ti ti-pencil"></i>
+                              </a>
                               <a
                                 href="{{ path('panel_dashboard_publish_advertisement', {'advertisementId': advertisement.id}) }}"
                                 class="btn btn-success btn-icon"
@@ -243,13 +251,21 @@
                             {% endif %}
                             <div class="col">
                               <div class="fw-bold text-body d-block">{{ report.name }}</div>
-                              <div class="text-muted text-truncate mt-1">{{ report.content }}</div>
+                              <div class="text-muted mt-1" style="white-space: pre-wrap; word-break: break-word;">{{ report.content }}</div>
                               <div class="text-muted small mt-1">
                                 Autor: <strong>{{ report.author|default('Czytelnik') }}</strong> | Data: <strong>{{ report.createdAt|date('d.m.Y H:i') }}</strong> | IP: <strong>{{ report.ipAddress|default('---') }}</strong>
                               </div>
                             </div>
 
-                            <div class="col-auto ms-auto">
+                            <div class="col-auto ms-auto d-flex gap-1">
+                              <a
+                                href="{{ path('panel_user_report_edit', {'reportId': report.id}) }}"
+                                class="btn btn-secondary btn-icon"
+                                data-bs-toggle="tooltip"
+                                data-bs-title="Edytuj"
+                              >
+                                <i class="ti ti-pencil"></i>
+                              </a>
                               <a
                                 href="{{ path('panel_user_report_publish', {'reportId': report.id}) }}"
                                 class="btn btn-success btn-icon"
@@ -294,14 +310,14 @@
                         <div class="list-group-item">
                           <div class="row align-items-center">
                             <div class="col">
-                              <a class="fw-bold text-body d-block" href="{{ path('article_details', {'__category': comment.article.category.slug, 'id': comment.article.id, 'slug': comment.article.name|lower|slug}) }}#comment-{{ comment.id }}" target="_blank">{{ comment.article.name }}</a>
-                              <div class="text-muted text-truncate mt-1">{{ comment.content }}</div>
+                              <a class="fw-bold text-body d-block" href="{{ path('article_details', {'__category': comment.article.category.slug, 'id': comment.article.id, 'slug': comment.article.name|lower|slug}) }}#comment-{{ comment.id }}" target="_blank">{{ comment.article.name }} <i class="ti ti-external-link fs-6"></i></a>
+                              <div class="text-muted mt-1" style="white-space: pre-wrap; word-break: break-word;">{{ comment.content }}</div>
                               <div class="text-muted small mt-1">
                                 Autor: <strong>{{ comment.author|default('Anonim') }}</strong> | Data: <strong>{{ comment.createdAt|date('d.m.Y H:i') }}</strong> | IP: <strong>{{ comment.ipAddress|default('---') }}</strong>
                               </div>
                             </div>
 
-                            <div class="col-auto ms-auto">
+                            <div class="col-auto ms-auto d-flex gap-1">
                               <a
                                 href="{{ path('panel_article_comment_unlock', {commentId: comment.id}) }}"
                                 class="btn btn-success btn-icon"
