@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Panel;
 
 use App\Entity\Article;
+use App\Form\ArticleCommentEditType;
 use App\Repository\ArticleCommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -72,6 +73,30 @@ class ArticleCommentController extends AbstractController
         $this->addFlash('success', 'Komentarz został zaakceptowany');
 
         return $this->redirect($request->headers->get('referer'), Response::HTTP_SEE_OTHER);
+    }
+
+    public function editComment(int $commentId, Request $request): Response
+    {
+        $comment = $this->articleCommentRepository->find($commentId);
+
+        if ($comment === null) {
+            throw $this->createNotFoundException();
+        }
+
+        $form = $this->createForm(ArticleCommentEditType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Komentarz został zaktualizowany');
+
+            return $this->redirectToRoute('panel_article_comment_list');
+        }
+
+        return $this->render('panel/article_comment/edit.html.twig', [
+            'form' => $form->createView(),
+            'comment' => $comment,
+        ]);
     }
 
     public function deleteComment(int $commentId, Request $request): Response

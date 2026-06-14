@@ -34,7 +34,7 @@
                   <td>{{ comment.id }}</td>
                   <td>{{ comment.author|default('Czytelnik') }}</td>
                   <td>
-                    <div style="max-width: 300px;">{{ comment.content|u.truncate(120, '...') }}</div>
+                    <div style="max-width: 400px; white-space: pre-wrap;">{{ comment.content }}</div>
                   </td>
                   <td>
                     <a href="{{ path('article_details', {
@@ -49,7 +49,11 @@
                   <td>{{ comment.ipAddress }}</td>
                   <td>{{ comment.createdAt|date('d.m.Y H:i') }}</td>
                   <td>
-                    <div class="btn-list justify-content-end">
+                    <div class="btn-list justify-content-end flex-nowrap">
+                      <a href="{{ path('panel_article_comment_edit', {'commentId': comment.id}) }}"
+                         class="btn btn-secondary btn-sm" title="Edytuj">
+                        <i class="ti ti-edit me-1"></i> Edytuj
+                      </a>
                       <a href="{{ path('panel_article_comment_unlock', {'commentId': comment.id}) }}"
                          class="btn btn-success btn-sm" title="Akceptuj">
                         <i class="ti ti-check me-1"></i> Akceptuj

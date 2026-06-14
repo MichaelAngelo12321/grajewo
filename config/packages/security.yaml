@@ -27,9 +27,9 @@ security:
 
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 604800
+                lifetime: 1800
                 path: /
-                always_remember_me: true
+                always_remember_me: false
         image_resolver:
             pattern: ^/media/cache/resolve
             security: false

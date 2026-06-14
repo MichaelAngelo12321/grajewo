@@ -154,6 +154,11 @@ panel_article_comment_unlock:
   path: /panel/articles/comments/{commentId}/unlock
   controller: App\Controller\Panel\ArticleCommentController::unlockComment
 
+panel_article_comment_edit:
+  path: /panel/articles/comments/{commentId}/edit
+  controller: App\Controller\Panel\ArticleCommentController::editComment
+  methods: [GET, POST]
+
 panel_article_comment_delete:
   path: /panel/articles/comments/{commentId}/delete
   controller: App\Controller\Panel\ArticleCommentController::deleteComment

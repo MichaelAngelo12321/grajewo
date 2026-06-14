@@ -1,0 +1,45 @@
+{% extends 'panel/layout/base.html.twig' %}
+
+{% block title %}Edycja komentarza{% endblock %}
+
+{% block body %}
+  <div class="page-body">
+    <div class="container-fluid">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="col card-title fw-bold">Edycja komentarza</h1>
+          <a href="{{ path('panel_article_comment_list') }}" class="col-auto btn btn-outline-secondary">
+            <i class="ti ti-arrow-back me-1"></i> Powrót do listy
+          </a>
+        </div>
+
+        {{ form_start(form) }}
+        <div class="card-body py-3">
+          <div class="mb-3 text-muted small">
+            <strong>Artykuł:</strong>
+            <a href="{{ path('article_details', {
+              '__category': comment.article.category.slug,
+              'id': comment.article.id,
+              'slug': comment.article.slug
+            }) }}" target="_blank" class="text-decoration-none">
+              {{ comment.article.name }}
+              <i class="ti ti-external-link ms-1"></i>
+            </a>
+          </div>
+          <div class="mb-3 text-muted small">
+            <strong>IP:</strong> {{ comment.ipAddress }} &nbsp;
+            <strong>Data:</strong> {{ comment.createdAt|date('d.m.Y H:i') }}
+          </div>
+
+          {{ form_row(form.author) }}
+          {{ form_row(form.content) }}
+        </div>
+
+        <div class="card-footer text-end">
+          <button type="submit" class="btn btn-primary">Zapisz</button>
+        </div>
+        {{ form_end(form) }}
+      </div>
+    </div>
+  </div>
+{% endblock %}

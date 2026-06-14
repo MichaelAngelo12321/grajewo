@@ -80,6 +80,11 @@
                 </td>
                 <td class="text-end">
                   <div class="btn-list justify-content-end">
+                    {% if company.slug %}
+                      <a href="{{ path('company_details', {'slug': company.slug}) }}" class="btn btn-secondary btn-icon" title="Podgląd" target="_blank">
+                        <i class="ti ti-eye"></i>
+                      </a>
+                    {% endif %}
                     <a href="{{ path('panel_company_edit', {'id': company.id}) }}" class="btn btn-primary btn-icon" title="Edytuj">
                       <i class="ti ti-edit"></i>
                     </a>
