@@ -12,7 +12,7 @@ doctrine:
                 dbname: '%env(LEGACY_DB_NAME)%'
                 user: '%env(LEGACY_DB_USER)%'
                 password: '%env(LEGACY_DB_PASSWORD)%'
-                charset: utf8mb4
+                charset: latin1
     orm:
         default_entity_manager: default
         auto_generate_proxy_classes: true

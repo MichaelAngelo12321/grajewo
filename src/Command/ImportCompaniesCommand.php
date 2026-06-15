@@ -142,7 +142,7 @@ class ImportCompaniesCommand extends Command
                 
                 // Miejscowość
                 if (method_exists($company, 'setCity')) {
-                    $company->setCity(mb_substr($row['location'] ?? 'Ełk', 0, 255));
+                    $company->setCity(mb_substr($row['location'] ?? 'Augustów', 0, 255));
                 }
 
                 // Daty
