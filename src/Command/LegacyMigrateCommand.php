@@ -326,7 +326,7 @@ class LegacyMigrateCommand extends Command
 
                 $image = new GalleryImage();
                 $image->setGallery($em->getReference(Gallery::class, $galleryId));
-                $image->setImageUrl('/public/images/galeria/' . $row['plik']);
+                $image->setImageUrl('/galeria/' . $row['plik'] . 'd.jpg');
                 $image->setDescription(mb_substr($this->cleanText($row['opis'] ?? ''), 0, 255) ?: null);
                 $image->setPositionOrder($positionCounters[$galleryId]++);
 
@@ -401,7 +401,7 @@ class LegacyMigrateCommand extends Command
                 $article->setCategory($em->getReference(Category::class, $catId));
 
                 if (!empty($row['foto'])) {
-                    $article->setImageUrl('/public/images/galeria/' . $row['foto']);
+                    $article->setImageUrl('/galeria/' . $row['foto'] . 'd.jpg');
                 }
 
                 $galleryId = (int)($row['nr_galerii'] ?? 0);
@@ -691,7 +691,7 @@ class LegacyMigrateCommand extends Command
             $promo->setUpdatedAt(new \DateTimeImmutable());
 
             $ext = ltrim($row['typ'] ?? '.jpg', '.');
-            $promo->setImageUrl('/public/images/galeria/reklama/' . $row['plik'] . '.' . $ext);
+            $promo->setImageUrl('/galeria/reklama/' . $row['plik'] . '.' . $ext);
 
             $em->persist($promo);
             $total++;

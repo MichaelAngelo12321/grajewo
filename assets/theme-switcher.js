@@ -1,18 +1,21 @@
 // theme mode switcher
 const setTheme = (isDarkMode) => {
-    const logoTop = document.querySelector('#logo-top')
+    const themeLogos = document.querySelectorAll('[data-light-src][data-dark-src]')
     const themeSwitcher = document.querySelector('#theme-switcher')
     const themeSwitcherMoon = document.querySelector('#theme-switcher-moon')
     const themeSwitcherSun = document.querySelector('#theme-switcher-sun')
 
+    themeLogos.forEach((logo) => {
+        const src = isDarkMode ? logo.dataset.darkSrc : logo.dataset.lightSrc
+        if (src) logo.src = src
+    })
+
     if (isDarkMode) {
-        if (logoTop && logoTop.dataset.darkSrc) logoTop.src = logoTop.dataset.darkSrc
         if (themeSwitcher) themeSwitcher.checked = true
         if (themeSwitcherMoon) themeSwitcherMoon.classList.remove('d-none')
         if (themeSwitcherSun) themeSwitcherSun.classList.add('d-none')
         document.documentElement.setAttribute('data-bs-theme', 'dark')
     } else {
-        if (logoTop && logoTop.dataset.lightSrc) logoTop.src = logoTop.dataset.lightSrc
         if (themeSwitcher) themeSwitcher.checked = false
         if (themeSwitcherMoon) themeSwitcherMoon.classList.add('d-none')
         if (themeSwitcherSun) themeSwitcherSun.classList.remove('d-none')
