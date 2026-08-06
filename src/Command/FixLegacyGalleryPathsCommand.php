@@ -39,19 +39,19 @@ class FixLegacyGalleryPathsCommand extends Command
             return Command::FAILURE;
         }
 
-        $io->title('Naprawa ścieżek zdjęć: /galeria/... → /galeria/...');
+        $io->title('Naprawa ścieżek zdjęć: /public/images/... → /galeria/...');
         $io->note(sprintf('Zakres: rekordy od %s%s', $since, $dryRun ? ' [DRY RUN — bez zapisu]' : ''));
 
         $io->section('Artykuły (article.image_url)');
         $count = (int) $this->connection->fetchOne(
-            "SELECT COUNT(*) FROM article WHERE created_at >= :since AND image_url LIKE '/galeria/%'",
+            "SELECT COUNT(*) FROM article WHERE created_at >= :since AND image_url LIKE '/public/images/%'",
             ['since' => $since]
         );
         if (!$dryRun && $count > 0) {
             $this->connection->executeStatement(
                 "UPDATE article
-                 SET image_url = CONCAT(REPLACE(image_url, '/galeria/', '/galeria/'), 'd.jpg')
-                 WHERE created_at >= :since AND image_url LIKE '/galeria/%'",
+                 SET image_url = CONCAT(REPLACE(image_url, '/public/images/', '/galeria/'), 'd.jpg')
+                 WHERE created_at >= :since AND image_url LIKE '/public/images/%'",
                 ['since' => $since]
             );
         }

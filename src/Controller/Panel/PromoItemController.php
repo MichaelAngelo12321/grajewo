@@ -128,7 +128,7 @@ class PromoItemController extends AbstractController
 
     public function list(Request $request): Response
     {
-        $itemsPerPage = (int)$request->get('number', 15);
+        $itemsPerPage = (int)$request->get('number', 50);
         $page = (int)$request->get('page', 1);
         $criteria = [];
         $promoItems = $this->promoItemRepository->findBy($criteria, ['createdAt' => 'DESC'], $itemsPerPage, ($page - 1) * $itemsPerPage);

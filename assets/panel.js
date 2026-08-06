@@ -28,7 +28,7 @@ const initPanel = () => {
         promotion: false,
         selector: '.content-editor',
         table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
-        toolbar: 'styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists | forecolor backcolor | link image table',
+        toolbar: 'styles | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists | link image table',
     })
 
     // Toasts

@@ -1,7 +1,6 @@
 <?php
 
 require __DIR__.'/vendor/autoload.php';
-require __DIR__.'/config/bootstrap.php';
 
 use App\Kernel;
 use Symfony\Component\Dotenv\Dotenv;

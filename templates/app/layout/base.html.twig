@@ -19,13 +19,9 @@
   <meta name="twitter:description" content="{% block twitter_description %}{{ block('description') }}{% endblock %}">
   <meta name="twitter:image" content="{% block twitter_image %}{{ app.request.schemeAndHttpHost ~ asset('build/images/default-share-image.jpg') }}{% endblock %}">
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id={{ app_ga4_id }}"></script>
+  <!-- Google tag (gtag.js) - loaded only after cookie consent, see cookie-consent.js -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '{{ app_ga4_id }}');
+    window.__GA4_ID__ = '{{ app_ga4_id }}';
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -83,6 +79,7 @@
 {% include 'app/layout/_bottom.html.twig' %}
 
 {% include 'app/layout/_footer.html.twig' %}
+{% include 'app/layout/_cookie_consent.html.twig' %}
 </body>
 </html>
 

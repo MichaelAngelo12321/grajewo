@@ -44,11 +44,6 @@ class ArticleType extends AbstractType
                 'label' => 'Pełna treść artykułu',
                 'required' => false,
             ])
-            ->add('excerpt', TextareaType::class, [
-                'label' => 'Zajawka artykułu',
-                'help' => 'Jeśli pozostawisz puste, zostaną użyte 3 pierwsze zdania pełnej treści artykułu',
-                'required' => false,
-            ])
             ->add('imageUrl', FileType::class, [
                 'constraints' => [
                     new File([
@@ -146,24 +141,22 @@ class ArticleType extends AbstractType
                     );
                 }
 
-                if ($form->get('excerpt')->getData() === null) {
-                    // remove html tags
-                    $excerpt = strip_tags($article->getContent());
-                    $excerpt = implode(
-                        '. ',
-                        array_slice(
-                            explode('. ', $excerpt),
-                            0,
-                            3,
-                        ),
-                    );
+                // remove html tags
+                $excerpt = strip_tags($article->getContent());
+                $excerpt = implode(
+                    '. ',
+                    array_slice(
+                        explode('. ', $excerpt),
+                        0,
+                        3,
+                    ),
+                );
 
-                    if (strlen($excerpt) > 300) {
-                        $excerpt = substr($excerpt, 0, 297) . '...';
-                    }
-
-                    $article->setExcerpt($excerpt);
+                if (strlen($excerpt) > 300) {
+                    $excerpt = substr($excerpt, 0, 297) . '...';
                 }
+
+                $article->setExcerpt($excerpt);
             });
     }
 

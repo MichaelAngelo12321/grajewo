@@ -12,6 +12,7 @@ import './theme-switcher.js'
 import './file-validator.js'
 import './recaptcha.js'
 import './post-link.js'
+import './cookie-consent.js'
 
 const { Collapse, Tooltip } = bootstrap
 
