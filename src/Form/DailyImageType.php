@@ -61,6 +61,7 @@ class DailyImageType extends AbstractType
 
         $builder->add('submit', SubmitType::class, [
                 'label' => 'Prześlij zdjęcie',
+                'attr' => ['class' => 'btn btn-danger'],
             ]);
     }
 

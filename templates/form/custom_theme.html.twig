@@ -1,0 +1,8 @@
+{# Globalny form theme – nadpisuje styl przycisków submit na btn-danger (czerwony) #}
+{% block submit_widget %}
+  {% set attr = attr|merge({'class': (attr.class|default(''))|replace({'btn-primary': 'btn-danger'})|trim}) %}
+  {% if 'btn-danger' not in attr.class %}
+    {% set attr = attr|merge({'class': ('btn btn-danger ' ~ attr.class)|trim}) %}
+  {% endif %}
+  {{ parent() }}
+{% endblock %}

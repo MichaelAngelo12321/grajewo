@@ -34,7 +34,7 @@ class GasStationPriceRepository extends ServiceEntityRepository
             ->where('gsp.station = :stationId')
             ->setParameter('stationId', $station)
             ->andWhere('DATE(gsp.date) >= DATE(:date)')
-            ->setParameter('date', new DateTimeImmutable('-1 day'))
+            ->setParameter('date', new DateTimeImmutable('-7 days'))
             ->andWhere('gsp.isPublished = true')
             ->orderBy('gsp.date', 'DESC')
             ->getQuery()->getResult();

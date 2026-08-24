@@ -138,8 +138,8 @@ class ArticleEditType extends AbstractType
                     ),
                 );
 
-                if (strlen($excerpt) > 300) {
-                    $excerpt = substr($excerpt, 0, 297) . '...';
+                if (mb_strlen($excerpt) > 300) {
+                    $excerpt = mb_substr($excerpt, 0, 297) . '...';
                 }
 
                 $article->setExcerpt($excerpt);

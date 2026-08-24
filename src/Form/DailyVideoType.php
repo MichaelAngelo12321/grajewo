@@ -52,6 +52,7 @@ class DailyVideoType extends AbstractType
 
         $builder->add('submit', SubmitType::class, [
                 'label' => 'Prześlij film',
+                'attr' => ['class' => 'btn btn-danger'],
             ]);
     }
 

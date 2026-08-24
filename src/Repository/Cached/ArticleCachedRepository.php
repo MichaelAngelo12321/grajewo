@@ -107,6 +107,7 @@ class ArticleCachedRepository
     public function invalidateMostPopularArticles(int $limit = 4): void
     {
         $this->cache->delete(CacheKeyPrefix::ARTICLE_MOST_POPULAR . $limit);
+        $this->cache->delete(CacheKeyPrefix::ARTICLE_MOST_POPULAR . 5);
     }
 
     public function findUpcomingEvents(): array

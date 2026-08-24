@@ -32,49 +32,69 @@
         <td colspan="{{ startDow }}"></td>
       {% endif %}
 
-      {% set class = '' %}
+      {# Budujemy klasę i styl dla komórki dnia #}
+      {% set isToday = (today == day.day) %}
+      {% set hasEvent = day.hasEvents %}
+      {% set isHoliday = day.isHoliday %}
+      {% set isSat = (dow == 5) %}
+      {% set isSun = (dow == 6) %}
 
-      {% if day.isHoliday %}
-        {% set class = class ~ ' bg-danger text-white' %}
+      {# Priorytet klas (od najwyższego): dzisiaj+impreza, dzisiaj, impreza, święto, sobota, niedziela #}
+      {% if isToday and hasEvent %}
+        {# Dzisiaj i jest impreza – niebieska ramka + zielony pasek na dole #}
+        {% set spanClass = 'rounded-1 fw-bold border border-2 border-primary' %}
+        {% set spanStyle = 'border-style: solid !important;' %}
+      {% elseif isToday %}
+        {# Tylko dzisiaj – niebieskie tło #}
+        {% set spanClass = 'rounded-1 fw-medium text-bg-primary' %}
+        {% set spanStyle = '' %}
+      {% elseif hasEvent and isHoliday %}
+        {# Impreza w święto – czerwone tło + wyraźny zielony badge #}
+        {% set spanClass = 'rounded-1 bg-danger text-white' %}
+        {% set spanStyle = '' %}
+      {% elseif hasEvent %}
+        {# Tylko impreza – zielone tło #}
+        {% set spanClass = 'rounded-1 text-white fw-medium' %}
+        {% set spanStyle = 'background-color: #198754;' %}
+      {% elseif isHoliday %}
+        {% set spanClass = 'rounded-1 bg-danger text-white' %}
+        {% set spanStyle = '' %}
+      {% elseif isSun %}
+        {% set spanClass = 'rounded-1 text-danger' %}
+        {% set spanStyle = '' %}
+      {% elseif isSat %}
+        {% set spanClass = 'rounded-1 text-muted' %}
+        {% set spanStyle = '' %}
+      {% else %}
+        {% set spanClass = 'rounded-1' %}
+        {% set spanStyle = '' %}
       {% endif %}
-
-
-      {% if today == day.day %}
-        {% set class = class ~ ' text-bg-primary fw-medium' %}
-      {% endif %}
-
-      {% if dow == 5 and class == '' %}
-        {% set class = class ~ ' text-muted' %}
-      {% endif %}
-
-      {% if dow == 6 %}
-        {% set class = class ~ ' text-danger' %}
-      {% endif %}
-
-      {% set class = class ~ ' rounded-1' %}
 
       <td class="py-1">
-        <div class="{% if dow == 5 %}text-muted{% endif %} {% if dow == 6 %}text-danger{% endif %}">
-          {% if day.hasEvents %}
-          <a href="{{ path('article_events_list_date', {date: day.date}) }}" class="text-decoration-none text-reset">
-            {% endif %}
+        {% if hasEvent %}
+        <a href="{{ path('article_events_list_date', {date: day.date}) }}" class="text-decoration-none text-reset d-block">
+        {% endif %}
 
-            <span
-              class="px-2 py-1 {{ class }} position-relative d-inline-block"
+          <span
+            class="px-2 py-1 {{ spanClass }} position-relative d-inline-block"
+            style="{{ spanStyle }}"
             {% if day.title != '' %}
               data-bs-toggle="tooltip" data-bs-title="{{ day.title }}"
             {% endif %}
           >
             {{ day.day }}
-            {% if day.hasEvents %}
-              <span class="position-absolute start-50 translate-middle-x bg-success rounded-circle" style="bottom: 2px; width: 4px; height: 4px;"></span>
+            {% if hasEvent %}
+              {# Wyraźna zielona "impreza" etykietka – widoczna zawsze #}
+              <span
+                class="position-absolute bottom-0 start-50 translate-middle-x rounded-pill"
+                style="width: 6px; height: 6px; background-color: {% if isToday %}#0d6efd{% else %}#198754{% endif %}; margin-bottom: 1px;"
+              ></span>
             {% endif %}
           </span>
 
-            {% if day.hasEvents %}
-          </a>
-          {% endif %}
-        </div>
+        {% if hasEvent %}
+        </a>
+        {% endif %}
       </td>
       {% if loop.last and dow != 6 %}
         <td colspan="{{ 6 - dow }}"></td>
@@ -90,6 +110,19 @@
     </tr>
     </tbody>
   </table>
+
+  {# Legenda #}
+  <div class="d-flex gap-3 mt-2 small text-muted">
+    <span class="d-flex align-items-center gap-1">
+      <span class="rounded-1 px-1 text-bg-primary" style="font-size: 0.65rem;">16</span> Dziś
+    </span>
+    <span class="d-flex align-items-center gap-1">
+      <span class="rounded-1 px-1 text-white fw-medium" style="font-size: 0.65rem; background-color:#198754;">16</span> Impreza
+    </span>
+    <span class="d-flex align-items-center gap-1">
+      <span class="rounded-1 px-1 text-white fw-medium border border-2 border-primary" style="font-size: 0.65rem;">16</span> Dziś + impreza
+    </span>
+  </div>
 
   <div class="d-flex justify-content-end mt-2">
     <a href="{{ path('article_events_list') }}" class="btn btn-sm btn-primary">

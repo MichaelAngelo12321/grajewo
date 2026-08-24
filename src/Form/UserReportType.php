@@ -68,6 +68,7 @@ class UserReportType extends AbstractType
 
         $builder->add('submit', SubmitType::class, [
                 'label' => 'Wyślij raport',
+                'attr' => ['class' => 'btn btn-danger'],
             ])
         ;
     }
