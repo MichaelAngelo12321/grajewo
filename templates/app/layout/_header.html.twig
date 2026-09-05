@@ -2,25 +2,21 @@
   <nav class="navbar navbar-expand-xl">
     <div class="container">
       <a href="{{ path('homepage') }}" class="navbar-brand">
-        <img src="{{ asset('build/images/logo_a24_light.svg') }}"
-             data-light-src="{{ asset('build/images/logo_a24_light.svg') }}"
-             data-dark-src="{{ asset('build/images/logo_a24_dark.svg') }}"
+        <img src="{{ asset('build/images/logo_' ~ app_city.logoKey ~ '_light.svg') }}"
+             data-light-src="{{ asset('build/images/logo_' ~ app_city.logoKey ~ '_light.svg') }}"
+             data-dark-src="{{ asset('build/images/logo_' ~ app_city.logoKey ~ '_dark.svg') }}"
              id="logo-top" alt="Logo serwisu" class="my-2" height="42"/>
       </a>
 
       <div class="d-none d-lg-flex align-items-center gap-3 partner-logos">
-        <a href="https://elk24.pl/" target="_blank" rel="noopener">
-          <img src="{{ asset('build/images/logo_e24_light.svg') }}"
-               data-light-src="{{ asset('build/images/logo_e24_light.svg') }}"
-               data-dark-src="{{ asset('build/images/logo_e24_dark.svg') }}"
-               alt="Elk24.pl" height="26"/>
+        {% for partner in app_city.partners %}
+        <a href="https://{{ partner.domain }}/" target="_blank" rel="noopener">
+          <img src="{{ asset('build/images/logo_' ~ partner.logoKey ~ '_light.svg') }}"
+               data-light-src="{{ asset('build/images/logo_' ~ partner.logoKey ~ '_light.svg') }}"
+               data-dark-src="{{ asset('build/images/logo_' ~ partner.logoKey ~ '_dark.svg') }}"
+               alt="{{ partner.domain|capitalize }}" height="26"/>
         </a>
-        <a href="https://grajewo24.pl/" target="_blank" rel="noopener">
-          <img src="{{ asset('build/images/logo_g24_light.svg') }}"
-               data-light-src="{{ asset('build/images/logo_g24_light.svg') }}"
-               data-dark-src="{{ asset('build/images/logo_g24_dark.svg') }}"
-               alt="Grajewo24.pl" height="26"/>
-        </a>
+        {% endfor %}
       </div>
 
       <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"

@@ -12,12 +12,12 @@
   <meta property="og:url" content="{% block og_url %}{{ app.request.schemeAndHttpHost ~ app.request.requestUri }}{% endblock %}">
   <meta property="og:title" content="{% block og_title %}{{ block('title') }}{% endblock %}">
   <meta property="og:description" content="{% block og_description %}{{ block('description') }}{% endblock %}">
-  <meta property="og:image" content="{% block og_image %}{{ app.request.schemeAndHttpHost ~ asset('build/images/default-share-image-a24.jpg') }}{% endblock %}">
+  <meta property="og:image" content="{% block og_image %}{{ app.request.schemeAndHttpHost ~ asset('build/images/' ~ app_city.shareImage) }}{% endblock %}">
 
   <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
   <meta name="twitter:title" content="{% block twitter_title %}{{ block('title') }}{% endblock %}">
   <meta name="twitter:description" content="{% block twitter_description %}{{ block('description') }}{% endblock %}">
-  <meta name="twitter:image" content="{% block twitter_image %}{{ app.request.schemeAndHttpHost ~ asset('build/images/default-share-image-a24.jpg') }}{% endblock %}">
+  <meta name="twitter:image" content="{% block twitter_image %}{{ app.request.schemeAndHttpHost ~ asset('build/images/' ~ app_city.shareImage) }}{% endblock %}">
 
   <!-- Google tag (gtag.js) - loaded only after cookie consent, see cookie-consent.js -->
   <script>

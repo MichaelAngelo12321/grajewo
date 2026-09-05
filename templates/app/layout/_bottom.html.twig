@@ -13,43 +13,24 @@
         </ul>
       </div>
 
-      <div class="col-6 col-md-2 mb-4 mt-md-2 mt-lg-4">
-        <h5 class="text-muted">Urzędy</h5>
+      {% for sectionTitle, links in app_city.institutions %}
+      <div class="col-6 {{ loop.last ? 'col-md-3' : 'col-md-2' }} mb-4 mt-md-2 mt-lg-4">
+        <h5 class="text-muted">{{ sectionTitle }}</h5>
         <ul class="nav flex-column">
-          <li><a class="nav-link" href="https://urzad.augustow.pl/">Urząd Miejski</a></li>
-          <li><a class="nav-link" href="https://samorzad.gov.pl/web/gmina-augustow">Urząd Gminy</a></li>
-          <li><a class="nav-link" href="https://augustow.praca.gov.pl/">Powiatowy Urząd Pracy</a></li>
-          <li><a class="nav-link" href="https://powiat-augustowski.eu/">Starostwo Powiatowe</a></li>
+          {% for link in links %}
+          <li><a class="nav-link" href="{{ link.url }}">{{ link.name }}</a></li>
+          {% endfor %}
         </ul>
       </div>
-
-      <div class="col-6 col-md-2 mb-4 mt-md-2 mt-lg-4">
-        <h5 class="text-muted">Instytucje</h5>
-        <ul class="nav flex-column">
-          <li><a class="nav-link" href="https://augustow.policja.gov.pl/">Policja</a></li>
-          <li><a class="nav-link" href="https://www.gov.pl/web/kppsp-augustow">Straż Pożarna</a></li>
-          <li><a class="nav-link" href="https://www.acedu.pl/">Augustowskie Centrum Edukacyjne</a></li>
-          <li><a class="nav-link" href="https://piramowicz.pl/">I LO im. G. Piramowicza</a></li>
-          <li><a class="nav-link" href="https://mops.augustow.pl/">MOPS w Augustowie</a></li>
-        </ul>
-      </div>
-
-      <div class="col-6 col-md-3 mb-4 mt-md-2 mt-lg-4">
-        <h5 class="text-muted">Miejskie serwisy</h5>
-        <ul class="nav flex-column">
-          <li><a class="nav-link" href="https://www.apk.augustow.pl/">Augustowskie Placówki Kultury</a></li>
-          <li><a class="nav-link" href="https://www.apk.augustow.pl/muzeum">Muzeum Ziemi Augustowskiej</a></li>
-          <li><a class="nav-link" href="https://biblioteka.augustow.pl/">Miejska Biblioteka</a></li>
-        </ul>
-      </div>
+      {% endfor %}
 
       <div class="col-12 col-md-3 mb-3 text-white-50">
-        <img src="{{ asset('build/images/logo_a24_dark.svg') }}" alt="Logo serwisu" class="mb-3" style="max-width: 220px;"/>
+        <img src="{{ asset('build/images/logo_' ~ app_city.logoKey ~ '_dark.svg') }}" alt="Logo serwisu" class="mb-3" style="max-width: 220px;"/>
         <p>Czekamy na Twoje ciekawe zdjęcia, filmy i artykuły. Z chęcią udostępnimy je.</p>
 
         <h5>Zadzwoń lub napisz</h5>
         <ul class="nav flex-column">
-          <li>E-mail: <a href="mailto:redakcja@augustow24.pl" class="link-primary fw-medium">redakcja@augustow24.pl</a>
+          <li>E-mail: <a href="mailto:{{ app_city.email }}" class="link-primary fw-medium">{{ app_city.email }}</a>
           </li>
           <li>Telefon: <a href="tel:604833731" class="link-primary fw-medium">604 833 731</a></li>
           <li>Fax: <a href="tel:862726697" class="link-primary fw-medium">86 272 66 97</a></li>
@@ -59,7 +40,7 @@
 
     <div class="row">
       <div class="col-12 py-3 border-top border-secondary-subtle text-center">
-        <a href="https://www.facebook.com/Augustow24" target="_blank" rel="noopener"
+        <a href="{{ app_city.facebook }}" target="_blank" rel="noopener"
            class="link-light d-inline-flex align-items-center gap-2 fw-medium">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" fill="none" stroke="currentColor">
             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>

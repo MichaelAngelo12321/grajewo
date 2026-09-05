@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app_city_default: 'augustow'
+    app_city: '%env(default:app_city_default:APP_CITY)%'
     air_pollution_data_url: '%env(APP_AIR_POLLUTION_DATA_URL)%'
     locale: 'pl'
     google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
@@ -69,6 +71,10 @@ services:
             $apiKey: '%weather_api_key%'
             $lat: '%weather_api_lat%'
             $lon: '%weather_api_lon%'
+
+    App\Service\CityConfig:
+        arguments:
+            $cityKey: '%app_city%'
 
     App\Service\FileUploader:
         arguments:

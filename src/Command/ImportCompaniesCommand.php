@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Company;
+use App\Service\CityConfig;
 use App\Entity\CompanyCategory;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,8 +24,11 @@ class ImportCompaniesCommand extends Command
     private EntityManagerInterface $entityManager;
     private ManagerRegistry $registry;
 
-    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $registry)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ManagerRegistry $registry,
+        private CityConfig $cityConfig,
+    ) {
         parent::__construct();
         $this->entityManager = $entityManager;
         $this->registry = $registry;
@@ -142,7 +146,7 @@ class ImportCompaniesCommand extends Command
                 
                 // Miejscowość
                 if (method_exists($company, 'setCity')) {
-                    $company->setCity(mb_substr($row['location'] ?? 'Augustów', 0, 255));
+                    $company->setCity(mb_substr($row['location'] ?? $this->cityConfig->getName(), 0, 255));
                 }
 
                 // Daty

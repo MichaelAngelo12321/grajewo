@@ -3,8 +3,8 @@
 {% block title %}{{ article.name }} - {{ app_name }}{% endblock %}
 {% block description %}{{ article.excerpt }}{% endblock %}
 
-{% block og_image %}{{ app.request.schemeAndHttpHost}}{% if article.imageUrl %}{{ article.imageUrl }}{% else %}{{ asset('build/images/default-share-image-a24.jpg') }}{% endif %}{% endblock %}
-{% block twitter_image %}{{ app.request.schemeAndHttpHost}}{% if article.imageUrl %}{{ article.imageUrl }}{% else %}{{ asset('build/images/default-share-image-a24.jpg') }}{% endif %}{% endblock %}
+{% block og_image %}{{ app.request.schemeAndHttpHost}}{% if article.imageUrl %}{{ article.imageUrl }}{% else %}{{ asset('build/images/' ~ app_city.shareImage) }}{% endif %}{% endblock %}
+{% block twitter_image %}{{ app.request.schemeAndHttpHost}}{% if article.imageUrl %}{{ article.imageUrl }}{% else %}{{ asset('build/images/' ~ app_city.shareImage) }}{% endif %}{% endblock %}
 
 {% block topContent %}
   <nav class="mb-3">
