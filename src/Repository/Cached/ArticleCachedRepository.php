@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository\Cached;
 
+use App\Entity\Article;
 use App\Entity\Category;
 use App\Enum\ArticleStatus;
 use App\Repository\ArticleRepository;
@@ -21,6 +22,9 @@ class ArticleCachedRepository
     ) {
     }
 
+    /**
+     * @return Article[] published events of the current month, ordered by date
+     */
     public function findEventsFromThisMonth(): array
     {
         $cacheKey = CacheKeyPrefix::ARTICLE_EVENTS_FROM_THIS_MONTH;
@@ -28,8 +32,7 @@ class ArticleCachedRepository
         return $this->cache->get($cacheKey, function (ItemInterface $item) {
             $item->expiresAt(new DateTime('last day of this month'));
 
-            $groupedEvents = [];
-            $events = $this->articleRepository->createQueryBuilder('a')
+            return $this->articleRepository->createQueryBuilder('a')
                 ->where('a.status = :status')
                 ->setParameter('status', ArticleStatus::PUBLISHED)
                 ->andWhere('a.isEvent = :isEvent')
@@ -41,16 +44,6 @@ class ArticleCachedRepository
                 ->orderBy('a.eventDateTime', 'ASC')
                 ->getQuery()
                 ->getResult();
-
-            foreach ($events as $event) {
-                if (!array_key_exists($event->getEventDateTime()->format('d'), $groupedEvents)) {
-                    $groupedEvents[$event->getEventDateTime()->format('d')] = [];
-                }
-
-                $groupedEvents[$event->getEventDateTime()->format('d')][] = $event;
-            }
-
-            return $groupedEvents;
         });
     }
 

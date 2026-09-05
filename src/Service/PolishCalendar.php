@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\Article;
 use App\Repository\Cached\ArticleCachedRepository;
 use DateTimeImmutable;
 
@@ -20,7 +21,7 @@ class PolishCalendar
         $holidays = $this->polishCalendarEvent->getHolidays();
         $date = new DateTimeImmutable(sprintf('%d-%d-01', $year, $month));
         $daysInMonth = (int)$date->format('t');
-        $thisMonthEvents = $this->articleRepository->findEventsFromThisMonth();
+        $thisMonthEvents = $this->groupEventsByDay($this->articleRepository->findEventsFromThisMonth());
         $today = (int)(new DateTimeImmutable())->format('d');
         $calendar = [];
 
@@ -65,6 +66,25 @@ class PolishCalendar
         }
 
         return $calendar;
+    }
+
+    /**
+     * Groups events by day of month using integer keys, so that the 5th is
+     * found under key 5 (a zero-padded "05" string key would never match).
+     *
+     * @param Article[] $events
+     * @return array<int, Article[]>
+     */
+    private function groupEventsByDay(array $events): array
+    {
+        $grouped = [];
+
+        foreach ($events as $event) {
+            $day = (int) $event->getEventDateTime()->format('j');
+            $grouped[$day][] = $event;
+        }
+
+        return $grouped;
     }
 
     private function pluralizeEventsNumber(int $number): string

@@ -8,6 +8,7 @@ use App\Entity\Article;
 use App\Entity\Category;
 use App\Entity\Gallery;
 use App\Enum\ArticleStatus;
+use App\Service\ExcerptGenerator;
 use DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -25,8 +26,10 @@ use Symfony\Component\Validator\Constraints\File;
 
 class ArticleType extends AbstractType
 {
-    public function __construct(private Security $security)
-    {
+    public function __construct(
+        private Security $security,
+        private ExcerptGenerator $excerptGenerator,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -141,22 +144,7 @@ class ArticleType extends AbstractType
                     );
                 }
 
-                // remove html tags
-                $excerpt = strip_tags($article->getContent());
-                $excerpt = implode(
-                    '. ',
-                    array_slice(
-                        explode('. ', $excerpt),
-                        0,
-                        3,
-                    ),
-                );
-
-                if (mb_strlen($excerpt) > 300) {
-                    $excerpt = mb_substr($excerpt, 0, 297) . '...';
-                }
-
-                $article->setExcerpt($excerpt);
+                $article->setExcerpt($this->excerptGenerator->fromHtml((string) $article->getContent()));
             });
     }
 

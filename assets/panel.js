@@ -22,6 +22,7 @@ const initPanel = () => {
     tinymce.remove() // Ensure cleanup before re-init
     tinymce.init({
         content_css: false,
+        entity_encoding: 'raw', // store Polish characters as UTF-8, not as &oacute; entities
         height: 500,
         menubar: false,
         plugins: ['link', 'lists', 'table', 'image'],

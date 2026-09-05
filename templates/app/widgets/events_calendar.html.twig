@@ -32,41 +32,30 @@
         <td colspan="{{ startDow }}"></td>
       {% endif %}
 
-      {# Budujemy klasę i styl dla komórki dnia #}
       {% set isToday = (today == day.day) %}
       {% set hasEvent = day.hasEvents %}
       {% set isHoliday = day.isHoliday %}
       {% set isSat = (dow == 5) %}
       {% set isSun = (dow == 6) %}
 
-      {# Priorytet klas (od najwyższego): dzisiaj+impreza, dzisiaj, impreza, święto, sobota, niedziela #}
-      {% if isToday and hasEvent %}
-        {# Dzisiaj i jest impreza – niebieska ramka + zielony pasek na dole #}
-        {% set spanClass = 'rounded-1 fw-bold border border-2 border-primary' %}
-        {% set spanStyle = 'border-style: solid !important;' %}
-      {% elseif isToday %}
-        {# Tylko dzisiaj – niebieskie tło #}
-        {% set spanClass = 'rounded-1 fw-medium text-bg-primary' %}
-        {% set spanStyle = '' %}
-      {% elseif hasEvent and isHoliday %}
-        {# Impreza w święto – czerwone tło + wyraźny zielony badge #}
-        {% set spanClass = 'rounded-1 bg-danger text-white' %}
+      {# Priorytet: dzisiaj (ciemna czerwień), wydarzenie (jaśniejsza czerwień), święto, niedziela, sobota #}
+      {% if isToday %}
+        {% set spanClass = 'fw-medium text-bg-primary' %}
         {% set spanStyle = '' %}
       {% elseif hasEvent %}
-        {# Tylko impreza – zielone tło #}
-        {% set spanClass = 'rounded-1 text-white fw-medium' %}
-        {% set spanStyle = 'background-color: #198754;' %}
+        {% set spanClass = 'fw-medium text-white' %}
+        {% set spanStyle = 'background-color: #b84c4c;' %}
       {% elseif isHoliday %}
-        {% set spanClass = 'rounded-1 bg-danger text-white' %}
+        {% set spanClass = 'bg-danger text-white' %}
         {% set spanStyle = '' %}
       {% elseif isSun %}
-        {% set spanClass = 'rounded-1 text-danger' %}
+        {% set spanClass = 'text-danger' %}
         {% set spanStyle = '' %}
       {% elseif isSat %}
-        {% set spanClass = 'rounded-1 text-muted' %}
+        {% set spanClass = 'text-muted' %}
         {% set spanStyle = '' %}
       {% else %}
-        {% set spanClass = 'rounded-1' %}
+        {% set spanClass = '' %}
         {% set spanStyle = '' %}
       {% endif %}
 
@@ -76,7 +65,7 @@
         {% endif %}
 
           <span
-            class="px-2 py-1 {{ spanClass }} position-relative d-inline-block"
+            class="px-2 py-1 rounded-1 {{ spanClass }} position-relative d-inline-block"
             style="{{ spanStyle }}"
             {% if day.title != '' %}
               data-bs-toggle="tooltip" data-bs-title="{{ day.title }}"
@@ -84,10 +73,10 @@
           >
             {{ day.day }}
             {% if hasEvent %}
-              {# Wyraźna zielona "impreza" etykietka – widoczna zawsze #}
+              {# Zielona kropka = w tym dniu jest wydarzenie #}
               <span
                 class="position-absolute bottom-0 start-50 translate-middle-x rounded-pill"
-                style="width: 6px; height: 6px; background-color: {% if isToday %}#0d6efd{% else %}#198754{% endif %}; margin-bottom: 1px;"
+                style="width: 6px; height: 6px; background-color: #198754; margin-bottom: 2px;"
               ></span>
             {% endif %}
           </span>
@@ -110,19 +99,6 @@
     </tr>
     </tbody>
   </table>
-
-  {# Legenda #}
-  <div class="d-flex gap-3 mt-2 small text-muted">
-    <span class="d-flex align-items-center gap-1">
-      <span class="rounded-1 px-1 text-bg-primary" style="font-size: 0.65rem;">16</span> Dziś
-    </span>
-    <span class="d-flex align-items-center gap-1">
-      <span class="rounded-1 px-1 text-white fw-medium" style="font-size: 0.65rem; background-color:#198754;">16</span> Impreza
-    </span>
-    <span class="d-flex align-items-center gap-1">
-      <span class="rounded-1 px-1 text-white fw-medium border border-2 border-primary" style="font-size: 0.65rem;">16</span> Dziś + impreza
-    </span>
-  </div>
 
   <div class="d-flex justify-content-end mt-2">
     <a href="{{ path('article_events_list') }}" class="btn btn-sm btn-primary">
