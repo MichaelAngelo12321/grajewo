@@ -78,7 +78,7 @@ class CompanyController extends AbstractController
     #[Route('/katalog-firm/{categorySlug}', name: 'company_list', defaults: ['categorySlug' => null])]
     public function list(Request $request, ?string $categorySlug = null): Response
     {
-        $page = $request->query->getInt('page', 1);
+        $page = max(1, $request->query->getInt('page', 1));
         $itemsPerPage = 20;
 
         $currentCategory = null;

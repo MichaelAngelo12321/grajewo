@@ -6,11 +6,14 @@ namespace App\Service;
 
 use App\Entity\PromoItem;
 use App\Repository\PromoItemRepository;
+use Doctrine\DBAL\Exception as DBALException;
+use Psr\Log\LoggerInterface;
 
 class PromoItemService
 {
     public function __construct(
         private readonly PromoItemRepository $promoItemRepository,
+        private readonly LoggerInterface $logger,
         private array $availablePromoItems = [],
         private array $displayedPromoItems = [],
     ) {
@@ -18,8 +21,28 @@ class PromoItemService
 
     public function updateViewsCounters(): void
     {
-        if (!empty($this->displayedPromoItems)) {
-            $this->promoItemRepository->increaseBatchViews($this->displayedPromoItems);
+        $this->countViews(array_keys($this->displayedPromoItems));
+    }
+
+    /**
+     * View statistics must never take the page down, so a database error here
+     * (deadlock, lock wait timeout) is logged and swallowed.
+     *
+     * @param int[] $ids
+     */
+    public function countViews(array $ids): void
+    {
+        if ($ids === []) {
+            return;
+        }
+
+        try {
+            $this->promoItemRepository->incrementViews($ids);
+        } catch (DBALException $exception) {
+            $this->logger->warning('Could not update promo item view counters', [
+                'ids' => $ids,
+                'exception' => $exception,
+            ]);
         }
     }
 

@@ -55,4 +55,26 @@ class PolishCalendarTest extends TestCase
             self::assertFalse($day['hasEvents']);
         }
     }
+
+    /**
+     * @dataProvider easterSundayProvider
+     */
+    public function testComputesWesternEasterSunday(int $year, string $monthDay): void
+    {
+        $holidays = (new PolishCalendarEvent())->getHolidays($year);
+
+        self::assertSame('Wielkanoc', $holidays[$monthDay]);
+        self::assertSame('0', (new DateTimeImmutable(sprintf('%d-%s', $year, $monthDay)))->format('w'));
+    }
+
+    public function easterSundayProvider(): array
+    {
+        return [
+            '2023' => [2023, '04-09'],
+            '2024' => [2024, '03-31'],
+            '2025' => [2025, '04-20'],
+            '2026' => [2026, '04-05'],
+            '2027' => [2027, '03-28'],
+        ];
+    }
 }

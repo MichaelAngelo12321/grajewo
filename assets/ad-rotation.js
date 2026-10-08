@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const ROTATION_INTERVAL = 60000; // 60 seconds
 
     rotationInterval = setInterval(() => {
+        // Tabs left open in the background kept polling every slot all day long
+        if (document.hidden) return;
+
         const slots = document.querySelectorAll('.promo-slot-wrapper[data-slot-name]');
 
         slots.forEach(slotWrapper => {

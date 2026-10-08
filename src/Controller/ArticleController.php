@@ -119,7 +119,7 @@ class ArticleController extends AbstractController
             throw $this->createNotFoundException('Category not found');
         }
 
-        $currentPage = $request->query->getInt('page', 1);
+        $currentPage = max(1, $request->query->getInt('page', 1));
         $itemsPerPage = 10;
         $articles = $this->articleRepository->findLatestByCategory(
             $category,

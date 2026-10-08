@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Repository\PromoItemRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\PromoItemService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,8 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class PromoItemController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private PromoItemRepository $promoItemRepository
+        private PromoItemRepository $promoItemRepository,
+        private PromoItemService $promoItemService,
     ) {
     }
 
@@ -42,8 +42,7 @@ class PromoItemController extends AbstractController
         $promoItem = $this->promoItemRepository->findBySlot($slot);
 
         if ($promoItem) {
-            $this->promoItemRepository->increaseViews($promoItem);
-            $this->entityManager->flush();
+            $this->promoItemService->countViews([$promoItem->getId()]);
         }
 
         $response = $this->render('app/widgets/_promo_space_content.html.twig', [

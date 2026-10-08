@@ -24,17 +24,17 @@ class PolishCalendarEvent
         '12-26' => 'Boże Narodzenie (drugi dzień)',
     ];
 
-    public function getHolidays(): array
+    public function getHolidays(?int $year = null): array
     {
-        $easter = $this->getEasterDate();
+        $easter = $this->getEasterDate($year ?? (int) date('Y'));
         $holidays = [];
 
         foreach (self::HOLIDAYS as $key => $value) {
             if ($key === 'easter') {
-                $holidays[date('m-d', $easter->getTimestamp())] = $value;
+                $holidays[$easter->format('m-d')] = $value;
             } elseif (str_contains($key, 'easter')) {
-                $key = str_replace('easter', '', $key);
-                $holidays[$easter->modify($key . ' day')->format('m-d')] = $value;
+                $offset = str_replace('easter', '', $key);
+                $holidays[$easter->modify($offset . ' day')->format('m-d')] = $value;
             } else {
                 $holidays[$key] = $value;
             }
@@ -43,27 +43,27 @@ class PolishCalendarEvent
         return $holidays;
     }
 
-    private function getEasterDate(): DateTimeImmutable
+    private function getEasterDate(int $year): DateTimeImmutable
     {
-        $year = (int)date('Y');
-
         $golden = $year % 19 + 1;
 
-        $dom = ($year + (int)($year / 4) - (int)($year / 100) + (int)($year / 400)) % 7;
+        $dom = ($year + intdiv($year, 4) - intdiv($year, 100) + intdiv($year, 400)) % 7;
         if ($dom < 0) {
             $dom += 7;
         }
 
-        $solar = (int)(($year - 1600) / 100) - (int)(($year - 1600) / 400);
+        $solar = intdiv($year - 1600, 100) - intdiv($year - 1600, 400);
 
-        $lunar = (int)((int)(($year - 1400) / 100) * 8) / 25;
+        // Integer division is required: `/ 25` without intdiv() leaves a float and
+        // PHP 8.1+ deprecates using that float as a modulo operand (homepage 500).
+        $lunar = intdiv(intdiv($year - 1400, 100) * 8, 25);
 
         $pfm = (3 - 11 * $golden + $solar - $lunar) % 30;
         if ($pfm < 0) {
             $pfm += 30;
         }
 
-        if ($pfm === 29 || $pfm === 28 && $golden > 11) {
+        if ($pfm === 29 || ($pfm === 28 && $golden > 11)) {
             $pfm--;
         }
 
@@ -72,10 +72,9 @@ class PolishCalendarEvent
             $tmp += 7;
         }
 
-        $easter = $pfm + $tmp + 1;
+        $easterDaysAfterMarch21 = $pfm + $tmp + 1;
 
-        return new DateTimeImmutable(
-            date('Y-m-d', mktime(0, 0, 0, 3, 21 + $easter, $year)),
-        );
+        return (new DateTimeImmutable(sprintf('%d-03-21', $year)))
+            ->modify(sprintf('+%d days', $easterDaysAfterMarch21));
     }
 }

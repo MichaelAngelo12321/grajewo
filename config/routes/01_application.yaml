@@ -76,6 +76,8 @@ article_details:
 article_events_list_date:
   path: /kalendarz-wydarzen/{date}
   controller: App\Controller\ArticleController::eventsListDate
+  requirements:
+    date: \d{4}-\d{2}-\d{2}
 
 article_events_list:
   path: /kalendarz-wydarzen
@@ -85,6 +87,8 @@ article_events_list:
 gallery_details:
   path: /galeria/{id}
   controller: App\Controller\GalleryController::details
+  requirements:
+    id: \d+
 
 gallery_list:
   path: /galerie

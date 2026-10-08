@@ -61,7 +61,7 @@ class AdvertisementController extends AbstractController
 
     public function list(Request $request, ?string $category = null): Response
     {
-        $page = $request->query->getInt('page', 1);
+        $page = max(1, $request->query->getInt('page', 1));
         $itemsPerPage = 20;
 
         $baseCriteria = ['isActive' => true];

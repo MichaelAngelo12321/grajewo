@@ -113,18 +113,6 @@ class PromoItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function increaseBatchViews(array $items): void
-    {
-        /** @var PromoItem $item */
-        foreach ($items as $item) {
-            $item->setViewsCount($item->getViewsCount() + 1);
-
-            $this->_em->persist($item);
-        }
-
-        $this->_em->flush();
-    }
-
     public function increaseClicks(PromoItem $item): void
     {
         $item->setClicksCount($item->getClicksCount() + 1);
@@ -133,10 +121,25 @@ class PromoItemRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    public function increaseViews(PromoItem $item): void
+    /**
+     * Bumps view counters with a single atomic UPDATE (rows locked in id order)
+     * instead of a read-modify-write flush, which deadlocked under concurrent
+     * page views and closed the EntityManager.
+     *
+     * @param int[] $ids
+     */
+    public function incrementViews(array $ids): void
     {
-        $item->setViewsCount($item->getViewsCount() + 1);
+        $ids = array_values(array_unique($ids));
 
-        $this->_em->persist($item);
+        if ($ids === []) {
+            return;
+        }
+
+        sort($ids);
+
+        $this->_em->createQuery('UPDATE App\Entity\PromoItem pi SET pi.viewsCount = pi.viewsCount + 1 WHERE pi.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->execute();
     }
 }
