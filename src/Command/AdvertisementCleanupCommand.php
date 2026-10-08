@@ -26,7 +26,7 @@ class AdvertisementCleanupCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $date = new \DateTimeImmutable('-30 days');
+        $date = AdvertisementRepository::expiryDate();
         
         $qb = $this->advertisementRepository->createQueryBuilder('a')
             ->where('a.createdAt < :date')

@@ -71,7 +71,7 @@ class AdvertisementController extends AbstractController
 
         $promotedCriteria = $baseCriteria;
         $promotedCriteria['isPromoted'] = true;
-        $promotedAdvertisements = $this->advertisementRepository->findBy(
+        $promotedAdvertisements = $this->advertisementRepository->findNotExpiredBy(
             $promotedCriteria,
             ['createdAt' => 'DESC'],
             5
@@ -80,7 +80,7 @@ class AdvertisementController extends AbstractController
         $standardCriteria = $baseCriteria;
         $standardCriteria['isPromoted'] = false;
 
-        $advertisements = $this->advertisementRepository->findBy(
+        $advertisements = $this->advertisementRepository->findNotExpiredBy(
             $standardCriteria,
             ['createdAt' => 'DESC'],
             $itemsPerPage,
@@ -95,7 +95,7 @@ class AdvertisementController extends AbstractController
             'categories' => $this->advertisementRepository->findAllCategories(),
             'currentCategory' => $category,
             'paginator' => new Paginator(
-                $this->advertisementRepository->count($standardCriteria),
+                $this->advertisementRepository->countNotExpiredBy($standardCriteria),
                 $itemsPerPage,
                 $page,
                 $request->getPathInfo(),
