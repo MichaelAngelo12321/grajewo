@@ -95,10 +95,13 @@ class ArticleEditType extends AbstractType
             ])
             ->add('gallery', EntityType::class, [
                 'class' => Gallery::class,
-                'choice_label' => 'name',
+                'choice_label' => fn (Gallery $gallery) => sprintf('%s (%s)', $gallery->getName(), $gallery->getCreatedAt()?->format('d.m.Y')),
                 'required' => false,
                 'label' => 'Galeria artykułu',
                 'placeholder' => 'Wybierz galerię',
+                'query_builder' => fn (\App\Repository\GalleryRepository $er) => $er->createQueryBuilder('g')
+                    ->orderBy('g.createdAt', 'DESC')
+                    ->addOrderBy('g.id', 'DESC'),
             ])
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
                 /** @var Article $article */

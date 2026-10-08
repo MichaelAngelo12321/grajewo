@@ -60,6 +60,36 @@ const initPanel = () => {
         }
     }
 
+    // Searchable selects - text input above the select that filters its options
+    const normalize = (text) => text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l')
+
+    for (let select of document.querySelectorAll('select[data-searchable-select]')) {
+        const search = document.createElement('input')
+        search.type = 'search'
+        search.className = 'form-control mb-2'
+        search.placeholder = select.dataset.searchableSelect || 'Szukaj...'
+        select.before(search)
+
+        const options = [...select.options]
+
+        search.addEventListener('input', () => {
+            const query = normalize(search.value.trim())
+            for (let option of options) {
+                const matches = option.value === '' || option.selected || normalize(option.text).includes(query)
+                option.hidden = !matches
+            }
+
+            select.size = query ? Math.min(10, Math.max(2, options.filter(o => !o.hidden).length)) : 0
+        })
+
+        select.addEventListener('change', () => {
+            if (search.value) {
+                search.value = ''
+                search.dispatchEvent(new Event('input'))
+            }
+        })
+    }
+
     // Confirm elements (removed from initPanel, handled globally below)
 
     // Sortable elements
