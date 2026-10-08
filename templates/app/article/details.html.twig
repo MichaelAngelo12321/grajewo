@@ -147,9 +147,13 @@
     <div class="col-auto ms-xl-auto">
       <p class="m-0 mb-2 fw-medium">Udostępnij</p>
 
+      {# Clean article URL: no fbclid/utm query, so share links stay valid once encoded #}
+      {% set share_url = app.request.schemeAndHttpHost ~ app.request.baseUrl ~ app.request.pathInfo %}
+
       <div class="d-flex gap-3">
-        <a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri }}" class="share-button"
-           target="_blank">
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url|url_encode }}" class="share-button"
+           id="share-button-facebook" data-share-title="{{ article.name }}" data-share-url="{{ share_url }}"
+           target="_blank" rel="noopener">
           <span class="badge rounded-pill bg-blue">
             <img src="{{ asset('build/images/icons/brand-facebook.svg') }}" alt="Logo Facebook" width="20" height="20"/>
           </span>
@@ -157,7 +161,7 @@
           <span class="d-none d-lg-block">Facebook</span>
         </a>
 
-        <a href="https://twitter.com/intent/tweet?text={{ article.name }} {{ app.request.uri }}" class="share-button"
+        <a href="https://twitter.com/intent/tweet?text={{ (article.name ~ ' ' ~ share_url)|url_encode }}" class="share-button"
            target="_blank">
           <span class="badge rounded-pill text-bg-dark">
             <img src="{{ asset('build/images/icons/brand-x.svg') }}" alt="Logo X" width="20" height="20"/>
@@ -169,7 +173,7 @@
         </a>
 
         <a
-          href="mailto:?body=<strong>{{ article.name }}</strong><p>{{ article.excerpt }}</p><br /><br />Więcej dowiesz się na: {{ app.request.uri }}"
+          href="mailto:?body=<strong>{{ article.name }}</strong><p>{{ article.excerpt }}</p><br /><br />Więcej dowiesz się na: {{ share_url }}"
           class="share-button"
           target="_blank"
         >

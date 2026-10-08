@@ -101,6 +101,26 @@ const initApp = () => {
     })
   }
 
+  // Facebook share: on touch devices the web sharer dialog can hang forever
+  // (in-app browsers / FB app hand-off), so use the native share sheet instead
+  const shareButtonFacebook = document.getElementById('share-button-facebook')
+  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches
+
+  if (shareButtonFacebook && navigator.share && isTouchDevice) {
+    shareButtonFacebook.addEventListener('click', (event) => {
+      event.preventDefault()
+
+      navigator.share({
+        title: shareButtonFacebook.dataset.shareTitle,
+        url: shareButtonFacebook.dataset.shareUrl,
+      }).catch((error) => {
+        if (error.name !== 'AbortError') {
+          window.open(shareButtonFacebook.href, '_blank', 'noopener')
+        }
+      })
+    })
+  }
+
   // Promo popup
   const promoPopupEl = document.getElementById('promoPopup')
   if (promoPopupEl) {
